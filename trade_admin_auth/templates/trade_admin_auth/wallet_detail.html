@@ -1,0 +1,178 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+      
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label >
+                        User Address : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{staticcontent_qs.useraddress}}
+                </div>
+                <div class="form-group">
+                  <label >
+                        Created On : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{staticcontent_qs.created_on}}
+                </div>
+                <div class="form-group">
+                  <label >
+                      Last Login : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{staticcontent_qs.modified_on}}
+                </div>
+                 <div class="form-group">
+                  <label >
+                        Total Bids : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{total_bid_qs}}
+                </div>
+                <div class="form-group">
+                  <label >
+                        Total Bids Token : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{bid_token|floatformat:8}} {{hbdtoken.symbol}}
+                </div>
+                <div class="form-group">
+                  <label >
+                        Total Winning Bids : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{total_winning_bid_qs}}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label > Wallet Detail </label>
+              <div class="table-responsive">
+                <div class="box-body">
+                <table id="example" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Currency</th>
+                      <th>Address</th>
+                    </tr>
+                    </thead>
+                   
+                    <tbody>
+                        {% if wallet_qs %}
+                        {% for item in wallet_qs %}
+                         <tr>
+                          <td>{{ forloop.counter}}</td>
+                          <td>{{ item.currency}}</td>
+                          <td>{{ item.address}}</td>
+                        </tr>
+                         {% endfor %}
+                        {% else %}
+                             <tr><td colspan=5><h5>There are no records yet</h5></td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+              </div>
+             </div>
+           </div>
+         </div>
+         <div class="row">
+          <div class="col-md-12">
+             <div class="form-group">
+                  <label >
+                       Bid List 
+                  </label>
+                </div>
+             <div class="table-responsive">
+              <div class="box-body">
+                <table id="example2" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Auction ID</th>
+                      <th>Pair Name</th>
+                      <th>Bid ID</th>
+                      <th>Bid Amount</th>
+                      <th>Created On</th>
+                      <th>Status</th>
+            
+                    </tr>
+                    </thead>
+                   
+                    <tbody >
+                        {% if bid_qs %}
+                        {% for item in bid_qs %}
+                         <tr>
+                          <td>{{ forloop.counter}}</td>
+                          <td><a href="/auctions/auctiondetail/{{ item.auction_id.id}}">{{ item.auction_id.auction_id}}</a></td>
+                          <td>{{ item.pair_name}}</td>
+                          <td>{{ item.bid_id}}</td>
+                          <td>{{ item.bidamount}}</td>
+                          <td>{{ item.created_on}}</td>
+                          <td>{{ item.get_status_display}}</td>
+
+                        </tr>
+                         {% endfor %}
+                        {% else %}
+                             <tr><td colspan=5><h5>There are no records yet</h5></td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+              </div>
+             </div>
+          </div>
+        </div>
+         <div class="box-footer">
+                 <a href="/tradeadmin/useraddresslist/" class="btn btn-primary">Back</a>
+         </div>
+        </form>
+      </div>
+    </section>
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

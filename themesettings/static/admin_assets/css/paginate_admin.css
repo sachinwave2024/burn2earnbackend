@@ -1,0 +1,15 @@
+@import url(basic.css); /* ÃÊ±âÈ­ */
+
+/* Paging */
+.paging {margin:50px 0; text-align:center;}
+.paging a {display:inline-block; vertical-align:top; width:38px; height:38px; text-align:center; line-height:38px; background:#fff; border:1px solid #ddd;}
+.paging a:hover {background:#f2f2f2;}
+.paging a.active {color:#ffff; border:1px solid #07b4f7;background-color: #07b4f7;}
+.paging a.btn_left_db {background:url(../../admin_assets/images/paging_arrow_left_db.png) center center no-repeat;}
+.paging a.btn_left {background:url(../../admin_assets/images/paging_arrow_left.png) center center no-repeat;}
+.paging a.btn_right {background:url(../../admin_assets/images/paging_arrow_right.png) center center no-repeat;}
+.paging a.btn_right_db {background:url(../../admin_assets/images/paging_arrow_right_db.png) center center no-repeat;}
+.paging a.btn_left_db:hover {background:#f2f2f2 url(../../admin_assets/images/paging_arrow_left_db.png) center center no-repeat;}
+.paging a.btn_left:hover {background:#f2f2f2 url(../../admin_assets/images/paging_arrow_left.png) center center no-repeat;}
+.paging a.btn_right:hover {background:#f2f2f2 url(../../admin_assets/images/paging_arrow_right.png) center center no-repeat;}
+.paging a.btn_right_db:hover {background:#f2f2f2 url(../../admin_assets/images/paging_arrow_right_db.png) center center no-repeat;}

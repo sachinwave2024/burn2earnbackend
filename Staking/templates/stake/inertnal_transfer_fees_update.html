@@ -1,0 +1,96 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                 <label >Fees (%)
+                    <span class="text-danger"> * </span>
+                  </label>
+                  <input type="number" name="fees" required="required" class="form-control" value="{{obj_internal.transaction_fees}}" placeholder="Fees" id="id_fees">
+                    
+                </div>
+
+              </div>
+              </div>
+          
+              
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="checkbox-row">
+                    <input type="checkbox" id="health_wallet_id" name="health_wallet" value="True" {% if obj_internal.health_wallet %}checked=""{% endif %} onclick="check_box_1()">
+                    <label for="health_wallet_id"> Health Wallet</label><br>
+                    <input type="checkbox" id="ref_wallet_id" name="ref_wallet" value="True" {% if obj_internal.referral_wallet %}checked=""{% endif %} onclick="check_box_2()">
+                    <label for="ref_wallet_id"> Referral Wallet</label><br>
+                    <!-- <input type="checkbox" id="stake_withdraw_wallet_id" name="stake_withdraw_wallet" value="1" onclick="check_box_3()">
+                    <label for="stake_withdraw_wallet_id">Stake Withdraw Wallet</label><br>
+                    <input type="checkbox" id="stake_ref_wallet_id" name="stake_ref_wallet" value="1" onclick="check_box_4()">
+                    <label for="stake_ref_wallet_id">Stake Referral Withdraw Wallet</label><br><br>
+                     -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+                 
+
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <!-- <a href="#" class="btn btn-primary" >Back</a> -->
+         </div>
+          </form>
+      </div>
+
+     </section>
+
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

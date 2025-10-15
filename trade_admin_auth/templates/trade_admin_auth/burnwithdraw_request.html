@@ -1,0 +1,199 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+
+{% block Style_sheets %}
+<link rel="stylesheet" href="{% static 'css/datatables.css' %}">
+<style>
+    #loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        text-align: center;
+    }
+
+    .loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+    }
+</style>
+{% endblock Style_sheets %}
+
+{% block Content_Area %}
+<section class="content">
+    <div class="box box-default">
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay">
+            <div class="loading-spinner">
+                <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Processing...</span>
+                </div>
+                <h4>Processing...</h4>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label>Email:</label>
+                    <input type="text" id="email" class="form-control" placeholder="Search Email">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label>Date:</label>
+                    <input type="date" id="created_on" class="form-control">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label>Status:</label>
+                    <select id="status" class="form-control">
+                        <option value="">All</option>
+                        <option value="3">Pending</option>
+                        <option value="1">Approved</option>
+                        <option value="2">Rejected</option>
+                        <option value="4">Hold</option>
+                    </select>
+                </div>
+                <div class="col-md-12 text-right">
+                    <button class="btn btn-primary" onclick="fetchData(0)">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Claim Amount -->
+        <div class="box-body">
+            <h4>Total Claim Amount: <span id="totalClaimAmount">0</span></h4>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table id="promoBonusTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User ID</th>
+                        <th>Email</th>
+                        <th>Amount</th>
+                        <th>Claim JW</th>
+                        <th>Claim JWC</th>
+                        <th>Transaction Hash</th>
+                        <th>Address</th>
+                        <th>Created On</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="box-footer text-center">
+            <button id="prevPage" class="btn btn-secondary" disabled>Previous</button>
+            <span id="pageInfo">Page 1</span>
+            <button id="nextPage" class="btn btn-secondary">Next</button>
+        </div>
+    </div>
+</section>
+{% endblock Content_Area %}
+
+{% block Java_Scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let currentPage = 0;
+    const pageSize = 10;
+
+    function fetchData(startIndex = 0) {
+        const data = {
+            email: $('#email').val().trim(),
+            status: $('#status').val(),
+            created_on: $('#created_on').val(),
+            start: startIndex,
+            length: pageSize,
+            draw: 1
+        };
+
+        $.ajax({
+            url: "{% url 'trade_admin_auth:get_Burn_details' %}",
+            type: "POST",
+            data: data,
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            beforeSend: function () {
+                $("#loading-overlay").show();
+            },
+            success: function (response) {
+                const statusMap = {
+                    1: "Approved",
+                    2: "Rejected",
+                    3: "Pending",
+                    4: "Hold"
+                };
+
+                let rows = "";
+                if (!response.data || response.data.length === 0) {
+                    rows = `<tr><td colspan="10" class="text-center">No records found</td></tr>`;
+                } else {
+                    response.data.forEach(item => {
+                        rows += `<tr>
+                            <td>${item.id}</td>
+                            <td>${item.user_id}</td>
+                            <td>${item.email}</td>
+                            <td>${item.amount}</td>
+                            <td>${item.Claim_JW}</td>
+                            <td>${item.Claim_JWC}</td>
+                            <td>${item.Transaction_Hash ? `<a class="btn btn-sm btn-info" href="https://bscscan.com/tx/${item.Transaction_Hash}" target="_blank"><i class="fa fa-external-link"></i></a>` : 'N/A'}</td>
+                            <td>${item.Address}</td>
+                            <td>${item.created_on}</td>
+                            <td>${statusMap[item.status] || 'Unknown'}</td>
+                        </tr>`;
+                    });
+                }
+
+                $("#table-body").html(rows);
+                $("#totalClaimAmount").text(response.total_claim_amount ? response.total_claim_amount.toFixed(2) : "0.00");
+
+                // Pagination update
+                const totalRecords = response.recordsFiltered || 0;
+                const totalPages = Math.ceil(totalRecords / pageSize);
+
+                currentPage = Math.floor(startIndex / pageSize);
+                $("#pageInfo").text(`Page ${currentPage + 1} of ${totalPages}`);
+                $("#prevPage").prop("disabled", currentPage <= 0);
+                $("#nextPage").prop("disabled", currentPage + 1 >= totalPages);
+            },
+            error: function (xhr, status, error) {
+                alert("Failed to fetch data. Please try again.");
+                console.error("AJAX Error:", error);
+            },
+            complete: function () {
+                $("#loading-overlay").hide();
+            }
+        });
+    }
+
+    $("#prevPage").on("click", function () {
+        if (currentPage > 0) {
+            fetchData((currentPage - 1) * pageSize);
+        }
+    });
+
+    $("#nextPage").on("click", function () {
+        fetchData((currentPage + 1) * pageSize);
+    });
+
+    $('#email, #status, #created_on').on('change keyup', function () {
+        fetchData(0);
+    });
+
+    $(document).ready(function () {
+        fetchData(0);
+    });
+</script>
+{% endblock Java_Scripts %}

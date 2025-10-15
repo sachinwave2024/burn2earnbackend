@@ -1,0 +1,667 @@
+
+
+
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+ 
+    <section class="content">
+    
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{Title}}</h3>
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    
+   
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+            </div>
+            
+            <div class="box-body">
+              {% comment %}
+               {% render_table table %} 
+              {% endcomment %}
+              
+              <!-- <div class="head-user d-flex justify-content-end p-3">
+                <div class="user-wrapper">
+                  <div class="right-inner-addon input-container">
+                    
+                    <input type="text" class="form-control font-firabook font12" id="id_findtext"  placeholder="Search Keywords..." />
+                  </div>
+                </div>
+              </div> -->
+              
+              <div class="row ">   
+                <div class="col-md-6 col-xs-12 pull-left"> 
+                  <div class="row">
+                    <form class="form-horizontal" method="post"> 
+                      {% csrf_token %} 
+                    <div class="col-md-3">
+                  <!-- <div class="form-control"> -->
+                    <label>Start Date :</label>
+                    <input type="date" placeholder="Start Date" id="id_start_date" class="textinput textInput">
+                  </div>
+                  <!-- </div> -->
+                    <div class="col-md-3">
+                  <!-- <div class="form-control"> -->
+                    <label>End Date :</label>
+                    <input type="date" placeholder="End Date" id="id_end_date" class="textinput textInput">
+                    <p class="mt-2" id="blankMsgName" style="color: red;"></p>
+                  <!-- </div> -->
+                  </div>
+          
+                  <div>
+                    <button type="button" class="btn btn-primary" style="position: absolute;right: 242px;top: 21px;" onclick="CSV_file_ajax()">Download CSV</button>
+                  </div>
+                  </form>
+                  
+                  </div>
+                   
+                  
+                 </div>  
+                 
+                <div class="col-md-6 col-xs-12 pull-right"> 
+                     <div class="panel-group accordion" id="accordion1">
+                                                           <div class="panel panel-default">
+                                                               <div class="panel-heading">
+                                                                   <div class="panel-title">
+                                                                       <a id="accordion-search" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" aria-expanded="false">
+                                                                        <i class="fa fa-search font-dark"></i>
+                                                                  <span class="caption-subject font-dark bold uppercase">Advanced Search</span>
+                                                                  <span style="float:right"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                                                                       </a>
+                                                                       
+                                                                   </div>
+                                                                   
+                                                               </div>
+                                                               <div id="collapse_1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                                   <div class="panel-body">
+                                                                     
+                                                                       
+          
+                                                                        <form class="form-horizontal" id="Bill_Search_Form" method="post"> 
+                                                                            <div class="row">
+
+                                                                              <div class="col-md-2">
+
+                                                                            <div id="div_id_Name" class="control-group"> 
+                                                                              <label for="id_Name" class="control-label ">
+                                                                            
+                                                                                          Search Type
+                                                                            </label> 
+                                                                            <div class="controls">
+                                                                              <select class="form-control" id="search_type">
+                                                                                <option value="1"> User Name</option>
+                                                                                <option value="2"> User Email</option>
+                                                                                <option value="3"> Device Id</option>
+                                                                                <option value="4"> Referral Email</option>
+                                                                                </select>
+                                                                            </div> 
+                                                                          </div> 
+                                                                        </div> 
+
+                                                                        <div class="col-md-6">
+                                                                          <div id="div_id_Name" class="control-group"> 
+                                                                            <label for="id_Name" class="control-label ">
+                                                                          
+                                                                                        Enter Value
+                                                                          </label> 
+                                                                          <div class="controls">
+                                                                            <input type="text" name="Name" class="form-control" required id="search_value"> 
+                                                                          </div> 
+                                                                      </div>
+                                                                    </div> 
+
+                                                                    <div class="col-md-4">
+
+                                                                      <div class="control-group"> 
+                                                                        <label for="id_Name" class="control-label ">   </label> 
+                                                                        <button type="submit" name="submit" value="Search" class="btn btn-primary" id="customerSearchButton"> submit </button>
+                                                                         <input type="reset" name="reset-search" value="Reset Search" class="btn btn-inverse btn btn-default" id="reset-search">
+                                                                         </div> 
+
+                                                                      </div>
+
+                                                                      </div>
+                                                                                    
+                                                                        
+                                                                         </form>
+                                                                      </div>
+                                                                                 
+                                                                        
+                                                                                                                                 
+                                                                   </div>
+                                                               </div>
+                                                           </div>
+                                                       </div>  
+                                                  
+                </div>
+
+            <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+              <div class="box-tools pull-right">                         
+                        </div>
+            </div>
+
+             <div class="table-responsive">
+          
+            <div class="box-body">
+              <table id="examples" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                      <th class="no-sort">S.No</th>
+                      <th class="no-sort">Username</th>
+                      <th class="no-sort">User Email Address</th>
+                      <th class="no-sort">Referral Email</th>
+                      <th class="no-sort">Ref User</th>
+                      <th class="no-sort">App Version</th>
+                      <th class="no-sort">Phone type</th>
+                      <th class="no-sort">Device ID</th>
+                      <th class="no-sort">New Device ID</th>
+                      <th class="no-sort">User INR ID</th>
+                      <th class="no-sort">Created on</th>
+                      <th class="no-sort">User Type</th>
+                      <th class="no-sort">Actions</th>
+                      <th class="no-sort">Wallet address</th>
+                      <th class="no-sort">History</th>
+                      <th class="no-sort">Direct Referal History</th>
+                      <!-- <th class="no-sort">OrderHistory</th> -->
+                      <th class="no-sort">Add Plan</th>
+                      <th class="no-sort">Add Support History</th>
+                      <th class="no-sort">Add Premium Deposit</th>
+                      <th class="no-sort">Add Deposit History</th>
+                      <th class="no-sort">Step Update</th>
+                      <th class="no-sort">Missing reward update</th>
+                      <th class="no-sort">Staking history</th>
+                      <th class="no-sort">Staking Credit history</th>
+                      <th class="no-sort">Add Trade Deposit</th> 
+                      <th class="no-sort">Purchage Bot</th> 
+                      <th class="no-sort">Trade History</th> 
+                      <th class="no-sort">Add Stake Deposit</th> 
+                      <th class="no-sort">Stake History</th>
+                      <th class="no-sort">MP History</th>
+                      <th class="no-sort">Add Burn Deposit</th> 
+                      <th class="no-sort">Add monthly plan</th> 
+                      <th class="no-sort">Add Burn JWC Deposit</th> 
+                      <th class="no-sort">Burn History</th>
+                      <th class="no-sort">Burn JWC History</th>
+
+                    </tr>
+                </thead>
+            </table>
+              
+            </div>
+            </div>
+          
+          </div>
+ 
+            </div>
+           
+            </div>
+           
+          </div>
+
+    </section>
+   
+    <style>
+      .head-user {
+          align-content: end;
+          width: 100%;
+        }
+        .p-3 {
+            padding: 1rem !important;
+          }
+        .justify-content-end {
+            justify-content: flex-end !important;
+          }
+      .d-flex {
+          display: flex !important;
+        }
+        .user-wrapper {
+          display: flex;
+          align-items: center;
+        }
+        .right-inner-addon {
+            position: relative;
+          }
+          .pagination{
+            /* padding-left: 1300px; */
+            float: right;
+          }
+          .form{
+            display: flex;
+          }
+          .form .control-group{
+     margin-right: 15px;
+     margin-bottom: 15px;
+   }
+   #example1_info {
+ padding: 25px;
+}
+   
+    </style>
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+ <script>
+
+$(document).ready(function() {
+    
+  var table =  $('#examples').DataTable({
+    bFilter: false,
+    ajax: {
+    url: '/tradeadmin/getUsers/',
+    type: 'POST',
+    data: function ( d )
+          {
+            d.search_type = $('#search_type').val()
+            d.search_value = $('#search_value').val()
+          },
+    },
+    columns: [
+        { data: null },
+        { data: 'Name' },
+        { data: 'Email' },
+        { data: 'User_Verification_Status' },
+        { data: 'Direct_referral_id' },
+        { data: 'phone_number' }, 
+        { data: 'user_profile_pic' }, 
+        { data: 'device_unique_id' }, 
+        { data: 'request_device_id' }, 
+        { data: 'USER_INRID' }, 
+        { data: 'created_on' }, 
+        { data: 'User_type' },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/Edit_User_Management/'+row['id']+'"><i class="fa fa-edit"/></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/User_Wallet_Address_Detail/'+row['id']+'"><i class="fa fa-address-card" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/user_history_table/'+row['id']+'"><i class="fa fa-history" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/user_referal_history_table/'+row['id']+'"><i class="fa fa-retweet" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        // {
+        //     data: null,
+        //     render: function (data, type, row) {
+        //             return '<a href="/tradeadmin/user_order_history_table/'+row['id']+'"><i class="fa fa-first-order" aria-hidden="true"></i></a>';
+                 
+        //         return data;
+        //     }
+        // },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/Add_User_Plan/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/user_add_usdt/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/user_premium_deposit/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/add_user_deposit/'+row['id']+'"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/step_update_user/'+row['id']+'"><i class="fa fa-blind" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/missing_reward_update_admin/'+row['id']+'"><i class="fa fa-steam" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/stake/user_stake_history_table/'+row['id']+'"><i class="fa fa-archive" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/stake/user_stake_credit_history_table/'+row['id']+'"><i class="fa fa-archive" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+
+
+        {
+          data: null,
+          render: function (data, type, row) {
+                  return '<a href="/tradeadmin/user_trade_deposit/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                
+              return data;
+          }
+      },
+
+
+      {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/purchase_bot/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+
+
+      {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/trade_history_table/'+row['id']+'"><i class="fa fa-history" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+
+
+       {
+          data: null,
+          render: function (data, type, row) {
+                  return '<a href="/tradeadmin/user_stake_deposit/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                
+              return data;
+          }
+      },
+
+      {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/stake_history_table/'+row['id']+'"><i class="fa fa-history" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+
+
+
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/mp_history_table/'+row['id']+'"><i class="fa fa-history" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+
+
+        {
+          data: null,
+          render: function (data, type, row) {
+                  return '<a href="/tradeadmin/user_burn_deposit/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                
+              return data;
+          }
+      },
+
+
+      {
+          data: null,
+          render: function (data, type, row) {
+                  return '<a href="/tradeadmin/user_monthly_deposit/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                
+              return data;
+          }
+      },
+
+
+      {
+          data: null,
+          render: function (data, type, row) {
+                  return '<a href="/tradeadmin/classicuser_burn_deposit/'+row['id']+'"><i class="fa fa-play" aria-hidden="true"></i></a>';
+                
+              return data;
+          }
+      },
+
+      {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/burn_history_table/'+row['id']+'"><i class="fa fa-history" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+
+        {
+            data: null,
+            render: function (data, type, row) {
+                    return '<a href="/tradeadmin/burnjwc_history_table/'+row['id']+'"><i class="fa fa-history" aria-hidden="true"></i></a>';
+                 
+                return data;
+            }
+        },
+
+
+
+
+
+
+
+    ],
+    processing: true,
+    serverSide: true,
+    drawCallback: function (settings) { 
+        var response = settings.json;
+        $('.sorting_1').each(function(i){
+          $(this).html(response.tt[i])
+        })
+    }, 
+  });
+  
+
+  $("#Bill_Search_Form").on("submit", function (event) {
+
+    event.preventDefault();
+
+    $('table#examples').dataTable().fnDraw();
+    
+  })
+  
+ });
+ 
+ </script>
+
+ 
+
+
+
+  
+<script src="https://cdn.tutorialjinni.com/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+
+
+
+
+<script>
+  function CSV_file_ajax() {
+    $("#loader_spin_id").show();
+     $.ajax({
+         type: "POST",
+         url: '/tradeadmin/download_csv_user_management_report/', 
+         data: {
+             start_date : $("#id_start_date").val(), 
+             end_date : $("#id_end_date").val(), 
+             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+         },
+         success:function(data)
+         {
+           if(data.start_date != "" && data.end_date != ""){
+              if(data.start_date <= data.end_date){
+                  if(data.data != ""){
+                    
+                      if (data.status == "true") {
+                        
+                        const str_date = data.start_date
+                        const end_date = data.end_date
+
+                        const csv = $.csv.fromObjects(data.data);
+                        downloadBlobAsFile(csv, str_date + '_to_' + end_date + ' transaction.csv' );
+                        $("#loader_spin_id").hide();
+                      } else {
+                        alert("No records found !!!!")
+                        $("#loader_spin_id").hide();
+                      }
+                }else{
+                  alert("No records found.")
+                  $("#loader_spin_id").hide();
+              }
+            }else{
+              alert("Invalid end date.")
+              $("#loader_spin_id").hide();
+            }
+          }else{
+            alert("Make sure select date.")
+            $("#loader_spin_id").hide();
+          }
+         },
+     });
+     };
+
+    const downloadBlobAsFile = function(csv, filename){
+      var downloadLink = document.createElement("a");
+      var blob = new Blob([csv], { type: 'text/csv' });
+      var url = URL.createObjectURL(blob);
+      downloadLink.href = url;
+      downloadLink.download = filename;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+
+ </script>
+
+
+
+<style>
+  /*-- -- -- -- -|| Loader Styles Start Here ||- -- -- -- --*/
+
+  .no-sort::after { display: none!important; }
+
+.no-sort { pointer-events: none!important; cursor: default!important; }
+  .loader {
+      background: rgba(0, 4, 10, 0.9) none repeat scroll 0 0;
+      bottom: 0;
+      height: 100%;
+      left: 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 100%;
+      z-index: 9999;
+  }
+  .spinner {
+      height: 40px;
+      margin: auto;
+      position: absolute;
+      width: 40px;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+  }
+  .double-bounce1, .double-bounce2 {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #fff;
+      opacity: 0.6;
+      position: absolute;
+      top: 0;
+      left: 0;
+      -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+      animation: sk-bounce 2.0s infinite ease-in-out;
+  }
+  .double-bounce2 {
+      -webkit-animation-delay: -1.0s;
+      animation-delay: -1.0s;
+  }
+  /*-- -- -- -- -|| Loader Styles End Here ||- -- -- -- --*/
+  
+  </style>
+ {% endblock %}
+

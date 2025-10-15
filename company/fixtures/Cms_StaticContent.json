@@ -1,0 +1,137 @@
+[
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 1,
+    "fields": {
+        "created_on": "2021-09-23T13:48:43.110",
+        "created_by": 1,
+        "modified_on": "2021-10-07T07:04:42.752",
+        "modified_by": 1,
+        "name": "bannerheading",
+        "title": "Banner Heading",
+        "content": "<h4 class=\"f-40 f-W500 T-c-0\"><span class=\"T-c-2\">Bid Farewell</span> to High Fees</h4>\r\n\r\n<p class=\"f-18 f-W500 T-c-0\">Among the lowest maker &amp; taker fees </p>",
+        "contenttype": 1,
+        "status": 0
+    }
+},
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 2,
+    "fields": {
+        "created_on": "2021-09-23T13:56:04.868",
+        "created_by": 1,
+        "modified_on": "2021-09-23T13:56:04.868",
+        "modified_by": 1,
+        "name": "process",
+        "title": "Our Process",
+        "content": "<h4 class=\"f-40 f-W500 T-c-2\">How it work</h4>",
+        "contenttype": 1,
+        "status": 0
+    }
+},
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 3,
+    "fields": {
+        "created_on": "2021-09-23T14:00:03.701",
+        "created_by": 1,
+        "modified_on": "2021-09-23T14:00:03.701",
+        "modified_by": 1,
+        "name": "purchase",
+        "title": "purchase",
+        "content": "<p class=\"mb-0 stP-Bx T-c-1 f-25 f-w500\">1</p>\r\n  <p class=\"mb-0 T-c-3 f-20\">Purchase</p>",
+        "contenttype": 1,
+        "status": 0
+    }
+},
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 4,
+    "fields": {
+        "created_on": "2021-09-23T14:00:31.839",
+        "created_by": 1,
+        "modified_on": "2021-09-23T14:00:31.839",
+        "modified_by": 1,
+        "name": "bidding",
+        "title": "Bidding",
+        "content": "<p class=\"mb-0 stP-Bx T-c-1 f-25 f-w500\">2</p>\r\n<p class=\"mb-0 T-c-3 f-20\">Bidding</p>",
+        "contenttype": 1,
+        "status": 0
+    }
+},
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 5,
+    "fields": {
+        "created_on": "2021-09-23T14:00:59.764",
+        "created_by": 1,
+        "modified_on": "2021-09-23T14:00:59.764",
+        "modified_by": 1,
+        "name": "winning",
+        "title": "Winning",
+        "content": "<p class=\"mb-0 stP-Bx T-c-1 f-25 f-w500\">3</p>\r\n <p class=\"mb-0 T-c-3 f-20\">Winning</p>",
+        "contenttype": 1,
+        "status": 0
+    }
+},
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 6,
+    "fields": {
+        "created_on": "2021-09-24T05:34:03.598",
+        "created_by": 1,
+        "modified_on": "2021-09-24T05:34:03.598",
+        "modified_by": 1,
+        "name": "platform",
+        "title": "Bidding Platform",
+        "content": "<h4 class=\"f-40 f-W500 T-c-0 mb-4 text-center\"><span class=\"T-c-2\">India's No#1 Discount Auction</span> Bidding Platform</h4>\r\n              <p class=\"f-18 text-center L-h27 \">100% RISKFREE ONLINE AUCTIONS, WIN or BUY BRANDED NEW PRODUCTS AT UP TO 89% HUGE DISCOUNT\r\n                5 Free Credits On Sign Up, Worldwide Shipping , Latest Gadgets, Click To BID Easy Auctions\r\n              60000+ Members , 15000+ Completed Auctions , Always Fair Auction Guaranteed.</p>",
+        "contenttype": 1,
+        "status": 0
+    }
+},
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 7,
+    "fields": {
+        "created_on": "2021-09-24T05:38:27.763",
+        "created_by": 1,
+        "modified_on": "2021-09-24T05:38:27.763",
+        "modified_by": 1,
+        "name": "auction",
+        "title": "List Auction",
+        "content": "<h4 class=\"f-40 f-W500 T-c-0 mb-4\"><span class=\"T-c-2\">List of</span> Auction</h4>\r\n                <p class=\"f-16 text-center L-h27 \">Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. </p>",
+        "contenttype": 1,
+        "status": 0
+    }
+},
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 8,
+    "fields": {
+        "created_on": "2021-09-24T05:39:48.538",
+        "created_by": 1,
+        "modified_on": "2021-09-24T05:39:48.538",
+        "modified_by": 1,
+        "name": "faq",
+        "title": "FAQ",
+        "content": "<h4 class=\"f-40 f-W500 T-c-0 mb-4\"><span class=\"T-c-2\">Hotbitdeal Online</span> Auction Rules</h4>\r\n                <p class=\"f-16 text-center L-h27 \">Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.  </p>",
+        "contenttype": 1,
+        "status": 0
+    }
+},
+{
+    "model": "trade_master.cms_staticcontent",
+    "pk": 9,
+    "fields": {
+        "created_on": "2021-09-24T05:41:05.059",
+        "created_by": 1,
+        "modified_on": "2021-09-24T05:41:05.059",
+        "modified_by": 1,
+        "name": "footer",
+        "title": "Footer Content",
+        "content": "<p>Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.</p>",
+        "contenttype": 1,
+        "status": 0
+    }
+}
+]

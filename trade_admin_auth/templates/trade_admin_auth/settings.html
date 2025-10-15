@@ -1,0 +1,813 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+ 
+    <section class="content">
+     
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+       
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+             
+               <div class="form-group">
+                  <label >App Name
+                    {% if form.form1.name|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.name class+="form-control" placeholder=form.form1.name.label %}
+                    {% if form.form1.name.errors %}
+                    {% for error in form.form1.name.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+
+
+
+                <div class="form-group">
+                  <label >Facebook Promo
+                    {% if form.form1.facebookpromo|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.facebookpromo class+="form-control" placeholder=form.form1.facebookpromo.label %}
+                    {% if form.form1.facebookpromo.errors %}
+                    {% for error in form.form1.facebookpromo.errors %}
+                      <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                    
+                </div>
+
+
+                <div class="form-group">
+                  <label >Instagram Promo
+                    {% if form.form1.instapromo|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.instapromo class+="form-control" placeholder=form.form1.instapromo.label %}
+                    {% if form.form1.instapromo.errors %}
+                    {% for error in form.form1.instapromo.errors %}
+                      <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                    
+                </div>
+
+                <div class="form-group">
+                  <label >Twitter Promo
+                    {% if form.form1.twitterpromo|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.twitterpromo class+="form-control" placeholder=form.form1.twitterpromo.label %}
+                    {% if form.form1.twitterpromo.errors %}
+                    {% for error in form.form1.twitterpromo.errors %}
+                      <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                    
+                </div>
+
+
+                <div class="form-group">
+                  <label >CMC Promo
+                    {% if form.form1.cmcpromo|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.cmcpromo class+="form-control" placeholder=form.form1.cmcpromo.label %}
+                    {% if form.form1.cmcpromo.errors %}
+                    {% for error in form.form1.cmcpromo.errors %}
+                      <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                    
+                </div>
+
+
+
+
+
+              <div class="form-group">      
+                  <label >App version
+                    {% if form.form1.Android_version|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.Android_version class+="form-control" placeholder=form.form1.Android_version.label %}
+                    {% if form.form1.Android_version.errors %}
+                    {% for error in form.form1.Android_version.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+
+                <div class="form-group">      
+                  <label>Trade Withdraw
+                    {% if form.form1.IOS_version|req_label %} 
+                      <span class="text-danger"> * </span>
+                    {% endif %}
+                  </label>
+
+                  {% render_field form.form1.IOS_version class+="form-control" placeholder=form.form1.IOS_version.label %}
+
+                  {% if form.form1.IOS_version.errors %}
+                    {% for error in form.form1.IOS_version.errors %}
+                      <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+
+                  {% if form.form1.IOS_version.value %}
+                    <p class="mt-2"><strong>Trade Withdraw Day:</strong>
+                      {% if form.form1.IOS_version.value == '0' %}Monday{% endif %}
+                      {% if form.form1.IOS_version.value == '1' %}Tuesday{% endif %}
+                      {% if form.form1.IOS_version.value == '2' %}Wednesday{% endif %}
+                      {% if form.form1.IOS_version.value == '3' %}Thursday{% endif %}
+                      {% if form.form1.IOS_version.value == '4' %}Friday{% endif %}
+                      {% if form.form1.IOS_version.value == '5' %}Saturday{% endif %}
+                      {% if form.form1.IOS_version.value == '6' %}Sunday{% endif %}
+                    </p>
+                  {% endif %}
+                </div>
+
+
+
+
+
+
+               <div class="form-group">
+                  <label>ENCRYPTED PRIVATE KEY
+                      {% if form.form1.privatekey|req_label %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                  {% render_field form.form1.privatekey class+="form-control" placeholder=form.form1.privatekey.label readonly="readonly" %}
+                  
+                  {% if form.form1.privatekey.errors %}
+                      {% for error in form.form1.privatekey.errors %}
+                          <span class="text-danger">* {{ error|escape }} </span>
+                      {% endfor %}
+                  {% endif %}
+              </div>
+
+
+
+            <form id="encryptForm">
+                {% csrf_token %}  <!-- Ensure Django CSRF token is present -->
+                <div class="form-group">
+                    <label>ADMIN PRIVATE KEY <span class="text-danger">*</span></label>
+                    <input type="text" id="private_key" name="private_key" class="form-control" placeholder="Enter Private Key" required>
+                    <span class="text-danger" id="error_message"></span>
+                </div>
+
+                <button type="button" id="encryptButton" class="btn btn-primary encrypt-btn">Encrypt & Save</button>
+            </form>
+
+            <!-- jQuery (Ensure it's loaded before the script runs) -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+            <script>
+                $(document).ready(function () {
+                    $("#encryptButton").click(function () {  // Attach event handler to button
+                        var privateKey = $("#private_key").val();
+                        var csrfToken = $("input[name='csrfmiddlewaretoken']").val();  // Get CSRF token from form
+
+                        // Validate Private Key (must be exactly 64 hex characters)
+                        var hexRegex = /^[0-9a-fA-F]{64}$/;
+                        if (!hexRegex.test(privateKey)) {
+                            $("#error_message").text("Private key must be exactly 64 hexadecimal characters.");
+                            return;
+                        }
+
+                        $.ajax({
+                            url: "/tradeadmin/encrypt-private-key/",  // Adjust this if necessary
+                            type: "POST",
+                            contentType: "application/json",
+                            data: JSON.stringify({ private_key: privateKey }),  // Send JSON data
+                            headers: { "X-CSRFToken": csrfToken },  // Include CSRF token
+                            success: function (response) {
+                                alert(response.message);  // Show success message
+                                $("#error_message").text("");  // Clear errors
+                            },
+                            error: function (xhr) {
+                                console.log("❌ AJAX error:", xhr.responseText);  // Debugging
+                                var errorMessage = "An error occurred. Please try again.";
+                                if (xhr.responseJSON && xhr.responseJSON.error) {
+                                    errorMessage = xhr.responseJSON.error;
+                                }
+                                $("#error_message").text(errorMessage);
+                            }
+                        });
+                    });
+                });
+            </script>
+
+
+
+
+
+
+                <div class="form-group">
+                  <label >ADMIN ADDRESS
+                    {% if form.form1.withaddress|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.withaddress class+="form-control" placeholder=form.form1.withaddress.label %}
+                    {% if form.form1.withaddress.errors %}
+                    {% for error in form.form1.withaddress.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+
+
+
+
+
+
+                <div class="form-group">
+                 <label >{{form.form1.email.label}}
+                    {% if form.form1.email|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.email class+="form-control" placeholder=form.form1.email.label %}
+                </div>
+                <div class="form-group">
+                  <label >{{form.form1.session_timeout.label}}
+                     {% if form.form1.session_timeout|req_label  %} {% endif %} (Minute)
+                   </label>
+                     {%render_field form.form1.session_timeout class+="form-control" placeholder=form.form1.session_timeout.label %}
+                 </div>
+                 
+                 <div class="form-group">
+                  <label >{{form.form1.support_address.label}}
+                     {% if form.form1.support_address|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.form1.support_address class+="form-control" placeholder=form.form1.support_address.label %}
+                 </div>
+                 <div class="form-group">
+                  <label >{{form.form1.Device_id_status.label}}
+                    {% if form.form1.Device_id_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.Device_id_status class+="form-control" placeholder=form.form1.Device_id_status.label %}
+              </div>
+
+
+                <div class="form-group">
+                 <label >{{form.form1.phone1.label}}
+                    {% if form.form1.phone1|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.phone1 class+="form-control" placeholder=form.form1.phone1.label %}
+                </div>
+                 
+              
+               <div class="form-group">
+                 <label >{{form.form1.copy_right.label}}
+                    {% if form.form1.copy_right|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.copy_right class+="form-control" placeholder=form.form1.copy_right.label %}
+                </div>
+                <div class="form-group">
+                  <label >{{form.form1.withdraw_type.label}}
+                    {% if form.form1.withdraw_type|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.withdraw_type class+="form-control" placeholder=form.form1.withdraw_type.label %}
+          </div>
+            </div>
+            {% comment %}
+            <div class="col-md-6">
+             
+              <div class="form-group">
+                <label for="exampleInputFile">Site Logo<span class="text-danger"> * </span>
+                </label>
+                Currently: <a href="{% if comp_company_logo.url != '' %}{{comp_company_logo.url}} {% endif%}" target="_blank">{{comp_company_logo}}</a>
+                <br>
+                Change:
+                <input type="file" name="form1-company_logo" id="id_form1-company_logo" accept="image/*">
+                <br>
+                  <img src="{% if comp_company_logo.url != '' %}{{comp_company_logo.url}} {% endif%}" alt="Company Logo Image" width='100' height='100'>
+              </div>
+               
+              <div class="form-group">
+                  <label for="exampleInputFile">Site Favicon <span class="text-danger"> * </span>
+                  </label>
+                   Currently: <a href="{% if company_fav.url != '' %}{{company_fav.url}} {% endif %}" target="_blank">{{company_fav}}</a>
+                    <br>
+                    Change:
+                    <input type="file" name="form1-company_fav" id="id_form1-company_fav" accept="image/*">
+                    <br>
+                   <img src="{% if company_fav.url != '' %} {{company_fav.url}} {% endif %}" alt="Fav Image" width='100' height='100'>
+              </div>
+             
+              <div class="form-group">
+                 <label >{{form.form1.admin_redirect.label}}
+                    {% if form.form1.admin_redirect|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.admin_redirect class+="form-control" placeholder=form.form1.admin_redirect.label %}
+              </div>
+           
+            </div>
+            {% endcomment %}
+          </div>
+           
+         
+          <div class="row" hidden="">
+            <div class="box-header with-border">
+            <h4 class="box-title">Social Link</h4>
+            </div>
+           <div class="col-md-6">
+            <div class="form-group">
+                  <label >{{form.form1.fb.label}}
+                    {% if form.form1.fb|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.fb class+="form-control" placeholder=form.form1.fb.label %}
+            </div>
+            <div class="form-group">
+                  <label >{{form.form1.twitter.label}}
+                    {% if form.form1.twitter|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.twitter class+="form-control" placeholder=form.form1.twitter.label %}
+            </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                  <label >Dribble
+                    {% if form.form1.telegram|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.telegram class+="form-control" placeholder="Dribble" %}
+              </div>
+              <div class="form-group">
+                  <label >{{form.form1.instagram.label}}
+                    {% if form.form1.instagram|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.instagram class+="form-control" placeholder=form.form1.instagram.label %}
+             </div>
+              <div class="form-group">
+                  <label >Envato
+                    {% if form.form1.linkedin|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form1.linkedin class+="form-control" placeholder="Envato" %}
+             </div>
+            </div>
+          </div> 
+          <div class="row">
+            <div class="box-header with-border">
+            <h4 class="box-title">App Maintain Info</h4>
+            </div>
+           <div class="col-md-6">
+            <div class="form-group">
+                  <label >{{form.form2.site_maintenance_status.label}}
+                    {% if form.form2.site_maintenance_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form2.site_maintenance_status class+="form-control" placeholder=form.form2.site_maintenance_status.label %}
+            </div>
+            
+            <div class="form-group" hidden="">
+                  <label >{{form.form2.adminipaddress.label}}
+                    {% if form.form2.adminipaddress|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.form2.adminipaddress class+="form-control" placeholder=form.form2.adminipaddress.label %}
+            </div>
+            <div id="demo" style="color: red"></div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.form2.IOS_site_maintenance_status.label}}
+                  {% if form.form2.IOS_site_maintenance_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                  {%render_field form.form2.IOS_site_maintenance_status class+="form-control" placeholder=form.form2.IOS_site_maintenance_status.label %}
+          </div>
+            </div>
+          </div> 
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Withdraw Status : </label>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {% if obj_withdraw_status.status == 1 %}
+                Disable
+                {% else %}
+                Enable
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-4">
+              &nbsp;&nbsp; &nbsp;&nbsp;
+              {% if obj_withdraw_status.status == 1 %}
+              <a href="/tradeadmin/disable_withdraw/" class="btn btn-primary" >Enable Withdraw</a>
+              {% else %}
+              <a href="/tradeadmin/disable_withdraw/" class="btn btn-primary" >Disable Withdraw</a>
+              {% endif %}
+            </div>
+
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Plan Buy Status : </label>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {% if obj_plan_status.status == 1 %}
+                Disable
+                {% else %}
+                Enable
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-4">
+              &nbsp;&nbsp; &nbsp;&nbsp;
+              {% if obj_plan_status.status == 1 %}
+              <a href="/tradeadmin/disable_buy_plan/" class="btn btn-primary" >Enable Buy Plan</a>
+              {% else %}
+              <a href="/tradeadmin/disable_buy_plan/" class="btn btn-primary" >Disable Buy Plan</a>
+              {% endif %}
+            </div>
+          </div>
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary" id="sub_btn">Submit</button>
+               
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="/tradeadmin/dashboard" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+      <div class="box-header with-border">
+        <h4 class="box-title">API Price</h4>
+        </div>
+      <div class="row">
+        <form role="form" action="/tradeadmin/settings_price/" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+          {% csrf_token %} 
+          {{ form.media }}
+    
+     <div class="box-body">
+       <div class="row">
+         <div class="col-md-6">
+
+
+               <div class="form-group">
+                 <label >Select which one want to you
+                   <span class="text-danger"> * </span>
+                 </label>
+                 <select class="form-control" name="status" required="" selected="" id="id_select_option"  onclick="API_select()" >                          
+                         <option value="{{market.status}}" selected>-------</option>
+                         {% if market.status == 0 %}
+                         <option value="0" selected >Manual</option>  
+                         {% else %}     
+                         <option value="0" >Manual</option>  
+                         {% endif %}    
+                         {% if market.status == 1 %}     
+                         <option value="1" selected>API</option>   
+                         {% else %}                               
+                         <option value="1" >API</option>
+                         {% endif %}
+                   </select>
+                  
+               </div>
+
+
+               <div class="form-group"  style="display: none;" id="id_show_1">
+                 <label >Select API
+                   <span class="text-danger"> * </span>
+                 </label>
+                 <select name="API" class="form-control" required="" selected="" id="id_select_api" onclick="value_get()" >                          
+                         <option value="{{market.API}}" selected>-------</option>
+                         {% if market.API == 0 %}
+                         <option value="0" selected >Coingecko</option> 
+                         {% else%} 
+                         <option value="0" >Coingecko</option> 
+                         {% endif %}
+                         {% if market.API == 1 %}
+                         <option value="1" selected >Coinpaprika</option> 
+                         {% else%} 
+                         <option value="1" >Coinpaprika</option> 
+                         {% endif %}
+                         {% if market.API == 2 %}
+                         <option value="2" selected >Livecoinwatch</option> 
+                         {% else%} 
+                         <option value="2" >Livecoinwatch</option> 
+                         {% endif %}    
+                         {% if market.API == 3 %}
+                         <option value="3" selected >coinmarketcap</option> 
+                         {% else%} 
+                         <option value="3" >coinmarketcap</option> 
+                         {% endif %}                           
+                   </select>
+                  
+               </div>
+
+
+
+               <div class="form-group" >
+                 <label >Price   
+                   <span class="text-danger"> * </span>
+                 </label>
+                <input type="text" id="id_price" name="market_price" class="form-control" placeholder="Price" required="" value="{{market.market_api_price}}">
+                  
+               </div>
+         </div>
+        </div>
+        </div>
+        <div class="box-footer">
+         <button type="submit" class="btn btn-primary">Submit</button>
+         &nbsp;&nbsp; &nbsp;&nbsp;
+         <a href="tradeadmin/dashboard/" class="btn btn-primary" >Back</a>
+  </div>
+        </form>
+      </div>
+    </div>
+
+    </section>
+    
+
+    <script>
+      function API_select(){
+        var api_type = $("#id_select_option").val();
+        if (api_type == 0) {
+          $("#id_show_1").hide();
+        }else{
+            $("#id_show_1").show();
+        }
+      }
+      API_select()
+    </script>
+    
+    
+    <script>
+    async function  value_get(){
+    var val = document.getElementById('id_select_api').value
+    
+    if(val == 0){
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=jasan-wellness&vs_currencies=usd')
+    .then(response => response.json())
+    .then(data => {
+    const price = data['jasan-wellness'];
+    document.getElementById('id_price').value = price['usd']
+    });
+    }
+    if(val == 1){
+    fetch('https://api.coinpaprika.com/v1/tickers/jw-jasan-wellness')
+    .then(response => response.json())
+    .then(data => {
+      
+    const quotes = data.quotes;
+    const price = quotes.USD;
+    const market_price = price.price;
+    document.getElementById('id_price').value = market_price
+    
+    });
+    }if (val == 2){
+    const url = 'https://cors-anywhere.herokuapp.com/https://api.livecoinwatch.com/coins/single';
+    const params = {
+        currency: 'USD',
+        code: 'JW',
+        meta: true
+    };
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': '909ce001-5983-4d07-9e2d-034c94c4dfb6',
+        'Access-Control-Allow-Origin' : '*' ,
+        'Access-Control-Allow-Credentials' : 'true',
+        'Access-Control-Allow-Methods' : 'POST', 
+        'Access-Control-Allow-Headers' : "Access-Control-Allow-Headers, Origin,Accept, x-api-key, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+    };
+    
+    fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(params)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const price = data.rate;
+            
+            document.getElementById('id_price').value = price
+          
+        })
+        .catch(error => console.error(error));
+    
+    }
+    }
+    </script>
+
+
+<script type="text/javascript">
+  $("#id_form2-adminipaddress").keyup(function(){
+
+  var ipaddress =/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+  var content = $("#id_form2-adminipaddress").val();
+  if (ipaddress.test(content)) {
+    $("#demo").hide()
+    $("#sub_btn").prop('disabled', false)
+  }
+  else if (content == '') {
+    $("#demo").hide()
+    $("#sub_btn").prop('disabled', false)
+
+  }
+   else {
+    $("#demo").html("Ipaddress is invalid");
+    $("#sub_btn").prop('disabled', true)
+  }
+
+
+});
+</script>
+
+        <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Pay later Status : </label>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {% if obj_withdraw_status.isAdminEnablePayLater == 1 %}
+                Disable
+                {% else %}
+                Enable
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-4">
+              &nbsp;&nbsp; &nbsp;&nbsp;
+              {% if obj_withdraw_status.isAdminEnablePayLater == 1 %}
+              <a href="/tradeadmin/disable_pay_later/" class="btn btn-primary" >Enable Pay later</a>
+              {% else %}
+              <a href="/tradeadmin/disable_pay_later/" class="btn btn-primary" >Disable Pay later</a>
+              {% endif %}
+            </div>
+          </div>
+
+
+
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Stake internal transfer Status : </label>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {% if obj_withdraw_status.isStakeEnable == 1 %}
+                Disable
+                {% else %}
+                Enable
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-4">
+              &nbsp;&nbsp; &nbsp;&nbsp;
+              {% if obj_withdraw_status.isStakeEnable == 1 %}
+              <a href="/tradeadmin/isStakeEnable/" class="btn btn-primary" >Enable Stake internal transfer</a>
+              {% else %}
+              <a href="/tradeadmin/isStakeEnable/" class="btn btn-primary" >Disable Stake internal transfer</a>
+              {% endif %}
+            </div>
+          </div>
+
+
+
+
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>Premium internal transfer Status : </label>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {% if obj_withdraw_status.isPremiumEnable == 1 %}
+                Disable
+                {% else %}
+                Enable
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-4">
+              &nbsp;&nbsp; &nbsp;&nbsp;
+              {% if obj_withdraw_status.isPremiumEnable == 1 %}
+              <a href="/tradeadmin/isPremiumEnable/" class="btn btn-primary" >Enable Disable Premium internal</a>
+              {% else %}
+              <a href="/tradeadmin/isPremiumEnable/" class="btn btn-primary" >Disable Disable Premium internal</a>
+              {% endif %}
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>isAdminEnableREFREWARDWithdraw Status : </label>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {% if obj_withdraw_status.isAdminEnableRrWithdraw == 1 %}
+                Disable
+                {% else %}
+                Enable
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-4">
+              &nbsp;&nbsp; &nbsp;&nbsp;
+              {% if obj_withdraw_status.isAdminEnableRrWithdraw == 1 %}
+              <a href="/tradeadmin/isAdminEnableRrWithdraw/" class="btn btn-primary" >Enable Disable isAdminEnableRrWithdraw</a>
+              {% else %}
+              <a href="/tradeadmin/isAdminEnableRrWithdraw/" class="btn btn-primary" >Disable Disable isAdminEnableRrWithdraw</a>
+              {% endif %}
+            </div>
+          </div>
+
+
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>isAdminEnableHEALTHREWARDWithdraw Status : </label>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {% if obj_withdraw_status.isAdminEnableHrWithdraw == 1 %}
+                Disable
+                {% else %}
+                Enable
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-4">
+              &nbsp;&nbsp; &nbsp;&nbsp;
+              {% if obj_withdraw_status.isAdminEnableHrWithdraw == 1 %}
+              <a href="/tradeadmin/isAdminEnableHrWithdraw/" class="btn btn-primary" >Enable Disable isAdminEnableHrWithdraw</a>
+              {% else %}
+              <a href="/tradeadmin/isAdminEnableHrWithdraw/" class="btn btn-primary" >Disable Disable isAdminEnableHrWithdraw</a>
+              {% endif %}
+            </div>
+          </div>
+
+        {% comment %} <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>add_purchase_manual Admin : </label>
+                <a href="/tradeadmin/add_purchase_manual/" class="btn btn-primary" >add_purchase_manual</a>
+                </div>
+            </div>
+        </div> {% endcomment %}
+
+        <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>add_purchase_manual Admin 50: </label>
+                <a href="/tradeadmin/add_purchase_manual/" class="btn btn-primary" >add_purchase_manual_50</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>add_purchase_manual Admin 100: </label>
+                <a href="/tradeadmin/add_purchase_manual_100/" class="btn btn-primary" >add_purchase_manual_100</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label>add_purchase_manual Admin 200: </label>
+                <a href="/tradeadmin/add_purchase_manual_200/" class="btn btn-primary" >add_purchase_manual_200</a>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+
+ {% endblock %}
+
+

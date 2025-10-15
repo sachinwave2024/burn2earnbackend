@@ -1,0 +1,248 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+{% load django_tables2 crispy_forms_tags %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+     
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title }}</h3>
+
+          <div class="box-tools pull-right">
+           
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span> 
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="row ">   
+      <div class="col-md-6 col-xs-12 pull-right"> 
+           <div class="panel-group accordion" id="accordion1">
+                                                 <div class="panel panel-default">
+                                                     <div class="panel-heading">
+                                                         <div class="panel-title">
+                                                             <a id="accordion-search" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" aria-expanded="false">
+                                                              <i class="fa fa-search font-dark"></i>
+                                                        <span class="caption-subject font-dark bold uppercase">Advanced Search</span>
+                                                        <span style="float:right"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                                                             </a>
+                                                             
+                                                         </div>
+                                                         
+                                                     </div>
+                                                     <div id="collapse_1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                         <div class="panel-body">
+                                                             <!-- {% crispy filter.form filter.form.helper %} -->
+                                                           
+                                                             
+
+                                                              <form class="form-horizontal" id="Bill_Search_Form" method="get"> 
+                                                                <div class="form">
+                                                                  <div class = "row">
+                                                                <div id="div_id_name" class="control-group"> 
+                                                                  <label for="id_name" class="control-label ">
+                                                                
+                                                                              User Name
+                                                                </label> 
+                                                                <div class="controls">
+                                                                  {% if request.GET.name != None %} 
+                                                                  <input type="text" name="name" class="textinput textInput" value=" {{request.GET.name}}" id="id_name"> 
+                                                                  {% else %}
+                                                                  <input type="text" name="name" class="textinput textInput" id="id_name"> 
+                                                                  {% endif%}
+                                                                </div> 
+                                                              </div> 
+
+
+                                                              <div id="div_id_name" class="control-group"> 
+                                                                <label for="id_name" class="control-label ">
+                                                              
+                                                                            Ticket ID
+                                                              </label> 
+                                                              <div class="controls">
+                                                                {% if request.GET.ticket_id != None %} 
+                                                                <input type="text" name="ticket_id" class="textinput textInput" value=" {{request.GET.ticket_id}}" id="id_ticket_id"> 
+                                                                {% else %}
+                                                                <input type="text" name="ticket_id" class="textinput textInput" id="id_ticket_id"> 
+                                                                {% endif%}
+                                                              </div> 
+                                                            </div> 
+                                                            </div>
+                                                              <div id="div_id_email" class="control-group">
+                                                                 <label for="id_email" class="control-label ">
+                                                                              User Email Address
+                                                                          </label>
+                                                                           <div class="controls"> 
+                                                                            {% if request.GET.email != None %}
+                                                                             <input type="text" name="email" class="textinput textInput" value=" {{request.GET.email}}" id="id_email"> 
+                                                                             {% else %}
+                                                                             <input type="text" name="email" class="textinput textInput" id="id_email"> 
+                                                                             {% endif %}
+                                                                            </div> 
+                                                                          </div> 
+                                                                  <div id="div_id_support_category" class="control-group"> 
+                                                                          <label for="id_support_category" class="control-label ">
+                                                                            Support Category Name
+                                                                          </label> <div class="controls"> 
+                                                                            {% if request.GET.support_category != None %}
+                                                                            <select name="support_category" class="textinput textInput" placeholder="plan_type" selected="" id="id_support_category">
+                                                                              <option value="{{request.GET.support_category}}" selected>{{request.GET.support_category}}</option> 
+                                                                              {% for i in category_obj %}
+                                                                                <option value="{{i.category}}">{{i.category}}</option> 
+                                                                                {% endfor %}
+                                                                          </select> 
+                                                                        
+                                                                        {% else %}
+                                                                        <select name="support_category" class="textinput textInput" placeholder="plan_type" selected="" id="id_support_category"> 
+                                                                          <option value="" selected>Select</option>      
+                                                                          {% for i in category_obj %}
+                                                                                <option value="{{i.category}}">{{i.category}}</option> 
+                                                                                {% endfor %}
+                                                                        </select>
+                                                                        {% endif %}
+                                                                          </div> 
+                                                            </div> 
+                                                            <div id="div_id_read_status" class="control-group"> 
+                                                              <label for="id_read_status" class="control-label ">
+                                                                Status
+                                                              </label> <div class="controls"> 
+                                                                {% if request.GET.read_status != None %}
+                                                                <select name="read_status" class="textinput textInput" placeholder="plan_type" selected="" id="id_read_status">
+                                                                      <option value="{{request.GET.read_status}}" selected>{{request.GET.read_status}}</option> 
+                                                                        <option value="0">New</option> 
+                                                                        <option value="1" >Replied</option>
+                                                                        <option value="2" >Closed</option>
+                                                                        <option value="4" >Re-Opened</option>
+                                                                  </select> 
+                                                               
+                                                                {% else %}
+                                                                <select name="read_status" class="textinput textInput" placeholder="plan_type" selected="" id="id_read_status"> 
+                                                                  <option value="" selected>Select</option>      
+                                                                  <option value="0">New</option> 
+                                                                        <option value="1" >Replied</option>
+                                                                        <option value="2" >Closed</option>
+                                                                        <option value="4" >Re-Opened</option>
+                                                                </select>
+                                                                {% endif %}
+                                                              </div> 
+                                                            </div> 
+                                                            
+                                                              </div>
+                                                              <div class="form-actions"> 
+                                                                <input type="submit" name="submit" value="Search" class="btn btn-primary" id="submit-id-submit">
+                                                                 <input type="reset" name="reset-search" value="Reset Search" class="btn btn-inverse btn btn-default" id="reset-search">
+                                                                 </div> 
+                                                               </form>
+                                                            </div>
+                                                                       
+                                                              
+                                                                                                                       
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             </div>  
+                                        
+      </div>
+    
+
+    <style>
+      .pagination{
+        padding-left: 450px;
+      }
+      .form{
+        display: flex;
+      }
+      .form .control-group{
+     
+        margin-right: 15px;
+        margin-bottom: 15px;
+      }
+      #example1_info {
+ padding: 25px 0;
+}
+
+.pagination {
+ /* padding-left: 1015px; */
+ float: right;
+}
+    </style>
+   
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+              <div class="box-tools pull-right">                         
+                        </div>
+            </div>
+
+             <div class="table-responsive">
+          
+            <div class="box-body">
+               {% render_table table %} 
+               
+                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
+                  Showing {{table.get_start_index}} to {{table.get_end_index}} of {{user_count}} entries
+                </div>
+              
+            </div>
+            </div>
+          
+          </div>
+        
+      </div>
+
+    </section>
+   
+   
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ <script>
+  $(document).ready(function(){
+    
+    $("#reset-productid-clear").click(function(){
+      $("{{filter.form.helper.form_id}}").trigger('reset'); 
+      
+    });
+    
+  $("#reset-search").click(function(){
+      
+    window.location = "{% url Btn_url %}";
+      
+    });
+      
+  })  
+  
+  
+  </script>
+
+<script>
+  $("#id_user").hide()
+  $("#div_id_user").hide()
+</script>
+
+
+ {% endblock %}
+
+

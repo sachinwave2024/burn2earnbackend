@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{comp_profile_name}}</title>
+  
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/bootstrap/dist/css/bootstrap.min.css" %}">
+ 
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/font-awesome/css/font-awesome.min.css" %}">
+
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/Ionicons/css/ionicons.min.css" %}">
+
+  <link rel="stylesheet" href="{% static "admin_assets/dist/css/AdminLTE.min.css" %}">
+
+  <link rel="stylesheet" href="{% static "admin_assets/plugins/iCheck/square/blue.css" %}">
+
+ 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <link rel="shortcut icon" type="image/png" href="/media/{{company_fav}}"/>
+  <link rel="stylesheet" href="{% static "admin_assets/pattern/patternLock.css" %}">
+<link rel="stylesheet" href="{% static "admin_assets/pattern/patternLock.css" %}">
+ 
+<style type="text/css">
+    #patternHolder7 .patt-wrap {
+  z-index: 10;
+}
+#patternHolder7 .patt-circ.hovered {
+  background-color: #cde2f2;
+  border: none;
+}
+#patternHolder7 .patt-circ.hovered .patt-dots {
+  display: none;
+}
+#patternHolder7 .patt-circ.dir {
+  background-image: url('../images/icon-arrow.png');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#patternHolder7 .patt-circ.e {
+  -webkit-transform: rotate(0);
+  transform: rotate(0);
+}
+#patternHolder7 .patt-circ.s-e {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+#patternHolder7 .patt-circ.s {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+#patternHolder7 .patt-circ.s-w {
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+#patternHolder7 .patt-circ.w {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+#patternHolder7 .patt-circ.n-w {
+  -webkit-transform: rotate(225deg);
+   transform: rotate(225deg);
+}
+#patternHolder7 .patt-circ.n {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+#patternHolder7 .patt-circ.n-e {
+  -webkit-transform: rotate(315deg);
+  transform: rotate(315deg);
+}
+
+#patternContainer, #patternContainernew {
+width: 311px;
+}
+
+@media screen and (min-width:768px) and (max-width:1280px){
+#patternContainer, #patternContainernew {
+width: 350px;
+}
+}
+@media screen and (min-width:0px) and (max-width:767px){
+#patternContainer, #patternContainernew {
+width: 100%;
+}
+}
+
+.error {
+    color: red;
+}
+  </style>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a><b>{{comp_profile_name}}</b></a>
+  </div>
+
+  <div class="login-box-body">
+    <p class="login-box-msg">Reset Pattern</p>
+
+    <form action="" method="post"  id="forgotpatternform" novalidate ="novalidate">
+     {% csrf_token %}
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+      <div class="form-group">
+        <label >New Pattern
+        <span class="text-danger"> * </span>
+        </label>
+         <div id="patternContainer"></div>
+      <input type="hidden"  name="pattern_code" id="id_pattern_code" value="">
+      </div>
+     <div class="form-group">
+      
+        <label >Confirm  Pattern
+           <span class="text-danger"> * </span>
+        </label>
+        <div id="patternContainernew"></div>
+         <input type="hidden"  name="confirmpattern_code" id="id_confirmpattern_code" value="">
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-8">
+        </div>
+       
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
+        </div>
+     
+        <a href="/RZqYkZRuiBaffkx/">Back to Login</a>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="{% static "admin_assets/bower_components/jquery/dist/jquery.min.js" %}"></script>
+
+<script src="{% static "admin_assets/bower_components/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+
+<script src="{% static "admin_assets/plugins/iCheck/icheck.min.js" %}"></script>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%'
+    });
+  });
+</script>
+ {% block Java_Scripts %}
+<script src="{% static "admin_assets/pattern/patternLock.js" %}"></script>
+<script src="{% static "admin_assets/plugins/iCheck/icheck.min.js" %}"></script>
+<script src="{% static 'admin_assets/js/jquery.validate.min.js' %}"></script>
+ <script src="{% static 'admin_assets/js/admin_login_validation.js' %}"></script>
+<script>
+  $(function () {
+
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%'
+    });
+    
+    lock = new PatternLock("#patternContainer",{
+      onDraw:function(pattern){
+      wordold(lock)
+     
+      }
+      });
+
+
+    lock_new = new PatternLock("#patternContainernew",{
+      onDraw:function(pattern){
+      word(lock_new)
+     
+      }
+      });
+
+    });
+  function wordold(lock) {
+        var pat = lock.getPattern();
+        $("#id_pattern_code").val(pat);
+   } 
+  function word(lock) {
+        var pat = lock_new.getPattern();
+        $("#id_confirmpattern_code").val(pat);
+   }  
+  
+</script>
+
+ {% endblock %}
+</body>
+</html>

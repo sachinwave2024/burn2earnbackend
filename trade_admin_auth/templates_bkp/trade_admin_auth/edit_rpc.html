@@ -1,0 +1,183 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+             <div class="box-body">
+              <div class="row">
+                <div class="col-md-6">
+                  
+    
+                    <div class="form-group">
+                     <label>RPC URL
+                        <span class="text-danger"> * </span>
+                      </label>
+                        <input type="text" name="RPC_URL" value="{{obj_stake_manage.Stake_contract_Address}}" required="required" class="form-control" placeholder="Stake Period" id="id_stake_period">
+                        
+                    </div>
+    
+                  </div>
+                  </div>
+          </div>
+    
+              <script>
+                $( document ).ready(function() {
+                  var h = $('#referral_status').val()
+                  if(h == 1){
+                  $('#referral_level').hide()
+                  }
+                  if(h ==0){
+                    $('#referral_level').show()
+                  }
+                });
+            </script>
+    
+    
+    <script>
+      function referal_status_id(event){
+      // id_referral_status
+      referral_status = document.getElementById('referral_status').value 
+      if(referral_status == 1){
+      $('#referral_level').hide()
+      }
+      if(referral_status == 0){
+      $('#referral_level').show()
+      }
+      }
+    </script>
+    
+              <style>
+                .column {
+                  float: left;
+                  width: 33.33%;
+                  padding: 5px;
+                }
+                
+                .row::after {
+                  content: "";
+                  clear: both;
+                  display: table;
+                }
+              </style>
+    
+              
+          </div>
+
+       
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+         </div>
+          </form>
+      </div>
+
+      </section>
+
+
+      <script>
+        function stake_status_click(){
+          var stake_status = $("#id_status").val();
+          if (stake_status == 0){
+            $("#min_stake").show();
+            $("#max_stake").show();
+          }else{
+           $("#min_stake").hide();
+           $("#max_stake").hide();
+          }
+        }
+        stake_status_click()
+      </script>
+
+<script>
+  function withdraw_status_click() {
+   var withdraw_status = $("#id_withdraw_status").val();
+   if (withdraw_status == 0) {
+     $("#min_with").show();
+     $("#max_with").show();
+     $("#min_with_ref").show();
+     $("#max_with_ref").show();
+    } else {
+     $("#min_with").hide();
+     $("#max_with").hide();
+     $("#min_with_ref").hide();
+     $("#max_with_ref").hide();
+    }
+  }
+  withdraw_status_click()
+</script>
+
+
+<script>
+  function wallet_claim_percentage(){
+    // var withdraw_wallet_percentage = $("#id_withdraw_wallet_percentage").val()
+    var wallet_percentage = $("#id_wallet_percentage").val()
+    
+
+    var val = parseInt(100) - parseInt(wallet_percentage)
+
+    document.getElementById('id_withdraw_wallet_percentage').value = val
+    
+
+  }
+</script>
+
+
+
+<script>
+  function wallet_withdraw_claim_percentage(){
+    var withdraw_wallet_percentage = $("#id_withdraw_wallet_percentage").val()
+    // var wallet_percentage = $("#id_wallet_percentage").val()
+    
+
+    var val = parseInt(100) - parseInt(withdraw_wallet_percentage)
+
+    document.getElementById('id_wallet_percentage').value = val
+    
+
+  }
+</script>
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

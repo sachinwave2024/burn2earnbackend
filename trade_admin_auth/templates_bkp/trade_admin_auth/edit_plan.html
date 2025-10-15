@@ -1,0 +1,942 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+             
+              <div class="form-group">
+                <label >Plan Type    
+                  <span class="text-danger"> * </span>
+                </label>
+                <select name="plan_type" class="form-control" placeholder="plan_type" required="" selected="" id="plan_type">
+                  {% if user.plan_type == 0 %}
+                  <option value = "0" selected >Free</option>
+                  <option value="1" >Paid</option>
+                  {% endif %}
+                  {% if user.plan_type == 1 %}
+                  <option value = "1" selected >Paid</option>
+                  {% endif %}
+                  {% if plan_object_count == 0 %}
+                        <option value="0">Free</option> 
+                  {% endif %}      
+                        
+                  </select>                 
+              </div>
+
+              
+              <div class="form-group">
+                <label >{{form.plan_purchase_type.label}}
+                    {% if form.plan_purchase_type|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                    </label>
+                    {%render_field form.plan_purchase_type class+="form-control" placeholder=form.plan_purchase_type.label onchange+="Plan_purchase_type()" required+="required" %}
+                    {% if form.plan_purchase_type.errors %}
+                    {% for error in form.plan_purchase_type.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+            </div>
+            
+
+                <div class="form-group">
+                 <label >{{form.plan_name.label}}
+                    {% if form.plan_name|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.plan_name class+="form-control" placeholder=form.plan_name.label required+="required" id+="id_plan_name" %}
+                    {% if form.plan_name.errors %}
+                        {% for error in form.plan_name.errors %}
+                        <span class="text-danger">* {{ error|escape }} </span>
+                        {% endfor %}
+                        {% endif %}
+                </div>
+             
+
+              <div class="form-group">
+                <label >{{form.plan_purchase_amount_monthly.label}}
+                   
+                 </label>
+                 <input type="number" name="plan_purchase_amount_monthly" value="{{user.plan_purchase_amount_monthly|floatformat:2}}" step="1e-8" required="" class="form-control" placeholder="Amount/Monthly" id="id_plan_purchase_amount_monthly" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                   <!-- {%render_field form.plan_purchase_amount_monthly class+="form-control" placeholder=form.plan_purchase_amount_monthly.label required+="required" %} -->
+                   {% if form.plan_purchase_amount_monthly.errors %}
+                    {% for error in form.plan_purchase_amount_monthly.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+            </div>
+            
+
+        <div id="plan_lw">
+          <div class="form-group">
+            <label >Activate Plan  
+              <span class="text-danger"> * </span>
+            </label>
+            <select name="activate_plan" class="form-control cus_select" oninput="wallet_stake()" placeholder="activate_plan" required="" selected=""  id="activate_plan">
+              {% for i in Plan %}
+              <option data-id="{{i.id}}" data-rewstep="{{i.Reward_step_value}}" data-planrew="{{i.plan_reward_amount}}" data-rewamount="{{i.reward_amount}}" data-min="{{i.Min_step_count}}" data-max="{{i.Max_step_count}}"  value = "{{i.plan_purchase_amount_monthly}}"selected >{{i.plan_purchase_amount_monthly}}</option>
+              {% endfor %}
+              </select>                 
+          </div>
+          <div class="form-group">
+              <label >{{form.user_stake_credit.label}}
+                  {% if form.user_stake_credit|req_label  %}  (Monthly Credit Amount){% endif %}
+                  </label>
+                  {%render_field form.user_stake_credit class+="form-control" placeholder=form.user_stake_credit.label required+="required" %}
+                  {% if form.user_stake_credit.errors %}
+                  {% for error in form.user_stake_credit.errors %}
+                  <span class="text-danger">* {{ error|escape }} </span>
+                  {% endfor %}
+                  {% endif %}
+          </div>
+        </div>
+
+            <div class="form-group">
+              <label >{{form.plan_purchase_amount_quarterly.label}}
+                 
+               </label>
+               <input type="number" name="plan_purchase_amount_quarterly" value="{{user.plan_purchase_amount_quarterly|floatformat:2}}" step="1e-8" required="" class="form-control" placeholder="Amount/Quarterly" id="id_plan_purchase_amount_quarterly" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                 <!-- {%render_field form.plan_purchase_amount_quarterly class+="form-control" placeholder=form.plan_purchase_amount_quarterly.label required+="required" %} -->
+                 {% if form.plan_purchase_amount_quarterly.errors %}
+                  {% for error in form.plan_purchase_amount_quarterly.errors %}
+                  <span class="text-danger">* {{ error|escape }} </span>
+                  {% endfor %}
+                  {% endif %}
+          </div>
+        
+
+
+          <div class="form-group">
+            <label >{{form.plan_purchase_amount_annual.label}}
+               
+             </label>
+             <input type="number" name="plan_purchase_amount_annual" value="{{user.plan_purchase_amount_annual|floatformat:2}}" step="1e-8" required="" class="form-control" placeholder="Amount/Annual" id="id_plan_purchase_amount_annual " onkeypress= "return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+               <!-- {%render_field form.plan_purchase_amount_annual class+="form-control" placeholder=form.plan_purchase_amount_annual.label required+="required" %} -->
+               {% if form.plan_purchase_amount_annual.errors %}
+                {% for error in form.plan_purchase_amount_annual.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                  <label >{{form.Reward_step_value.label}}
+                      {% if form.Reward_step_value|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                      </label>
+                      {%render_field form.Reward_step_value class+="form-control" placeholder=form.Reward_step_value.label required+="required" min+="0" id+="Reward_step_value" %}
+                      <p class="mt-2" id = "blankMsgName" style="color:red"> </p>
+                      <p class="mt-2" id = "blankName" style="color:red"> </p>
+                      {% if form.Reward_step_value.errors %}
+                      {% for error in form.Reward_step_value.errors %}
+                      <span class="text-danger">* {{ error|escape }} </span>
+                      {% endfor %}
+                      {% endif %}
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.plan_reward_amount.label}}
+                    {% if form.plan_reward_amount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                    </label>
+                    <input type="number" name="plan_reward_amount" value="{{user.plan_reward_amount|floatformat:2}}" step="1e-8" id="plan_reward_amount" min="0" required="" class="form-control" placeholder="Reward for Steps">
+                    <!-- {%render_field form.plan_reward_amount class+="form-control" placeholder=form.plan_reward_amount.label required+="required" min+="0" id+="plan_reward_amount" %} -->
+                    <p class="mt-2" id = "blankMsgName" style="color:red"> </p>
+                    <p class="mt-2" id = "blankName" style="color:red"> </p>
+                    {% if form.plan_reward_amount.errors %}
+                    {% for error in form.plan_reward_amount.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <style>
+            .column {
+              float: left;
+              width: 33.33%;
+              padding: 5px;
+            }
+            
+            .row::after {
+              content: "";
+              clear: both;
+              display: table;
+            }
+          </style>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                <label >{{form.Min_step_count.label}}
+                    {% if form.Min_step_count|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                    </label>
+                    {%render_field form.Min_step_count class+="form-control" placeholder=form.Min_step_count.label required+="required" id+="min_price" min+="0" onkeypress+="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" %}
+                    <p class="mt-2" id = "blankMsg" style="color:red"> </p>
+                    {% if form.Min_step_count.errors %}
+                        {% for error in form.Min_step_count.errors %}
+                        <span class="text-danger">* {{ error|escape }} </span>
+                        {% endfor %}
+                        {% endif %}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                    <label >{{form.Max_step_count.label}}
+                        {% if form.Max_step_count|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                        </label>
+                        {%render_field form.Max_step_count class+="form-control" placeholder=form.Max_step_count.label required+="required" id+="max_price" oninput+="verifymin_max_amount()" min+="0" onkeypress+="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57" %}
+                        <p class="mt-2" id = "blankMsgName" style="color:red"> </p>
+                        <p class="mt-2" id = "blankName" style="color:red"> </p>
+                        {% if form.Max_step_count.errors %}
+                        {% for error in form.Max_step_count.errors %}
+                        <span class="text-danger">* {{ error|escape }} </span>
+                        {% endfor %}
+                        {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label >{{form.reward_amount.label}}
+                  {% if form.reward_amount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                  {%render_field form.reward_amount class+="form-control" id+="reward_amount" placeholder=form.reward_amount.label required+="required" readonly="" %}
+                  {% if form.reward_amount.errors %}
+                  {% for error in form.reward_amount.errors %}
+                  <span class="text-danger">* {{ error|escape }} </span>
+                  {% endfor %}
+                  {% endif %}
+          </div>
+          <div class="form-group">
+            <label >{{form.support_status.label}}
+                {% if form.support_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.support_status class+="form-control" id+="support_status" onchange+="support_type()" placeholder=form.support_status.label required+="required"  %}
+                {% if form.support_status.errors %}
+                {% for error in form.support_status.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+         
+          <div id="support_status_type">
+            <div class="row">
+            <div class="col-md-3">
+          <div class="form-group">
+            <label >{{form.monthly_support_status.label}}
+                {% if form.monthly_support_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.monthly_support_status class+="form-control" id+="monthly_support_status" onchange+="month_support_type()" placeholder=form.monthly_support_status.label required+="required"  %}
+                {% if form.monthly_support_status.errors %}
+                {% for error in form.monthly_support_status.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          <div class="form-group" id="monthly_status">
+            <label >{{form.monthly_support_amount.label}}
+                {% if form.monthly_support_amount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.monthly_support_amount class+="form-control" id+="monthly_support_amount" placeholder=form.monthly_support_amount.label required+="required"  %}
+                {% if form.monthly_support_amount.errors %}
+                {% for error in form.monthly_support_amount.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          </div>
+          <div class="col-md-3">
+          <div class="form-group">
+            <label >{{form.quarterly_support_status.label}}
+                {% if form.quarterly_support_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.quarterly_support_status class+="form-control" id+="quarterly_support_status" onchange+="quaterly_support_type()" placeholder=form.quarterly_support_status.label required+="required"  %}
+                {% if form.quarterly_support_status.errors %}
+                {% for error in form.quarterly_support_status.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          <div class="form-group" id="quarterly_status">
+            <label >{{form.quarterly_support_amount.label}}
+                {% if form.quarterly_support_amount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.quarterly_support_amount class+="form-control" id+="quarterly_support_amount" placeholder=form.quarterly_support_amount.label required+="required"  %}
+                {% if form.quarterly_support_amount.errors %}
+                {% for error in form.quarterly_support_amount.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label >{{form.halfyearly_support_status.label}}
+                {% if form.halfyearly_support_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.halfyearly_support_status class+="form-control" id+="halfyearly_support_status" onchange+="halfyearly_support_type()" placeholder=form.halfyearly_support_status.label required+="required"  %}
+                {% if form.halfyearly_support_status.errors %}
+                {% for error in form.halfyearly_support_status.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          <div class="form-group" id="halfyearly_status">
+            <label >{{form.halfyearly_support_amount.label}}
+                {% if form.halfyearly_support_amount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.halfyearly_support_amount class+="form-control" id+="halfyearly_support_amount" placeholder=form.halfyearly_support_amount.label required+="required"  %}
+                {% if form.halfyearly_support_amount.errors %}
+                {% for error in form.halfyearly_support_amount.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label >{{form.annual_support_status.label}}
+                {% if form.annual_support_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.annual_support_status class+="form-control" id+="annual_support_status" onchange+="annual_support_type()" placeholder=form.annual_support_status.label required+="required"  %}
+                {% if form.annual_support_status.errors %}
+                {% for error in form.annual_support_status.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          <div class="form-group" id="annual_status">
+            <label >{{form.annual_support_amount.label}}
+                {% if form.annual_support_amount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.annual_support_amount class+="form-control" id+="annual_support_amount" placeholder=form.annual_support_amount.label required+="required"  %}
+                {% if form.annual_support_amount.errors %}
+                {% for error in form.annual_support_amount.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+        </div>
+          </div>
+          </div>
+          <h5><b>Wallet_type:</b></h5><br>
+          <div class="row">
+            <div class="col-md-3">
+          <div class="form-group">
+            <label >{{form.health_wallet_status.label}}
+                {% if form.health_wallet_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.health_wallet_status class+="form-control" id+="health_wallet_status" placeholder=form.health_wallet_status.label required+="required"  %}
+                {% if form.health_wallet_status.errors %}
+                {% for error in form.health_wallet_status.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+            </div>
+            <div class="col-md-3">
+          <div class="form-group">
+            <label >{{form.referral_wallet_status.label}}
+                {% if form.referral_wallet_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.referral_wallet_status class+="form-control" id+="referral_wallet_status" placeholder=form.referral_wallet_status.label required+="required"  %}
+                {% if form.referral_wallet_status.errors %}
+                {% for error in form.referral_wallet_status.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          </div>
+          <div class="col-md-3">
+          <div class="form-group">
+          <label >{{form.trust_wallet_status.label}}
+              {% if form.trust_wallet_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+              </label>
+              {%render_field form.trust_wallet_status class+="form-control" id+="trust_wallet_status" placeholder=form.trust_wallet_status.label required+="required"  %}
+              {% if form.trust_wallet_status.errors %}
+              {% for error in form.trust_wallet_status.errors %}
+              <span class="text-danger">* {{ error|escape }} </span>
+              {% endfor %}
+              {% endif %}
+        </div>
+        </div>
+        </div>
+            <div class="form-group">
+              <label >Referral_plan_status    
+                <span class="text-danger"> * </span>
+              </label>
+              <select name="referral_status" class="form-control" placeholder="referral_status" required="" selected="" id="referral_status" onchange ="referal_status_id()"> 
+                      {% if user.referral_status == 0 %}
+                      <option value="{{user.referral_status}}" selected>InActive</option>
+                      <option value = 1 >Active</option>
+                      {% else %}
+                      <option value = 1 selected>Active</option>
+                      <option value= 0 >InActive</option>
+                      {% endif %}
+                </select>                 
+            </div>
+        <div id="plan_referral">
+          <div class="form-group">
+            <label >Level   
+              <span class="text-danger"> * </span>
+            </label>
+            <select name="level" class="form-control" placeholder="level" required="" selected="" id="level" onchange="verify_change()"> 
+              {% if user.level > 0 %}
+                    <option value="{{user.level}}" selected >Level {{user.level}} </option>
+                    {% else %}
+                    <option value="0" selected >-----</option>
+                    {% endif %}
+                    {% for i in Referral%}            
+                    <option value="{{i.referral_level_id}}" >Level {{i.referral_level_id}}</option>               
+                    {% endfor %}
+              </select>                 
+          </div>
+
+
+
+
+
+
+
+
+
+
+          {% comment %} <div id="plan_referral">
+          <div class="form-group">
+            <label >Direct Level   
+              <span class="text-danger"> * </span>
+            </label>
+            <select name="direct_level" class="form-control" placeholder="direct_level" required="" selected="" id="direct_level" onchange="verify_change()"> 
+              {% if user.direct_level > 0 %}
+                    <option value="{{user.direct_level}}" selected >direct_level {{user.direct_level}} </option>
+                    {% else %}
+                    <option value="0" selected >-----</option>
+                    {% endif %}
+                    {% for i in Referral%}            
+                    <option value="{{i.direct_level_id}}" >Level {{i.direct_level_id}}</option>               
+                    {% endfor %}
+              </select>                 
+          </div> {% endcomment %}
+
+
+
+
+
+
+          <div class="form-group">
+            <label >{{form.referral_level_eligible.label}}
+                {% if form.referral_level_eligible|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.referral_level_eligible class+="form-control" id+="referral_level_eligible" placeholder=form.referral_level_eligible.label required+="required" readonly="" %}
+                {% if form.referral_level_eligible.errors %}
+                {% for error in form.referral_level_eligible.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          
+          </div>
+
+
+
+
+
+
+
+        
+
+        <div class="form-group">
+          <label >{{form.withdraw_status.label}}
+              {% if form.withdraw_status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+              </label>
+              {%render_field form.withdraw_status class+="form-control" id+="withdraw_status" placeholder=form.withdraw_status.label required+="required" onchange+="withdraw_status_id()" %}
+              {% if form.withdraw_status.errors %}
+              {% for error in form.withdraw_status.errors %}
+              <span class="text-danger">* {{ error|escape }} </span>
+              {% endfor %}
+              {% endif %}
+        </div>
+
+        <div id="Withdraw_plan">
+          <div class="form-group">
+            <label >{{form.health_withdraw_minimum_limit.label}}
+                {% if form.health_withdraw_minimum_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                <!-- {%render_field form.health_withdraw_minimum_limit class+="form-control" type+="Number" id+="health_withdraw_minimum_limit" placeholder=form.health_withdraw_minimum_limit.label required+="required" min+="0" %} -->
+                <input type="Number" name="health_withdraw_minimum_limit" value="{{user.health_withdraw_minimum_limit|floatformat:2}}" step="1e-8" min="0" required="" id="health_withdraw_minimum_limit" class="form-control" placeholder="Health Wallet withdraw Minimum Limit" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                {% if form.health_withdraw_minimum_limit.errors %}
+                {% for error in form.health_withdraw_minimum_limit.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label >{{form.health_withdraw_maximum_limit.label}}
+                {% if form.health_withdraw_maximum_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                <input type="number" name="health_withdraw_maximum_limit" value="{{user.health_withdraw_maximum_limit|floatformat:2}}" step="1e-8" min="0" required="" oninput="withdraw_values_chk()" id="health_withdraw_maximum_limit" class="form-control" placeholder="Health Wallet withdraw Maximum Limit" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                <!-- {%render_field form.health_withdraw_maximum_limit class+="form-control" id+="health_withdraw_maximum_limit" oninput+="withdraw_values_chk()" placeholder=form.health_withdraw_maximum_limit.label required+="required" min+="0" %} -->
+                <p class="mt-2" id = "blank" style="color:red"> </p>
+                {% if form.health_withdraw_maximum_limit.errors %}
+                {% for error in form.health_withdraw_maximum_limit.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label >{{form.referral_withdraw_minimum_limit.label}}
+                {% if form.referral_withdraw_minimum_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                <input type="number" name="referral_withdraw_minimum_limit" value="{{user.referral_withdraw_minimum_limit|floatformat:2}}" step="1e-8" min="0" required="" id="referral_withdraw_minimum_limit" class="form-control" placeholder="Referral Wallet withdraw Minimum Limit" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                <!-- {%render_field form.referral_withdraw_minimum_limit class+="form-control" id+="referral_withdraw_minimum_limit" placeholder=form.referral_withdraw_minimum_limit.label required+="required" min+="0" %} -->
+                {% if form.referral_withdraw_minimum_limit.errors %}
+                {% for error in form.referral_withdraw_minimum_limit.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label >{{form.referral_withdraw_maximum_limit.label}}
+                {% if form.referral_withdraw_maximum_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                <input type="number" name="referral_withdraw_maximum_limit" value="{{user.referral_withdraw_maximum_limit|floatformat:2}}" step="1e-8" min="0" required="" oninput="withdraw_values_chk()" id="referral_withdraw_maximum_limit" class="form-control" placeholder="Referral Wallet withdraw Maximum Limit" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                <!-- {%render_field form.referral_withdraw_maximum_limit class+="form-control" id+="referral_withdraw_maximum_limit" oninput+="withdraw_values_chk()" placeholder=form.referral_withdraw_maximum_limit.label required+="required" min+="0"  %} -->
+                <p class="mt-2" id = "blank0" style="color:red"> </p>
+                {% if form.referral_withdraw_maximum_limit.errors %}
+                {% for error in form.referral_withdraw_maximum_limit.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label >{{form.Total_maximum_limit.label}}
+                {% if form.Total_maximum_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                <input type="number" name="Total_maximum_limit" min="0" value="{{user.Total_maximum_limit}}" required="" id="Total_maximum_limit" class="form-control" placeholder="Referral Wallet withdraw Maximum Limit" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57">
+                <!-- {%render_field form.Total_maximum_limit class+="form-control" id+="Total_maximum_limit" oninput+="withdraw_values_chk()" placeholder=form.Total_maximum_limit.label required+="required" min+="0"  %} -->
+                <p class="mt-2" id = "blank0" style="color:red"> </p>
+                {% if form.Total_maximum_limit.errors %}
+                {% for error in form.Total_maximum_limit.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+          </div>
+          
+        </div>
+                
+        <div class="form-group">
+            <label >{{form.status.label}}
+                {% if form.status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                </label>
+                {%render_field form.status class+="form-control" placeholder=form.status.label required+="required" %}
+                {% if form.status.errors %}
+                {% for error in form.status.errors %}
+                <span class="text-danger">* {{ error|escape }} </span>
+                {% endfor %}
+                {% endif %}
+        </div>
+        <h5><b>Withdraw Split Percentage:</b></h5><br>
+        <div class="row" >
+        <div class="col-md-4">
+        <div class="form-group">
+          <label >Monthly Stake Wallet:
+              {% if form.stake_wallet_monthly_percentage|req_label  %} <span class="text-danger"> * </span>{% endif %}
+              </label>
+              {%render_field form.stake_wallet_monthly_percentage class+="form-control" id+="stake_wallet_monthly_percentage" oninput="wallet_claim_percentage()" placeholder=form.stake_wallet_monthly_percentage.label required+="required"  %}
+              {% if form.stake_wallet_monthly_percentage.errors %}
+              {% for error in form.stake_wallet_monthly_percentage.errors %}
+              <span class="text-danger">* {{ error|escape }} </span>
+              {% endfor %}
+              {% endif %}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label >Withdraw Wallet (Trust wallet):
+            {% if form.withdraw_wallet_monthly_percentage|req_label  %} <span class="text-danger"> * </span>{% endif %}
+            </label>
+            {%render_field form.withdraw_wallet_monthly_percentage class+="form-control" id+="withdraw_wallet_monthly_percentage" oninput="wallet_withdraw_claim_percentage()"  placeholder=form.withdraw_wallet_monthly_percentage.label required+="required"  %}
+            {% if form.withdraw_wallet_monthly_percentage.errors %}
+            {% for error in form.withdraw_wallet_monthly_percentage.errors %}
+            <span class="text-danger">* {{ error|escape }} </span>
+            {% endfor %}
+            {% endif %}
+    </div>
+        </div>
+    </div>
+                  
+             
+            </div>
+           
+            <div class="col-md-6">
+             
+           
+            </div>
+          </div>
+           
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="tradeadmin/List_plan" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+
+    </section>
+    <script>
+      $( document ).ready(function() {
+        plan_status = document.getElementById('support_status').value 
+        if(plan_status == 1){
+        $('#support_status_type').hide()
+        }
+        if(plan_status == 0){
+        $('#support_status_type').show()
+        }
+    });
+    </script>
+<script>
+    $("#ip_address").keyup('keyup blur',function(){  
+       var node = $(this);   
+        node.val(node.val().replace(/[^0-9.]/g,'') );   
+    }); 
+</script>
+
+<script>
+    $( document ).ready(function() {
+      var h = $('#referral_status').val()
+      if(h == 0){
+      $('#plan_referral').hide()
+      }
+      if(h ==1){
+        $('#plan_referral').show()
+      }
+    });
+</script>
+
+<script>
+  function referal_status_id(event){
+    referral_status = document.getElementById('referral_status').value 
+    if(referral_status == 0){
+      $('#plan_referral').hide()
+    }
+    if(referral_status == 1){
+      $('#plan_referral').show()
+    }
+  }
+</script>
+
+<script>
+  $( document ).ready(function() {
+    var h = $('#withdraw_status').val()
+    
+    if(h == 0){
+      $('#Withdraw_plan').hide()
+    }
+    if(h ==1){
+      $('#Withdraw_plan').show()
+    }
+});
+</script>
+
+<script>
+  function verifymin_max_amount(event){
+       max_step = document.getElementById('Reward_step_value').value 
+       count_step_reward = document.getElementById('plan_reward_amount').value  
+       Min = $('#min_price').val()
+       Max = document.getElementById('max_price').value;  
+       count = (Max)
+       co = parseFloat(count) / parseFloat(max_step) 
+       count_count = parseFloat(co) * parseFloat(count_step_reward)
+       if (parseInt(Max) < parseInt(Min)){
+        document.getElementById("blankMsgName").innerHTML = 'Maximum Step Count Should be Greate Than Minimum';
+       } else{
+         document.getElementById("blankMsgName").innerHTML = "";
+       }
+       document.getElementById('reward_amount').value = parseFloat(count_count).toFixed(4)     
+}
+</script>
+
+<script>
+  function verify_change(event){
+    level = document.getElementById('level').value; 
+    document.getElementById('referral_level_eligible').value = level
+  }
+</script>
+
+
+<script>
+  function withdraw_status_id(event){
+  // id_referral_status
+  referral_status = document.getElementById('withdraw_status').value 
+  if(referral_status == 0){
+  $('#Withdraw_plan').hide()
+  }
+  if(referral_status == 1){
+  $('#Withdraw_plan').show()
+  }
+  }
+</script>
+
+<script>
+  function support_type(event){
+  // id_referral_status
+  plan_status = document.getElementById('support_status').value 
+  if(plan_status == 1){
+  $('#support_status_type').hide()
+  }
+  if(plan_status == 0){
+  $('#support_status_type').show()
+  }
+  }
+</script>
+<script>
+  function month_support_type(event){
+  // id_referral_status
+  plan_status = document.getElementById('monthly_support_status').value 
+  if(plan_status == 1){
+  $('#monthly_status').hide()
+  }
+  if(plan_status == 0){
+  $('#monthly_status').show()
+  }
+  }
+</script>
+<script>
+  function quaterly_support_type(event){
+  // id_referral_status
+  plan_status = document.getElementById('quarterly_support_status').value 
+  if(plan_status == 1){
+  $('#quarterly_status').hide()
+  }
+  if(plan_status == 0){
+  $('#quarterly_status').show()
+  }
+  }
+</script>
+<script>
+  function halfyearly_support_type(event){
+  // id_referral_status
+  plan_status = document.getElementById('halfyearly_support_status').value 
+  if(plan_status == 1){
+  $('#halfyearly_status').hide()
+  }
+  if(plan_status == 0){
+  $('#halfyearly_status').show()
+  }
+  }
+</script>
+<script>
+  function annual_support_type(event){
+  // id_referral_status
+  plan_status = document.getElementById('annual_support_status').value 
+  if(plan_status == 1){
+  $('#annual_status').hide()
+  }
+  if(plan_status == 0){
+  $('#annual_status').show()
+  }
+  }
+</script>
+<script>
+  $( document ).ready(function() {
+    var h = $('#monthly_support_status').val()
+    if(h == 1){
+    $('#monthly_status').hide()
+    }
+    if(h ==0){
+      $('#monthly_status').show()
+    }
+  });
+</script>
+<script>
+  $( document ).ready(function() {
+    var h = $('#quarterly_support_status').val()
+    if(h == 1){
+    $('#quarterly_status').hide()
+    }
+    if(h ==0){
+      $('#quarterly_status').show()
+    }
+  });
+</script>
+<script>
+  $( document ).ready(function() {
+    var h = $('#halfyearly_support_status').val()
+    if(h == 1){
+    $('#halfyearly_status').hide()
+    }
+    if(h ==0){
+      $('#halfyearly_status').show()
+    }
+  });
+</script>
+<script>
+  $( document ).ready(function() {
+    var h = $('#annual_support_status').val()
+    if(h == 1){
+    $('#annual_status').hide()
+    }
+    if(h ==0){
+      $('#annual_status').show()
+    }
+  });
+</script>
+<script>
+
+  function withdraw_values_chk(event){
+    health_min_amount = document.getElementById("health_withdraw_minimum_limit").value
+    health_max_amount = document.getElementById("health_withdraw_maximum_limit").value
+    referral_min_amount = document.getElementById("referral_withdraw_minimum_limit").value
+    referral_max_amount = document.getElementById("referral_withdraw_maximum_limit").value
+    if (parseInt(health_min_amount) > parseInt(health_max_amount)){
+        document.getElementById("blank").innerHTML = 'Maximum Withdraw Limit should be Greater';
+       } else{
+         document.getElementById("blank").innerHTML = "";
+       }
+    if (parseInt(referral_min_amount) > parseInt(referral_max_amount)){
+      document.getElementById("blank0").innerHTML = 'Maximum Withdraw Limit should be Greater';
+    } else{
+      document.getElementById("blank0").innerHTML = "";
+    }
+
+
+  }
+</script>
+
+<script>
+  function wallet_claim_percentage(){
+    // var withdraw_wallet_percentage = $("#withdraw_wallet_monthly_percentage").val()
+    var wallet_percentage = $("#stake_wallet_monthly_percentage").val()
+    console.log(wallet_percentage,'wallet_percentage wallet_percentage wallet_percentage');
+
+    var val = parseInt(100) - parseInt(wallet_percentage)
+
+    document.getElementById('withdraw_wallet_monthly_percentage').value = val
+    
+
+  }
+</script>
+
+
+
+<script>
+  function wallet_withdraw_claim_percentage(){
+    var withdraw_wallet_percentage = $("#withdraw_wallet_monthly_percentage").val()
+    // var wallet_percentage = $("#stake_wallet_monthly_percentage").val()
+    console.log(withdraw_wallet_percentage,'withdraw_wallet_percentage withdraw_wallet_percentage withdraw_wallet_percentage');
+
+    var val = parseInt(100) - parseInt(withdraw_wallet_percentage)
+
+    document.getElementById('stake_wallet_monthly_percentage').value = val
+    
+
+  }
+</script>
+
+<script>
+  function Plan_purchase_type(event){
+  plan_status = document.getElementById('id_plan_purchase_type').value 
+  if(plan_status == 0){
+  $('#plan_lw').hide()
+  }
+  if(plan_status == 1){
+  $('#plan_lw').show()
+  }
+  }
+  try {
+    plan_status_default = document.getElementById('id_plan_purchase_type').value 
+    if(plan_status_default == 0){
+    $('#plan_lw').hide()
+    }
+    if(plan_status_default == 1){
+    $('#plan_lw').show()
+    }
+  } catch (error) {
+    console.log(error);
+  }
+</script>
+
+<script>
+  function wallet_stake(){
+    var activate_plan = $("#activate_plan").val()
+    var plan_month = $("#plan_purchase_amount_monthly").val()
+    var val = parseFloat(plan_month) - parseFloat(activate_plan)
+    document.getElementById('user_stake_credit').value = val
+  }
+</script>
+<script>
+  $(function() {
+  $('select.cus_select').change(function() {
+    var rew_stp = $(this).find('option:selected').data('rewstep');
+    var plan_rew = $(this).find('option:selected').data('planrew');
+    var min_stp = $(this).find('option:selected').data('min');
+    var max_stp = $(this).find('option:selected').data('max');
+    var rew_amt = $(this).find('option:selected').data('rewamount');
+
+    document.getElementById('Reward_step_value').value = rew_stp
+    document.getElementById('plan_reward_amount').value = plan_rew
+    document.getElementById('min_price').value = min_stp
+    document.getElementById('max_price').value = max_stp   
+    document.getElementById('reward_amount').value = rew_amt   
+
+  })
+});
+
+</script>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+
+ 
+
+

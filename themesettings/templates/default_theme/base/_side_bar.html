@@ -1,0 +1,43 @@
+  {% load static %}
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    
+    <section class="sidebar">
+    
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MENU</li>
+
+
+{% if request.user.admin_user_profile.role == 0 %}
+        <li>
+          <a href="{% url 'trade_admin_auth:dashboard' %}">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+          </a>
+        </li>
+{% endif %}
+     
+
+        {% include 'trade_admin_auth/menu.html'%}
+        
+        {% include 'trade_currency/menu.html'%}
+        
+        {% include 'trade_master/menu.html'%}
+
+        {% include 'stake/menu.html' %}
+
+        
+      
+{% if request.user.admin_user_profile.role == 0 %}
+        <li>
+          <a href="{% url 'trade_admin_auth:attemptiplist' %}">
+            <i class="fa fa-ban"></i> <span>Admin Login Attempt</span>
+          </a>
+        </li>
+{% endif %}
+        
+      </ul>
+    </section>
+    
+    <!-- /.sidebar -->
+  </aside>

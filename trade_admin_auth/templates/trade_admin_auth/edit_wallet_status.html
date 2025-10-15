@@ -1,0 +1,134 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    
+    <section class="content">
+   
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+        
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+              
+               <div class="form-group">
+                 <label >{{form.Health_wallet_plan.label}}
+                    {% if form.Health_wallet_plan|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.Health_wallet_plan class+="form-control" id+="Health_wallet_plan" placeholder=form.Health_wallet_plan.label %}
+                </div>
+
+                <div class="form-group">
+                  <label >{{form.Referral_wallet_plan.label}}
+                     {% if form.Referral_wallet_plan|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Referral_wallet_plan class+="form-control" id+="Referral_wallet_plan" placeholder=form.Referral_wallet_plan.label %}
+                 </div>
+
+                 <div class="form-group">
+                  <label >{{form.Trust_wallet_plan.label}}
+                     {% if form.Trust_wallet_plan|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Trust_wallet_plan class+="form-control" id+="Trust_wallet_plan" placeholder=form.Trust_wallet_plan.label %}
+                     <p class="mt-2" id = "blankMsg" style="color:red"> </p>
+                 </div>
+
+                <div class="form-group">
+                 <label >{{form.Health_wallet_Withdraw.label}}
+                    {% if form.Health_wallet_Withdraw|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.Health_wallet_Withdraw id+="Health_wallet_Withdraw" class+="form-control" placeholder=form.Health_wallet_Withdraw.label %}
+                </div>
+                <p id="t1"></p>
+
+                <div class="form-group">
+                 <label >{{form.Referral_wallet_Withdraw.label}}
+                    {% if form.Referral_wallet_Withdraw|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.Referral_wallet_Withdraw id+="Referral_wallet_Withdraw" class+="form-control" placeholder=form.Referral_wallet_Withdraw.label %}
+                    <p class="mt-2" id = "blankMsg1" style="color:red"> </p>
+                </div>
+
+                  
+             
+            </div>
+          
+            <div class="col-md-6">
+             
+            
+            </div>
+          </div>
+        
+         <div class="box-footer">
+                <a  class="btn btn-primary" onclick="Plan_purchase_validate()">Submit</a>
+                <button type="submit" class="btn btn-primary" style="display: none;" id="final" >Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="/tradeadmin/List_wallet" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+
+    </section>
+
+
+
+<script>
+  function Plan_purchase_validate(){
+    Health_wallet_plan = document.getElementById('Health_wallet_plan').value
+    Referral_wallet_plan = document.getElementById('Referral_wallet_plan').value
+    Trust_wallet_plan = document.getElementById('Trust_wallet_plan').value
+    if (parseInt(Health_wallet_plan) == 0 && parseInt(Referral_wallet_plan) == 0 && parseInt(Trust_wallet_plan) == 0){
+      document.getElementById("blankMsg").innerHTML = 'All Three Wallets Plan Purchase Status Cannot be Disabled';
+    }else{
+      Health_wallet_Withdraw = document.getElementById('Health_wallet_Withdraw').value
+      Referral_wallet_Withdraw = document.getElementById('Referral_wallet_Withdraw').value
+      if (parseInt(Health_wallet_Withdraw) == 0 && parseInt(Referral_wallet_Withdraw) == 0){
+        document.getElementById("blankMsg1").innerHTML = ' All Two Wallets Withdraw Status Cannot be Disabled';
+      }else{
+        $('#final').click()
+      }
+
+    }
+
+  }
+</script>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

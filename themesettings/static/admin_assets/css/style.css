@@ -1,0 +1,871 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	color: #222;
+}
+li {
+	list-style: none;
+}
+.hide {
+	display: none;
+}
+/* Margin styyles */
+.m-0 {
+	margin: 0px !important;
+}
+.mr-0 {
+	margin-right: 0;
+}
+.ml-0 {
+	margin-left: 0;
+}
+.mh-0 {
+	margin-right: 0;
+	margin-left: 0;
+}
+.mv-0 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.mt-0 {
+	margin-top: 0px;
+}
+.mt-10 {
+	margin-top: 10px;
+}
+.mt-20 {
+	margin-top: 20px;
+}
+.mt-30 {
+	margin-top: 30px;
+}
+.mt-40 {
+	margin-top: 40px;
+}
+.mt-50 {
+	margin-top: 50px;
+}
+.mb-0 {
+	margin-bottom: 0px;
+}
+.mb-5 {
+	margin-bottom: 5px;
+}
+.mb-10 {
+	margin-bottom: 10px;
+}
+.mb-20 {
+	margin-bottom: 20px;
+}
+.mb-30 {
+	margin-bottom: 30px;
+}
+.mb-40 {
+	margin-bottom: 40px;
+}
+.mb-50 {
+	margin-bottom: 50px;
+}
+/* Padding styyles */
+.p-0 {
+	padding: 0px;
+}
+.pt-0 {
+	padding-top: 0px;
+}
+.pt-10 {
+	padding-top: 10px;
+}
+.pt-20 {
+	padding-top: 20px;
+}
+.pt-30 {
+	padding-top: 30px;
+}
+.pt-40 {
+	padding-top: 40px;
+}
+.pt-50 {
+	padding-top: 50px;
+}
+.pb-0 {
+	padding-bottom: 0px;
+}
+.pb-10 {
+	padding-bottom: 10px;
+}
+.pb-20 {
+	padding-bottom: 20px;
+}
+.pb-30 {
+	padding-bottom: 30px;
+}
+.pb-40 {
+	padding-bottom: 40px;
+}
+.pb-50 {
+	padding-bottom: 50px;
+}
+.pr-0 {
+	padding-right: 0;
+}
+.pl-0 {
+	padding-left: 0;
+}
+.ph-0 {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+}
+.pv-0 {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+.fright {
+	float: right;
+}
+.fleft {
+	float: left;
+}
+.widthFull {
+	width: 100%;
+}
+.loginBg {
+	background: #163046 url("../images/login-bg.jpg") no-repeat scroll center top;
+	height: 100vh;
+	width: 100%;
+	display: inline-block;
+}
+h4.logTit {
+	border-bottom: 1px solid #666666;
+	color: #666666;
+	display: inline-block;
+	padding-bottom: 10px;
+	text-transform: uppercase;
+}
+.loginForm {
+	background: #ffffff none repeat scroll 0 0;
+	left: 0;
+	margin: 40px auto;
+	padding: 15px;
+	position: relative;
+	right: 0;
+}
+.loginForm::after {
+	background: rgba(255, 255, 255, 0.5) none repeat scroll 0 0;
+	bottom: -10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	content: "";
+	left: -10px;
+	position: absolute;
+	right: -10px;
+	top: -10px;
+	z-index: -1;
+}
+.loginForm .btn {
+	background-color: #184560;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 16px;
+	text-transform: uppercase;
+}
+h4.logTit {
+	border-bottom: 1px solid #666666;
+	color: #666666;
+	display: inline-block;
+	padding-bottom: 10px;
+	text-transform: uppercase;
+}
+.fn {
+	float: none !important;
+}
+/** Dashboard css starts here ***/
+.mainWrapper {
+	padding-left: 32px;
+	padding-right: 42px;
+}
+.cardsBlk {
+	border-radius: 5px;
+	color: #ffffff;
+	font-family: Roboto;
+	padding: 10px 20px;
+	margin-top: 20px;
+	min-height: 112px;
+}
+.cardsClr1 {
+	background-color: #70dfbc;
+}
+.cardsClr2 {
+	background-color: #ffb6b6;
+}
+.cardsClr3 {
+	background-color: #8ccbf2;
+}
+.cardsClr4 {
+	background-color: #8bbfb9;
+}
+.cardsClr5 {
+	background-color: #ffa3bd;
+}
+.cardsBlk p {
+	font-size: 16px;
+	margin: 0;
+}
+.cardsBlk p a {
+	color: #ffffff;
+	float: right;
+	font-size: 12px;
+}
+.cardsBlk .midSec {
+	font-size: 36px;
+}
+.cardsBlk .bottomSec {
+	display: flex;
+}
+.cardsBlk .bottomSec a {
+	color: #ffffff;
+	flex-grow: 1;
+	font-size: 12px;
+}
+.bottomSec > a:nth-child(2) {
+	text-align: center;
+}
+.bottomSec > a:last-child {
+	text-align: right;
+}
+.cardsBlk .supTick {
+	display: flex;
+}
+.cardsBlk .supTick div {
+	color: #ffffff;
+	flex-grow: 0;
+	font-size: 36px;
+	text-align: center;
+	width: 33.33%;
+}
+.suppTickBtm > a {
+	flex-grow: 0 !important;
+	text-align: center;
+	width: 33.33%;
+}
+/*.fancy-collapse-panel .panel-default  {
+  margin-top: 30px;
+}*/
+.fancy-collapse-panel .panel-default > .panel-heading {
+	padding: 0;
+}
+.panelMinHgt {
+	min-height: 440px;
+}
+/*.panel-body { padding:0 !important;}*/
+.fancy-collapse-panel h4 {
+	font-family: Roboto;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 10px;
+	padding: 5px 10px;
+}
+.fancy-collapse-panel .panel-heading a {
+	background-color: #f5f5f5;
+	color: #646464;
+	display: inline-block;
+	font-family: Roboto;
+	font-size: 12px;
+	padding: 5px;
+	position: relative;
+	text-decoration: none;
+}
+.fancy-collapse-panel .panelLft {
+	display: inline-block;
+	width: 40%;
+}
+.fancy-collapse-panel .panelLft > span {
+	color: #646464;
+	left: 8px;
+	position: relative;
+	top: 2px;
+}
+.fancy-collapse-panel .panelRight {
+	display: inline-block;
+	text-align: right;
+	width: 59%;
+}
+/* show the move cursor as the user moves the mouse over the panel header.*/
+#draggablePanelList li.panel {
+	box-shadow: none;
+}
+#draggablePanelList .panel-heading {
+	cursor: move;
+}
+.panel-group {
+	margin-bottom: 0px !important;
+}
+#draggablePanelList {
+	margin-left: -15px;
+	margin-right: -15px;
+}
+#draggablePanelList li.panel {
+	width: 50%;
+	display: inline-block;
+	padding-left: 15px;
+	padding-right: 15px;
+	float: left;
+}
+#draggablePanelList li .panel {
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.paneIn textarea {
+	width: 100%;
+	height: 110px;
+	border: 1px solid #e8e8e8;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 10px;
+}
+.feesPaneIn .form-inline .input-group {
+	display: inline-table;
+	vertical-align: middle;
+	width: 25% !important;
+}
+.feesPaneIn .form-inline .form-group {
+	margin-bottom: 15px;
+}
+.feesPaneIn .form-inline .spanLbl {
+	margin-left: 10px;
+	margin-right: 10px;
+	color: #646464;
+}
+.fancy-collapse-panel .btnSmt, .fancy-collapse-panel .btnSmt:hover {
+	background-color: #323232;
+	color: #fff;
+}
+/*.fancy-collapse-panel .panel-heading a:after {
+font-family: "FontAwesome";
+content: "\f0c9";
+position: absolute;
+right: 20px;
+font-size: 14px;
+font-weight: 400;
+top: 50%;
+line-height: 1;
+margin-top: -10px;
+}
+
+.fancy-collapse-panel .panel-heading a.collapsed:after {
+content: "\f0c9";
+}*/
+
+/** data table css starts here **/
+.cm_tablesc1 {
+	border: 1px solid #ccc;
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 20px 20px 10px;
+}
+.cm_head3 h4 {
+	border-bottom: 1px solid #b4b4b4;
+	color: #005d53;
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: 0.2px;
+	padding-bottom: 15px;
+	text-transform: uppercase;
+}
+.dataTables_length label {
+	bottom: -4px;
+	color: #282828;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 32px;
+	margin: 10px 20px 20px 0;
+	position: relative;
+	text-transform: initial;
+}
+.form-inline .dataTables_length label select {
+	-moz-appearance: none;
+	background: #ffffff url("../images/select4.png") no-repeat scroll right center;
+	border-color: #dddddd;
+	box-shadow: none;
+	height: 38px;
+	line-height: 28px;
+	margin-left: 4px;
+	margin-right: 4px;
+	padding-left: 4px;
+	position: relative;
+	width: 62px;
+}
+.form-inline .dataTables_length label select option {
+	padding: 5px 10px;
+}
+.dataTables_filter {
+	float: right;
+	margin-top: 4px;
+}
+.dataTables_filter label {
+	color: #282828;
+	font-size: 14px;
+	font-weight: 400;
+	margin: 17px 0px 0px;
+	text-transform: initial;
+}
+.dataTables_filter label .form-control, .dataTables_filter label input[type="search"] {
+	border: 1px solid #dddddd;
+	border-radius: 2px;
+	box-shadow: none;
+	height: 40px;
+	margin-left: 12px;
+	width: 184px;
+	padding-left: 12px;
+	float: right;
+	margin-top: -8px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+}
+.dataTables_filter label .form-control:focus {
+	border-color: #cccccc;
+	box-shadow: none;
+}
+.dataTables_info {
+	color: #282828;
+	font-size: 14px;
+	line-height: 22px;
+	margin: 10px 0 0 0;
+	text-transform: initial;
+}
+.dataTables_paginate {
+	float: right;
+	margin: 10px 0 0 0;
+	position: relative;
+}
+.dataTables_paginate .pagination {
+	margin: 0;
+	border: 1px solid #cccccc;
+}
+.dataTables_paginate .pagination li a {
+	background-color: #f4f4f4;
+	border-left: medium none;
+	border-top: medium none;
+	border-bottom: medium none;
+	border-right: 1px solid #ccc;
+	color: #282828;
+	font-size: 14px;
+	line-height: 20px;
+	min-width: 22px;
+	padding: 5px 10px;
+	text-align: center;
+	text-transform: initial;
+}
+.dataTables_paginate .pagination li:last-child a {
+	border: none;
+}
+.dataTables_paginate .pagination li.active a, .dataTables_paginate .pagination li.active a:hover, .dataTables_paginate .pagination li.active a:focus, .dataTables_paginate .pagination li a:hover, .dataTables_paginate .pagination li a:focus {
+	background: #62a648 none repeat scroll 0 0;
+	color: #fff;
+}
+.clsCtlr {
+	padding: 4px;
+	color: #fff;
+	font-size: 12px;
+	border-radius: 5px;
+	height: 20px;
+	width: 82px;
+	display: block;
+	text-align: center;
+	line-height: 12px;
+}
+.clsCtlr:hover, .clsCtlr:focus {
+	text-decoration: none;
+	color: #fff;
+}
+.clsActive {
+	background-color: #8ac544;
+}
+.clsDeactive {
+	background-color: #dc6767;
+}
+.clsOffline {
+	background-color: #62a648;
+}
+.clsNotVerify {
+	background-color: #5bc0de;
+}
+.userRemove, .editUser, .deleteUser {
+	background-color: #fff;
+	border: 1px solid #646464;
+	border-radius: 5px;
+	display: inline-block;
+	height: 24px;
+	width: 24px;
+	text-align: center;
+	line-height: 17px;
+}
+.userRemove:hover, .editUser:hover, .deleteUser:hover {
+	background-color: #f0ad4e;
+}
+.userRemove:hover img, .editUser:hover img, .deleteUser:hover img {
+	filter: brightness(0) invert(1);
+}
+.cm_tableh3 th {
+	background-color: #07b4f7;
+	font-weight: normal;
+	border: none !important;
+	color: #fff;
+	cursor: pointer;
+}
+.cm_tableh3 .table td, .cm_tableh3 .table th {
+	border-right: 1px solid #e8e8e8 !important;
+	padding: 8px 5px !important;
+}
+.cm_tableh3 .table td:last-child, .cm_tableh3 .table th:last-child {
+	border-right: none !important;
+}
+.cm_tableh3 .table tr:hover {
+	background-color: #f5f5f5;
+}
+.dataTables_wrapper {
+	/*border: 1px solid #cccccc;*/
+	border-radius: 5px;
+}
+.typeLbl {
+	float: left;
+	line-height: 38px;
+}
+.typeSelect {
+	float: left;
+	margin-left: 10px;
+	width: 100px;
+}
+.typeSelect .styled-select select, .typeSelect .styled-select {
+	height: 38px;
+}
+.dateInputGroup {
+	float: left;
+	margin-left: 10px;
+	position: relative;
+}
+.dateInputGroup .form-control {
+	border: 1px solid #cccccc;
+	box-shadow: none;
+	height: 38px;
+}
+.dateInputGroup span {
+	color: #646464;
+	font-size: 20px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+.cm_blacbtn {
+	background: #323232;
+	border: 1px solid #323232;
+	border-radius: 4px;
+	color: #ffffff;
+	display: inline-block;
+	font-family: "Roboto", sans-serif;
+	font-size: 14px;
+	line-height: 24px;
+	margin-bottom: 8px;
+	padding: 6px 18px;
+	transition: all 0.5s ease 0s;
+	-webkit-transition: all 0.5s ease 0s;
+}
+.cm_blacbtn:hover, .cm_blacbtn:focus {
+	background: #07b4f7;
+	border-color: #07b4f7;
+	color: #ffffff;
+	outline: none;
+	text-decoration: none;
+}
+.topstatusBar label {
+	font-weight: normal;
+}
+.cm_tableh3 th span {
+	float: right;
+	margin-top: 5px;
+	color: #1d75b7;
+	font-size: 12px;
+}
+/** data table css end here **/
+.modal-footer {
+	text-align: center !important;
+}
+.modalPop .modal-header {
+	background-color: #f5f5f5;
+	border-radius: 8px 8px 0 0;
+}
+.modalPop .modal-content {
+	border: 3px solid #c8c8c8;
+}
+.modalPop .modal-title {
+	color: #646464;
+	font-size: 24px;
+}
+.modalPop .modal-body p {
+	color: #646464;
+	font-size: 18px;
+}
+.modalPop .cm_blacbtn1 {
+	width: 82px;
+	height: 40px;
+	margin-top: 0;
+}
+.modalPop .modal-header .close {
+	margin-top: -30px;
+	background-color: #f5f5f5;
+	opacity: 1;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	border: 2px solid #c8c8c8;
+	margin-right: -28px;
+}
+.modal-header .close img {
+	position: relative;
+	top: -2px;
+}
+.modalPop .modal-dialog {
+	margin-top: 60px;
+}
+.modalPop .form-group {
+	margin-bottom: 10px !important;
+}
+.modalPop label {
+	font-weight: normal;
+}
+.dateInputGroup .input-group.date .input-group-addon {
+	z-index: 999;
+	border: none;
+	padding: 0 15px;
+}
+.dateInputGroup .input-group.date .input-group-addon:hover {
+	background: none;
+}
+.fancy-collapse-panel {
+	margin: 10px 0;
+}
+/** Loading animation css **/
+.loader {
+	background: rgba(0, 4, 10, 0.9) none repeat scroll 0 0;
+	bottom: 0;
+	height: 100%;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	width: 100%;
+	z-index: 9999;
+}
+.spinner {
+	height: 40px;
+	margin: auto;
+	position: absolute;
+	width: 40px;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+.double-bounce1, .double-bounce2 {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #fff;
+	opacity: 0.6;
+	position: absolute;
+	top: 0;
+	left: 0;
+	-webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+	animation: sk-bounce 2.0s infinite ease-in-out;
+}
+.double-bounce2 {
+	-webkit-animation-delay: -1.0s;
+	animation-delay: -1.0s;
+}
+ @-webkit-keyframes sk-bounce {
+ 0%, 100% {
+-webkit-transform: scale(0.0)
+}
+ 50% {
+-webkit-transform: scale(1.0)
+}
+}
+ @keyframes sk-bounce {
+ 0%, 100% {
+ transform: scale(0.0);
+ -webkit-transform: scale(0.0);
+}
+50% {
+ transform: scale(1.0);
+ -webkit-transform: scale(1.0);
+}
+}
+#chat_dta h3 {
+	margin: 0;
+	font-size: 18px;
+}
+#chat_dta {
+	max-height: 500px;
+	overflow: auto;
+}
+.wltFeeTbl th {
+	text-align: center;
+}
+.wltFeeTbl thead {
+	background-color: #f5f5f5;
+}
+.cust-field {
+	word-break: break-all;
+	height: auto !important;
+}
+.dropenla {
+	height: 100px !important
+}
+.ticket_table {
+	overflow-y: auto ! important;
+}
+#ticketList h3 {
+	margin: 0;
+	font-size: 18px;
+	font-weight: bold;
+}
+#ticketList .chat-list {
+	margin-bottom: 20px;
+}
+.chat-list #myImg {
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+.chat-list img {
+	max-width: 200px;
+	height: auto;
+	object-fit: contain;
+}
+.chat-list #myImg:hover {
+	opacity: 0.7;
+}
+/* The Modal (background) */
+.modal.image-modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+/* Modal Content (image) */
+.image-modal .modal-content {
+	margin: auto;
+	display: block;
+	width: 80%;
+	max-width: 700px;
+}
+/* Caption of Modal Image */
+#caption {
+	margin: auto;
+	display: block;
+	width: 80%;
+	max-width: 700px;
+	text-align: center;
+	color: #ccc;
+	padding: 10px 0;
+	height: 150px;
+}
+/* Add Animation */
+.image-modal .modal-content, #caption {
+	-webkit-animation-name: zoom;
+	-webkit-animation-duration: 0.6s;
+	animation-name: zoom;
+	animation-duration: 0.6s;
+}
+ @-webkit-keyframes zoom {
+ from {
+-webkit-transform:scale(0)
+}
+to {
+	-webkit-transform: scale(1)
+}
+}
+ @keyframes zoom {
+ from {
+transform:scale(0)
+}
+to {
+	transform: scale(1)
+}
+}
+/* The Close Button */
+.image-modal .close {
+	position: absolute;
+	top: 15px;
+	right: 35px;
+	color: #fff;
+	font-size: 40px;
+	font-weight: bold;
+	transition: 0.3s;
+	opacity: 0.8;
+}
+.image-modal .close:hover, .image-modal .close:focus {
+	color: #bbb;
+	text-decoration: none;
+	cursor: pointer;
+	opacity: 1;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px) {
+.image-modal .modal-content {
+	width: 100%;
+}
+}
+.file-upload {
+	z-index: 0;
+}
+.search_area {
+	float: right;
+	margin-right: 0px!important;
+	margin-bottom: 12px;
+}
+input[type="text"], input[type="search"], input[type="password"], input[type="file"] {
+	height: 35px;
+	padding: 0 5px;
+	border: 1px solid #ddd;
+	outline: none;
+	-webkit-appearance: none;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+}
+.search_area .btn {
+	padding: 4px 12px;
+	border: 1px solid #bbbbbb;
+	border-bottom-color: #a2a2a2;
+	background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+	border-radius: 4px;
+}
+.read_permission {
+	height: 50px;
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px
+}
+a.cm_blacbtn1.topback.atopback {
+	position: relative;
+	float: right;
+}
+#login_div h2 {
+    color: #fff;
+    font-weight: 600;
+}

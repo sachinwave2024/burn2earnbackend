@@ -1,0 +1,134 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+ 
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab"><h3 class="box-title">BNB Profits</h3></a></li>
+              <li><a href="#tab_2" data-toggle="tab"><h3 class="box-title"></h3></a></li>
+             
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+                
+                <div class="box-body">
+               
+              <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                   <th>S.No</th>
+                  <th>Username</th>
+                  <th>Currency Name</th>
+                  <th>Type</th>
+                  <th>Profit Amount</th>
+                  <th>Datetime</th>
+                </tr>
+                </thead>
+               
+                <tbody>
+
+
+                 {% if profit_qs %}
+                 {% for item in profit_qs %}
+                 <tr>
+                  <td>{{ forloop.counter}}</td>
+                  <td>{{ item.user}}</td>
+                  <td>{{ item.currency_name}}</td>
+                  <td>{{ item.Type}}</td>
+                  <td>{{ item.profitamt}}</td>
+                  <td>{{item.datetime}}</td>
+                
+                </tr>
+                 {% endfor %}
+                {% else %}
+                     <tr><td colspan=5><h5>There are no records yet</h5></td></tr>
+                {% endif %}
+              </tbody>
+               </table>
+
+            </div>
+            </div>
+
+                <div class="tab-pane" id="tab_2">
+
+                <div class="box-body">
+               
+              <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                   <th>S.No</th>
+                  <th>Username</th>
+                  <th>Currency Name</th>
+                  <th>Type</th>
+                  <th>Profit Amount</th>
+                  <th>Datetime</th>
+                </tr>
+                </thead>
+               
+                <tbody>
+
+
+                 {% if profit_qs1 %}
+                 {% for item in profit_qs1 %}
+                 <tr>
+                  <td>{{ forloop.counter}}</td>
+                  <td>{{ item.user}}</td>
+                  <td>{{ item.currency_name}}</td>
+                  <td>{{ item.Type}}</td>
+                  <td>{{ item.profitamt}}</td>
+                  <td>{{item.datetime}}</td>
+                
+                </tr>
+                 {% endfor %}
+                {% else %}
+                     <tr><td colspan=5><h5>There are no records yet</h5></td></tr>
+                {% endif %}
+              </tbody>
+               </table>
+
+            </div>
+            </div>
+               
+
+
+              </div>
+             
+            
+            </div>
+           
+          </div>
+        
+          
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     
+      </div>
+
+    </section>
+
+
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

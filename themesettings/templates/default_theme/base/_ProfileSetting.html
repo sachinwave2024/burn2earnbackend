@@ -1,0 +1,42 @@
+ {% load static %}
+ <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+               {% if request.user.admin_user_profile.photo != ''  %}
+              <img src="{{request.user.admin_user_profile.photo.url}}" class="user-image" alt="User Image">
+              {%else%}
+              <img src="{% static "admin_assets/dist/img/user2-160x160.jpg" %}" class="user-image" alt="User Image">
+                {% endif %}
+              <span class="hidden-xs">{{request.user.username}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                {% if request.user.admin_user_profile.photo != ''  %}
+                <img src="{{request.user.admin_user_profile.photo.url}}" class="img-circle" alt="User Image">
+                {%else%}
+                 <img src="{% static "admin_assets/dist/img/user2-160x160.jpg" %}" class="img-circle" alt="User Image">
+                {% endif %}
+                <p>
+                 {{request.user.username}}
+                  <small>Last login : {{request.user.last_login|date:'Y-m-d'}}</small>
+                </p>
+              </li>
+             
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                
+                 {% if request.user.admin_user_profile.role == 0  %}
+                <div class="pull-left">
+                  <a href="/tradeadmin/profile_settings/{{request.user.id}}/" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-left">
+                  <a href="/tradeadmin/general_settings/{{comp_profile_id}}/" class="btn btn-default btn-flat">Setting</a>
+                </div>
+                {% endif %}
+                <div class="pull-right">
+                  <a href="/tradeadmin/logout/" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>

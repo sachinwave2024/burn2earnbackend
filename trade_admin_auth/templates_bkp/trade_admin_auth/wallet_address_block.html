@@ -1,0 +1,87 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="/tradeadmin/wallet_address_block/" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+
+                  <div class="form-group" >
+                    <label >Address  
+                      <span class="text-danger"> * </span>
+                    </label>
+                   <input type="text" id="address" name="address" class="form-control" placeholder="Address" required="">
+                     
+                  </div>
+
+                  
+
+                
+            </div>
+           </div>
+           </div>
+           <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Block</button>
+            &nbsp;&nbsp; &nbsp;&nbsp;
+            <a href="tradeadmin/dashboard/" class="btn btn-primary" >Back</a>
+     </div>
+           </form>
+            <div class="col-md-6">
+             
+           
+            </div>
+          </div>
+        
+   
+
+     
+
+    </section>
+   
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

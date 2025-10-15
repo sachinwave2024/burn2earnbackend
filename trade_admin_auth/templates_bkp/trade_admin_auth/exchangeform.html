@@ -1,0 +1,169 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         <!-- form start -->
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+              <!-- /.form-group -->
+
+
+               {% for ind_form in form %}   
+                <div class="form-group">
+                  <label >{{ind_form.label}}
+                    {% if ind_form|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field ind_form class+="form-control" placeholder=ind_form.label %}
+                    {% if ind_form.errors %}
+                    {% for error in ind_form.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+               {% endfor %}  
+                <p style="color: red; display: none;" id="er1">Maximim Amount must be greater than minimum amount</p>
+                <p style="color: red; display: none;" id="er2">Minimum Amount must be less than Maximum amount</p>
+                <p style="color: red; display: none;" id="fee_error1">Fees Not Greater than minimum amount</p>
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+             
+            <!-- /.col -->
+            </div>
+          </div>
+           <!-- /.second row -->
+        <!-- /.box-body -->
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary" id="c_upt">Submit</button>
+                &nbsp;&nbsp;
+                 <a href="{% url Btn_url %}" class="btn btn-primary">Back</a>
+         </div>
+          </form>
+      </div>
+
+    </section>
+    <!-- /.content -->
+
+<script type="text/javascript">
+  $("#id_exchange_max_amount").keyup(function(){
+    var min_amt = parseFloat($("#id_exchange_min_amount").val());
+    var max_amt = parseFloat($("#id_exchange_max_amount").val());
+    if (max_amt > min_amt){
+        $("#er1").hide();
+        document.getElementById("c_upt").disabled = false;
+        
+      }
+        
+    else{
+      $("#er1").show();
+      document.getElementById("c_upt").disabled = true;
+
+     
+    }
+  });
+
+$("#id_exchange_min_amount").keyup(function(){
+    var min_amt = parseFloat($("#id_exchange_min_amount").val());
+    var max_amt = parseFloat($("#id_exchange_max_amount").val());
+    if (min_amt < max_amt){
+          $("#er2").hide();
+          document.getElementById("c_upt").disabled = false;
+    }
+        
+    else{
+          $("#er2").show();
+          document.getElementById("c_upt").disabled = true;
+    }
+  });
+
+$("#id_exchange_fees").keyup(function(){
+  alert("Ddddddddd")
+    var fe_tpe = $("#id_exchange_feetype option:selected").attr('value')
+       alert(fe_tpe)
+        if (fe_tpe == 1){
+          var mamt = $("#id_exchange_min_amount").val()
+          var fes = $("#id_exchange_fees").val()
+            if (fes > mamt){
+              $("#fee_error1").show();
+              document.getElementById("c_upt").disabled = true;
+            }
+            else{
+              $("#fee_error1").hide();
+              document.getElementById("c_upt").disabled = false;
+            }
+        }
+        else{
+          $("#fee_error1").hide();
+          document.getElementById("c_upt").disabled = false;
+        }
+  });
+
+$( "#id_exchange_feetype" ).change(function() {
+      var fe_tpe = $("#id_exchange_feetype option:selected").attr('value')
+       
+        if (fe_tpe == 1){
+          var mamt = $("#id_exchange_min_amount").val()
+          var fes = $("#id_exchange_fees").val()
+            if (fes > mamt){
+              $("#fee_error1").show();
+              document.getElementById("c_upt").disabled = true;
+            }
+            else{
+              $("#fee_error1").hide();
+              document.getElementById("c_upt").disabled = false;
+            }
+        }
+        else{
+          $("#fee_error1").hide();
+          document.getElementById("c_upt").disabled = false;
+        }
+});
+</script>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

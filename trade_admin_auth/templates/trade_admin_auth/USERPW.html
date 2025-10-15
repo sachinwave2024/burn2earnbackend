@@ -1,0 +1,103 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+
+{% block Style_sheets %}
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" href="{% static 'css/datatables.css' %}">
+{% endblock Style_sheets %}
+
+{% block Content_Area %}
+<section class="content">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h2>USER Detail Premium Wallet</h2>
+        </div>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="box-body">
+            <h3>USER Detail Premium Wallet</h3>
+            <div class="table-responsive">
+                <table id="userDetailsTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Email <input type="text" id="emailFilter" class="form-control" placeholder="Search Email"></th>
+                            <th>Plan <input type="number" id="planFilter" class="form-control" placeholder="Search Plan"></th>
+                            <th>Lock Date <input type="date" id="lockDateFilter" class="form-control"></th>
+                            <th>Premium Wallet <input type="number" id="premiumWalletFilter" class="form-control" placeholder="Filter Premium Wallet"></th>
+                            <th>Transfer PW <input type="number" id="transferPwFilter" class="form-control" placeholder="Filter Transfer PW"></th>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <th>Plan</th>
+                            <th>Lock Date</th>
+                            <th>Premium Wallet</th>
+                            <th>Transfer PW</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- Totals Section -->
+            <div class="totals">
+                <h4>Totals</h4>
+                <p><strong>Total Premium Wallet:</strong> <span id="totalPremiumWallet">0</span></p>
+                <p><strong>Total Transfer PW:</strong> <span id="totalTransferPw">0</span></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock Content_Area %}
+
+{% block Java_Scripts %}
+<script>
+    $(document).ready(function () {
+        var table = $('#userDetailsTable').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: '{% url "trade_admin_auth:get_user_pwdetails" %}',
+                type: 'POST',
+                data: function (d) {
+                    d.email = $('#emailFilter').val();
+                    d.plan = $('#planFilter').val();
+                    d.lock_date = $('#lockDateFilter').val();
+                    d.premium_wallet = $('#premiumWalletFilter').val();
+                    d.transferpw = $('#transferPwFilter').val();
+                    return d;
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                },
+                dataSrc: function (json) {
+                    // Update totals
+                    $('#totalPremiumWallet').text(json.total_premium_wallet.toFixed(2));
+                    $('#totalTransferPw').text(json.total_transferpw.toFixed(2));
+                    return json.data;
+                }
+            },
+            columns: [
+                { data: 'email' },
+                { data: 'plan' },
+                { data: 'lock_date' },
+                { data: 'premium_wallet' },
+                { data: 'transferpw' }
+            ]
+        });
+
+        // Trigger table redraw on filter change
+        $('.form-control').on('keyup change', function () {
+            table.draw();
+        });
+    });
+</script>
+{% endblock %}

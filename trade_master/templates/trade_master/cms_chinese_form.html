@@ -1,0 +1,163 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class=""><a href="{% url 'trade_master:cms_content' english_qs.id %}"><h3 class="box-title">English</h3></a></li>
+              <li class="active"><a href="#tab_1"  data-toggle="tab"><h3 class="box-title">Chinese </h3></a></li>
+               <li class=""><a href="{% url 'trade_master:cms_thailandcontent' thailand_qs.id %}"><h3 class="box-title"> Thailand</h3></a></li>
+            </ul>
+          </div>
+         <!--  <h3 class="box-title">{{ Title}}</h3> -->
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="tab-content">
+         <!-- form start -->
+      <div class="tab-pane active" id="tab_1">
+         <!-- form start -->
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+              <!-- /.form-group -->
+
+
+               {% for ind_form in form %}   
+                <div class="form-group">
+                  <label >{{ind_form.label}}
+                    {% if ind_form|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field ind_form class+="form-control" placeholder=ind_form.label %}
+                    {% if ind_form.errors %}
+                    {% for error in ind_form.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+               {% endfor %}  
+                  
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+             
+            <!-- /.col -->
+            </div>
+          </div>
+           <!-- /.second row -->
+        <!-- /.box-body -->
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                 &nbsp;&nbsp;
+                <a href="{% url Btn_url %}" class="btn btn-primary">Back</a>
+         </div>
+          </div>
+        </form>
+      </div>
+    
+      <div class="tab-pane" id="tab_3">
+         <!-- form start -->
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+              <!-- /.form-group -->
+
+
+               {% for ind_form in form %}   
+                <div class="form-group">
+                  <label >{{ind_form.label}}
+                    {% if ind_form|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field ind_form class+="form-control" placeholder=ind_form.label %}
+                    {% if ind_form.errors %}
+                    {% for error in ind_form.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+               {% endfor %}  
+                  
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-6">
+             
+            <!-- /.col -->
+            </div>
+          </div>
+           <!-- /.second row -->
+        <!-- /.box-body -->
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                 &nbsp;&nbsp;
+                <a href="{% url Btn_url %}" class="btn btn-primary">Back</a>
+         </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+    </section>
+    <!-- /.content -->
+
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js" integrity="sha512-GDey37RZAxFkpFeJorEUwNoIbkTwsyC736KNSYucu1WJWFK9qTdzYub8ATxktr6Dwke7nbFaioypzbDOQykoRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" integrity="sha512-63+XcK3ZAZFBhAVZ4irKWe9eorFG0qYsy2CaM5Z+F3kUn76ukznN0cp4SArgItSbDFD1RrrWgVMBY9C/2ZoURA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" integrity="sha512-aEe/ZxePawj0+G2R+AaIxgrQuKT68I28qh+wgLrcAJOz3rxCP+TwrK5SPN+E5I+1IQjNtcfvb96HDagwrKRdBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script type="text/javascript">
+ $("#id_timer_date").datetimepicker({
+  minDate: new Date(),
+  format: 'YYYY-MM-DD HH:mm'});
+</script>
+ {% endblock %}
+
+

@@ -1,0 +1,239 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+ 
+    <section class="content">
+  
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{user_name}}'s Direct Referal History</h3>
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+  
+    <input type="hidden" id="all_user_list" value="{{ref_dict_users}}">
+
+    <div class="row ">   
+      <div class="col-md-6 col-xs-12 pull-right"> 
+           <div class="panel-group accordion" id="accordion1">
+                                                 <div class="panel panel-default">
+                                                     <div class="panel-heading">
+                                                         <div class="panel-title">
+                                                             <a id="accordion-search" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" aria-expanded="false">
+                                                              <i class="fa fa-search font-dark"></i>
+                                                        <span class="caption-subject font-dark bold uppercase">Advanced Search</span>
+                                                        <span style="float:right"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                                                             </a>
+                                                             
+                                                         </div>
+                                                         
+                                                     </div>
+                                                     <div id="collapse_1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                         <div class="panel-body">
+                                                             
+
+                                                              <form class="form-horizontal" id="Bill_Search_Form" method="get"> 
+                                                                <div class="form">
+                                                                <div id="div_id_email" class="control-group"> 
+                                                                  <label for="id_email" class="control-label ">
+                                                                
+                                                                              Email
+                                                                </label> 
+                                                                <div class="controls">
+                                                                  {% if request.GET.email != None %} 
+                                                                  <input type="text" name="email" class="textinput textInput" value=" {{request.GET.email}}" id="id_email"> 
+                                                                  {% else %}
+                                                                  <input type="text" name="email" class="textinput textInput" id="id_email"> 
+                                                                  {% endif%}
+                                                                </div> 
+                                                              </div> 
+                                                              </div>
+                                                              <div class="form-actions"> 
+                                                                <input type="submit" name="submit" value="Search" class="btn btn-primary" id="submit-id-submit">
+                                                                 <input type="reset" name="reset-search" value="Reset Search" class="btn btn-inverse btn btn-default" id="reset-search">
+                                                                 </div> 
+                                                               </form>
+                                                            </div>
+                                                                       
+                                                              
+                                                                                                                       
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             </div>  
+                                        
+      </div>
+
+      <style>
+        .pagination{
+          padding-left: 557px;
+        }
+        .form{
+          display: flex;
+        }
+        .form .control-group{
+       
+          margin-right: 15px;
+          margin-bottom: 15px;
+        }
+        #example1_info {
+   padding: 25px 0;
+  }
+  
+  .pagination {
+   /* padding-left: 1015px; */
+   float: right;
+  }
+      </style>
+     
+   
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+              <div class="box-tools pull-right">
+                         
+                        </div>
+            </div>
+            <div class="table-responsive">
+           
+            <div class="box-body">
+            
+
+               <table id="example" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>User Name</th>
+                  <th>User Email Address</th>
+                  <th>Referral id</th>
+                  <th>Direct Referal id</th>
+                  <th>App version</th>
+                  <th>Phone Type</th>
+                  <th>Created on</th>
+                  <th>User Type</th>
+                  <th>Plan Start Date</th>
+                  <th>Plan End Date</th>
+                  <th>Actions</th>
+                  
+                </tr>
+                </thead>
+               
+                <tbody id="user_ref_id">
+                    
+              </tbody>
+               </table>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-5">
+                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
+                  Showing {{ref_start_value}} to {{ref_end_value}} of {{ref_usr_count}} entries
+                </div>
+                </div>
+            <div class="paginattion-inn d-flex justify-content-end" >
+              <div class="col-sm-7">
+              {% if ref_hist_qs.has_other_pages %}
+              <ul class="pagination pagination mr-md-4">
+                 {% if ref_hist_qs.has_previous %}
+                <li class="page-item"><a class="page-link font-secondary" href="?pageno={{ ref_hist_qs.previous_page_number }}"><i class="fas fa-long-arrow-alt-left mr-2"></i>Previous</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link font-secondary" href="#"><i class="fas fa-long-arrow-alt-left mr-2"></i>Previous</a></li>
+                {% endif %}
+                {% for i in ref_hist_qs.paginator.page_range %}
+                {% if ref_hist_qs.number == i %}
+                <li class="page-item"><a class="page-link font-secondary " href="#">{{ i }}</a></li>
+                {% else %}
+                {% if request.GET.email != None %} 
+                <li class="page-item"><a class="page-link font-secondary " href="?email={{request.GET.email}}&submit=Search&pageno={{ i }}">{{ i }}</a></li>
+                {% else %}
+                {% if  i == ref_startpage %}
+                <li class="page-item"><a class="page-link font-secondary " href="?pageno={{ i }}">{{ i }}</a></li>
+                {% elif i == ref_endpage %}
+                <li class="page-item"><a class="page-link font-secondary " href="?pageno={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                 {% if ref_hist_qs.has_next %}
+                <li class="page-item"><a class="page-link font-secondary" href="?pageno={{ ref_hist_qs.next_page_number }}">Next <i class="fas fa-long-arrow-alt-right ml-2"></i></a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link font-secondary" href="#">Next <i class="fas fa-long-arrow-alt-right ml-2"></i></a></li>
+                {% endif %}
+              </ul>
+              {% endif %}
+              </div>
+              </div>
+            </div>
+            
+             </div>
+            
+          </div>
+          <!-- <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
+            Showing {{table.get_start_index}} to {{table.get_end_index}} of {{user_count}} entries
+          </div> -->
+        
+      </div>
+
+    </section>
+ {% endblock Content_Area %}
+ {% block Java_Scripts %}
+
+ <script>
+  function search_table(){
+    
+     var user = $("#all_user_list").val();
+     var obj = JSON.parse(user)
+     
+     var len = Object.keys(obj).length
+     if (len > 0) {
+       
+       $("#user_ref_id").empty();
+     k = 1
+     for (var i = 0; i < len; i++) {
+       table = $("#user_ref_id").append("<tr><td>"+obj[i+1].sno+"</td><td>"+obj[i+1].username+"</td><td>"+obj[i+1].email+"</td><td>"+obj[i+1].Referral_id +"</td><td>"+obj[i+1].Direct_referral_id+"</td><td>"+obj[i+1].phone_number+"</td><td>"+obj[i+1].phone_type+"</td><td>"+obj[i+1].date+"</td><td>"+obj[i+1].User_type+"</td><td>"+obj[i+1].plan_start_date+"</td><td>"+obj[i+1].plan_end_date+"</td><td><a href='/tradeadmin/user_referal_history_table/"+obj[i+1].id+"/' title='View'><i class='fa fa-info'></i></a></td></tr>");  
+      
+       k++
+       
+         
+     }
+     } else {
+      $("#user_ref_id").append("<tr><td colspan='12'><h5>"+"There are no records yet"+"</h5></td></tr>");
+     }
+     
+  }
+  search_table()
+</script>
+
+
+<script>
+  $("#reset-search").click(function(){
+     window.location = "/tradeadmin/List_Withdraw_Request/";
+     });
+   
+</script>
+
+ {% endblock %}
+
+

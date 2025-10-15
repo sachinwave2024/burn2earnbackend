@@ -1,0 +1,432 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+
+{% block Style_sheets %}
+<link rel="stylesheet" href="{% static 'css/datatables.css' %}">
+<style>
+    #loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        text-align: center;
+    }
+    .loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+    }
+</style>
+{% endblock Style_sheets %}
+
+{% block Content_Area %}
+<section class="content">
+    <div class="box box-default">
+
+        <div id="loading-overlay">
+            <div class="loading-spinner">
+                <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Processing...</span>
+                </div>
+                <h4>Processing...</h4>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="box-body">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="text" id="email" class="form-control" placeholder="Search Email">
+            </div>
+
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="date" id="created_on" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Status:</label>
+                <select id="status" class="form-control">
+                    <option value="">All</option>
+                    <option value="3">Pending</option>
+                    <option value="1">Approved</option>
+                    <option value="2">Rejected</option>
+                    <option value="4">Hold</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="fetchData()">Search</button>
+        </div>
+
+        <!-- Total -->
+        <div class="box-body">
+            <h4>Total Claim Amount: <span id="totalClaimAmount">0</span></h4>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table id="promoBonusTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User ID</th>
+                        <th>Email</th>
+                        <th>Amount</th>
+                        <th>Claim USDT</th>
+                        <th>Claim JWC</th>
+                        <th>Tx Hash</th>
+                        <th>Tx Hash Rec.</th>
+                        <th>Address</th>
+                        <th>Created</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="text-center my-3">
+            <button class="btn btn-default" id="prevPage" onclick="changePage(-1)">Previous</button>
+            <span> Page <span id="currentPage">1</span> </span>
+            <button class="btn btn-default" id="nextPage" onclick="changePage(1)">Next</button>
+        </div>
+    </div>
+</section>
+{% endblock Content_Area %}
+
+{% block Java_Scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let currentPage = 1;
+    const pageSize = 100;
+
+    function fetchData() {
+        const data = {
+            email: $('#email').val().trim(),
+            status: $('#status').val(),
+            created_on: $('#created_on').val(),
+            start: (currentPage - 1) * pageSize,
+            length: pageSize,
+            draw: 1
+        };
+
+        $.ajax({
+            url: "{% url 'trade_admin_auth:get_Swap_details' %}",
+            type: "POST",
+            data: data,
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            beforeSend: function () {
+                $("#loading-overlay").show();
+            },
+            success: function (response) {
+                let rows = "";
+                if (response.data.length === 0) {
+                    rows = `<tr><td colspan="12" class="text-center">No records found</td></tr>`;
+                } else {
+                    response.data.forEach(item => {
+                        rows += `<tr>
+                            <td>${item.id}</td>
+                            <td>${item.user_id}</td>
+                            <td>${item.email}</td>
+                            <td>${item.amount}</td>
+                            <td>${item.claim_amountusdt}</td>
+                            <td>${item.claim_amountjwc}</td>
+                            <td>${item.Transaction_Hash ? `<a class="btn btn-sm btn-info" href="https://bscscan.com/tx/${item.Transaction_Hash}" target="_blank"><i class="fa fa-external-link"></i></a>` : 'N/A'}</td>
+                            <td>${item.Transaction_Hash_recieved ? `<a class="btn btn-sm btn-info" href="https://bscscan.com/tx/${item.Transaction_Hash_recieved}" target="_blank"><i class="fa fa-external-link"></i></a>` : 'N/A'}</td>
+                            <td>${item.Address}</td>
+                            <td>${item.created_on}</td>
+                            <td>${item.status == 3 ? 'Pending' : item.status == 1 ? 'Approved' : item.status == 2 ? 'Rejected' : 'Hold'}</td>
+                            <td>${item.status == 3 ? `
+                                <button class="btn btn-success btn-sm" onclick="updateStatus(${item.id}, 1)">Approve</button>
+                                <button class="btn btn-danger btn-sm" onclick="updateStatus(${item.id}, 2)">Reject</button>
+                                <button class="btn btn-warning btn-sm" onclick="updateStatus(${item.id}, 4)">Hold</button>
+                            ` : '—'}</td>
+                        </tr>`;
+                    });
+                }
+
+                $("#table-body").html(rows);
+                $("#totalClaimAmount").text(response.total_claim_amount.toFixed(2));
+                $("#currentPage").text(currentPage);
+
+                // Enable/Disable buttons
+                $("#prevPage").prop("disabled", currentPage === 1);
+                $("#nextPage").prop("disabled", response.data.length < pageSize);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert("Failed to fetch data.");
+            },
+            complete: function () {
+                $("#loading-overlay").hide();
+            }
+        });
+    }
+
+    function changePage(direction) {
+        currentPage += direction;
+        if (currentPage < 1) currentPage = 1;
+        fetchData();
+    }
+
+    function updateStatus(id, newStatus) {
+        $("#loading-overlay").show();
+        $.ajax({
+            url: "{% url 'trade_admin_auth:Approve_swap' %}",
+            type: "POST",
+            data: {
+                id: id,
+                status: newStatus,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function (response) {
+                alert(response.message);
+                fetchData();
+            },
+            error: function () {
+                alert("Failed to update status.");
+            },
+            complete: function () {
+                $("#loading-overlay").hide();
+            }
+        });
+    }
+
+    $('#email, #status, #created_on').on('change keyup', function () {
+        currentPage = 1;
+        fetchData();
+    });
+
+    $(document).ready(fetchData);
+</script>
+{% endblock Java_Scripts %}
+
+
+
+
+
+
+{% comment %} {% extends 'default_theme/base/__base.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+
+{% block Style_sheets %}
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" href="{% static 'css/datatables.css' %}">
+<style>
+    /* Loader Styling */
+    #loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        text-align: center;
+    }
+    .loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+    }
+</style>
+{% endblock Style_sheets %}
+
+{% block Content_Area %}
+<section class="content">
+    <div class="box box-default">
+
+        <!-- ✅ Loader (Hidden by Default) -->
+        <div id="loading-overlay">
+            <div class="loading-spinner">
+                <div class="spinner-border text-light" role="status">
+                    <span class="sr-only">Processing...</span>
+                </div>
+                <h4>Processing...</h4>
+            </div>
+        </div>
+
+        <!-- ✅ Filters Section -->
+        <div class="box-body">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="text" id="email" class="form-control" placeholder="Search Email">
+            </div>
+            
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="date" id="created_on" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Status:</label>
+                <select id="status" class="form-control">
+                    <option value="">All</option>
+                    <option value="3">Pending</option>
+                    <option value="1">Approved</option>
+                    <option value="2">Rejected</option>
+                    <option value="4">Hold</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="fetchData()">Search</button>
+        </div>
+
+        <!-- ✅ Total Claim Amount -->
+        <div class="box-body">
+            <h4>Total Claim Amount: <span id="totalClaimAmount">0</span></h4>
+        </div>
+
+        <!-- ✅ Table -->
+        <div class="table-responsive">
+            <table id="promoBonusTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User ID</th>
+                        <th>Email</th>
+                        <th>Amount</th>
+                        <th>Claim Amount USDT</th>
+                        <th>Claim Amount JWC</th>
+                        <th>Transaction Hash</th>
+                        <th>Transaction Hash Received</th>
+                        <th>Address</th>
+                        <th>Created On</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock Content_Area %}
+
+{% block Java_Scripts %}
+<!-- ✅ Load jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function fetchData() {
+        let data = {
+            email: $('#email').val().trim(),
+            status: $('#status').val(),
+            created_on: $('#created_on').val(),
+            start: 0,
+            length: 100,
+            draw: 1,
+        };
+
+        $.ajax({
+            url: "{% url 'trade_admin_auth:get_Swap_details' %}",
+            type: "POST",
+            data: data,
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            beforeSend: function() {
+                // ✅ Show loader before AJAX starts
+                $("#loading-overlay").show();
+            },
+            success: function(response) {
+                let rows = "";
+                if (response.data.length === 0) {
+                    rows = `<tr><td colspan="12" class="text-center">No records found</td></tr>`;
+                } else {
+                    response.data.forEach(item => {
+                        rows += `<tr>
+                            <td>${item.id}</td>
+                            <td>${item.user_id}</td>
+                            <td>${item.email}</td>
+                            <td>${item.amount}</td>
+                            <td>${item.claim_amountusdt}</td>
+                            <td>${item.claim_amountjwc}</td>
+                            <td>
+                                ${item.Transaction_Hash ? 
+                                `<a class="btn btn-sm btn-info" href="https://bscscan.com/tx/${item.Transaction_Hash}" target="_blank">
+                                    <i class="fa fa-external-link"></i>
+                                </a>` : 'N/A'}
+                            </td>
+                            <td>
+                                ${item.Transaction_Hash_recieved ? 
+                                `<a class="btn btn-sm btn-info" href="https://bscscan.com/tx/${item.Transaction_Hash_recieved}" target="_blank">
+                                    <i class="fa fa-external-link"></i>
+                                </a>` : 'N/A'}
+                            </td>
+                            <td>${item.Address}</td>
+                            <td>${item.created_on}</td>
+                            <td>
+                                ${item.status == 3 ? 'Pending' : item.status == 1 ? 'Approved' : item.status == 2 ? 'Rejected' : 'Hold'}
+                            </td>
+                            <td>
+                                ${item.status == 3 ? `
+                                    <button class="btn btn-success btn-sm" onclick="updateStatus(${item.id}, 1)">Approve</button>
+                                    <button class="btn btn-danger btn-sm" onclick="updateStatus(${item.id}, 2)">Reject</button>
+                                    <button class="btn btn-warning btn-sm" onclick="updateStatus(${item.id}, 4)">Hold</button>
+                                ` : '—'}
+                            </td>
+                        </tr>`;
+                    });
+                }
+                $("#table-body").html(rows);
+                $("#totalClaimAmount").text(response.total_claim_amount.toFixed(2));
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+                alert("Failed to fetch data. Please try again.");
+            },
+            complete: function() {
+                // ✅ Hide loader after request completes
+                $("#loading-overlay").hide();
+            }
+        });
+    }
+
+    $('#email, #status, #created_on').on('change keyup', function () {
+        fetchData();
+    });
+
+    function updateStatus(id, newStatus) {
+        // ✅ Show loader before AJAX starts
+        $("#loading-overlay").show();
+
+        $.ajax({
+            url: "{% url 'trade_admin_auth:Approve_swap' %}",
+            type: "POST",
+            data: {
+                id: id,
+                status: newStatus,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function(response) {
+                alert(response.message);
+                fetchData();
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+                alert("Failed to update status.");
+            },
+            complete: function() {
+                // ✅ Hide loader after request completes
+                $("#loading-overlay").hide();
+            }
+        });
+    }
+
+    $(document).ready(fetchData);
+</script>
+{% endblock Java_Scripts %}
+
+
+
+ {% endcomment %}

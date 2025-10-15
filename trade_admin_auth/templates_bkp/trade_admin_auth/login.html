@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=320; user-scalable=no; initial-scale=1.0; maximum-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{{comp_profile_name}} | Admin Login</title>
+    <link rel="shortcut icon" type="image/png" href="{% if company_fav.url != '' %}{{company_fav.url}}{% endif %}"/>
+    {% load static %}
+   
+    <link href="{% static 'admin_assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'admin_assets/css/style.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="{% static "admin_assets/bower_components/font-awesome/css/font-awesome.min.css" %}">
+     <link rel="stylesheet" href="{% static "admin_assets/dist/css/AdminLTE.min.css" %}">
+    <link href="{% static 'admin_assets/css/patternLock.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "admin_assets/plugins/iCheck/square/blue.css" %}">
+<style>
+    body{
+        font-family:Arial, Helvetica, sans-serif;
+    }
+    .error{
+      color:red;
+    }
+</style>
+  </head>
+  <body class="loginBg">
+
+    <div class="" id="login_div">
+      <div class="container">
+        <h2 class="text-center mb-0">{{comp_profile_name}}</h2>
+        <div class="loginForm col-md-4 col-sm-6 col-xs-12 fn center-block">
+          
+    <form class="form-horizontal" id="login_form" method="post" action="/tradeadmin/admin_auth">
+      {% csrf_token %}
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12 text-center">
+                 {% if messages %}
+              {% for message in messages %}
+                 <div class="alert {{ message.tags }} alert-dismissible" role="alert"><a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {% if message.tags %}<strong>{{ message }} </strong>{% endif %}
+                </div>
+                 {% endfor %}
+    {% endif %}
+                <h4 class="logTit">Login</h4>
+              </div>
+            </div>
+      
+            <div class="form-group">
+              <label class="col-md-12 col-sm-12">Email</label>
+              <div class="col-md-12 col-sm-12">
+                <input type="email" name="username" id="admin_username" class="form-control" placeholder="Enter Email">
+                {{ form.username.errors }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-12 col-sm-12">Password</label>
+              <div class="col-md-12 col-sm-12">
+                <input type="password" name="password" id="admin_password" class="form-control" placeholder="Enter Password" />
+                 {{ form.password.errors }}
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="col-md-12 col-sm-12">Pattern Code</label>
+              <div class="col-md-12 col-sm-12">
+              <div id="patternContainer"></div>
+               <input type="hidden" name="pattern_code" id="patterncode">
+                {{ form.admin_pattern.errors }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-6">
+              </div>
+              <div class="col-sm-6 text-right">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12">
+                <button type="submit" class="btn btn-primary btn-block btn-flat" id="login_submit">Login</button>
+                <img src="{% static 'admin_assets/images/loader.gif' %}" class="btn_how" id="login_loader" style="display: none;">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12 text-center">
+                <p>
+                  Forgot password? <a href="/tradeadmin/adminforgotpassword/" id="forgot_show">Click here</a>
+                </p>
+              </div>
+              <div class="col-md-12 col-sm-12 text-center">
+                <p>
+                  Forgot Pattern? <a href="/tradeadmin/adminforgotpattern/" id="forgot_show">Click here</a>
+                </p>
+              </div>
+            </div>
+           
+              
+            
+        </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="" style="display:none;" id="forgot_div">
+      <div class="container">
+        <div class="loginForm col-md-4 col-sm-6 col-xs-12 fn center-block">
+          <form class="form-horizontal" id="forgot_form" method="post"> 
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12 text-center">
+                <h4 class="logTit">Forgot Password </h4>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-12 col-sm-12">Email</label>
+              <div class="col-md-12 col-sm-12">
+                <input type="text" name="useremail" id="useremail" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-6">
+
+              </div>
+              <div class="col-sm-6 text-right">
+              
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12">
+                <button type="submit" class="btn btn-block" id="forgot_submit">Reset Password</button>
+                <img src="{% static 'admin_assets/images/loader.gif' %}" class="btn_how" id="forgot_loader" style="display: none;">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12 text-center">
+                <p>
+                  <a href="#" id="login_show">Login</a>
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+<script src="{% static 'admin_assets/js/jquery-2.1.1.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/patternLock.js' %}"></script>
+<script src="{% static 'admin_assets/js/jquery.validate.min.js' %}"></script>
+ <script src="{% static 'admin_assets/js/admin_login_validation.js' %}"></script>
+ <style>
+ .errorlist {
+    color: red;
+}
+ </style>
+ <script>
+  $(document).ready(function(){
+   document.addEventListener("contextmenu", function(e){
+        e.preventDefault();
+      }, false)
+  
+document.onkeydown = function(e) {
+            if(e.keyCode == 123) {
+             return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+             return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+             return false;
+            }
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+             return false;
+            }
+
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){
+             return false;
+            }      
+         }
+     
+  });
+  function validate_msg(type,message){
+          if (type =='success'){
+            var success_text =  message;
+            
+
+            Lobibox.notify('success', {
+            title:'Success',
+            continueDelayOnInactiveTab: false,
+            pauseDelayOnHover: true,
+            sound: false,
+            position: 'right top',
+            msg: success_text
+            });
+
+          }
+
+          if (type =='error'){
+            var error_text = message
+            Lobibox.notify('error', {
+            title:'Error',
+            continueDelayOnInactiveTab: false,
+            pauseDelayOnHover: true,
+            sound: false,
+            position: 'right top',
+            msg: error_text
+            });
+
+
+
+          }
+
+        }
+</script>
+  </body>
+</html>

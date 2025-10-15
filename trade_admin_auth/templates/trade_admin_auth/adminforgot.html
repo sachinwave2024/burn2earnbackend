@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{comp_profile_name}}</title>
+ 
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/bootstrap/dist/css/bootstrap.min.css" %}">
+
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/font-awesome/css/font-awesome.min.css" %}">
+
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/Ionicons/css/ionicons.min.css" %}">
+  
+  <link rel="stylesheet" href="{% static "admin_assets/dist/css/AdminLTE.min.css" %}">
+
+  <link rel="stylesheet" href="{% static "admin_assets/plugins/iCheck/square/blue.css" %}">
+
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <link rel="shortcut icon" type="image/png" href="/media/{{company_fav}}"/>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a><b class="text-white">{{comp_profile_name}}</b></a>
+     
+  </div>
+  
+  <div class="login-box-body">
+    <p class="login-box-msg">Forgot Password</p>
+
+    <form action="" method="post"  >
+     {% csrf_token %}
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control" placeholder="Email" oninput="validateemail()" name="email" id="email_type" required>
+        <p id="t1"></p>
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      
+      <div class="row">
+        <div class="col-xs-8">
+        </div>
+        
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
+        </div>
+        
+        <a href="/RZqYkZRuiBaffkx/">Back to Login</a>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="{% static "admin_assets/bower_components/jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "admin_assets/bower_components/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+<script src="{% static "admin_assets/plugins/iCheck/icheck.min.js" %}"></script>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' 
+    });
+  });
+</script>
+<script>  
+  function validateemail()  
+  {
+    
+  var x=document.getElementById('email_type').value;  
+  var atposition=x.indexOf("@");  
+  var dotposition=x.lastIndexOf(".");  
+  if (atposition<1 || dotposition<atposition+2 || dotposition+2>=x.length){  
+    tr = "Enter A Valid Email Address ";
+    document.getElementById("t1").innerHTML = tr.fontcolor("red");
+    return false; 
+    }
+    else{
+    tr = "";
+    document.getElementById("t1").innerHTML = tr.fontcolor("red");
+    return true;  
+    }
+    
+  }  
+  </script>
+</body>
+</html>

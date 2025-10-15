@@ -1,0 +1,267 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+
+ <div class="row">
+  <div class="col-md-6" style="min-height:500px;">
+ <section class="content">
+  
+     
+  <div class="box box-default">
+    <div class="box-header with-border">
+      <h3 class="box-title">Upline Referral History</h3>
+      <div class="box-tools pull-right">
+      </div>
+    </div>
+ {% if messages %}
+ {% for message in messages %}
+ <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<input type="hidden" id="all_user_list" value="{{ref_dict_uplineusers}}">
+<input type="hidden" id="upline_referral" value="{{upline_referral}}">
+
+
+
+
+  <style>
+    .pagination{
+      padding-left: 1015px;
+    }
+    .form{
+      display: flex;
+    }
+    .form .control-group{
+   
+      margin-right: 15px;
+      margin-bottom: 15px;
+    }
+    #example1_info {
+padding: 25px 0;
+}
+
+.pagination {
+/* padding-left: 1015px; */
+float: right;
+}
+  </style>
+
+
+
+<div class="box">
+<div class="box-header">
+<h3 class="box-title"></h3>
+<div class="box-tools pull-right">                         
+          </div>
+</div>
+
+<div class="table-responsive">
+  
+<div class="box-body">
+<table id="examples" class="table table-bordered table-striped">
+  <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Name</th>
+        <th>User Email Address</th>
+        <th>Level</th>
+        <th>Current Plan</th>
+        <th>Plan Start Date</th>
+        <th>Plan End Date</th>
+        <th>Current Stake</th>  
+        <th>Current Trade</th>
+        <th>MP Plan</th>
+      </tr>
+  </thead>
+  {{plan_his}}
+  <tbody>
+      {% if upline_referral %}
+      {% for item in upline_referral %}
+      <tr>
+       <td>{{ forloop.counter}}</td>
+       <td>{{ item.Name}}</td>
+       <td>{{ item.Email}}</td>
+       <td>{{ item.user}}</td>
+       <td>{{ item.user_name}}</td>
+       <td>{{ item.plan_start_date}}</td>
+       <td>{{ item.plan_end_date}}</td>
+       <td>{{ item.Newstake_wallet}}</td>
+       <td>{{ item.TradeBwa_divided}}</td>
+       <td>{{ item.MPlan}}</td>
+
+
+     </tr>
+      {% endfor %}
+    
+     {% endif %}
+   </tbody>
+  </tbody>
+</table>
+
+</div>
+</div>
+</div>
+    
+  </div>
+
+</section>
+</div>
+<div class="col-md-6" style="min-height:500px;">
+    <section class="content">
+  
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Upline Referral Reward History</h3>
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+  
+    <input type="hidden" id="all_user_list" value="{{ref_dict_uplineusers}}">
+    <input type="hidden" id="upline_referral" value="{{upline_referral}}">
+    
+
+    
+      <style>
+        .pagination{
+          padding-left: 1015px;
+        }
+        .form{
+          display: flex;
+        }
+        .form .control-group{
+       
+          margin-right: 15px;
+          margin-bottom: 15px;
+        }
+        #example1_info {
+   padding: 25px 0;
+  }
+  
+  .pagination {
+   /* padding-left: 1015px; */
+   float: right;
+  }
+      </style>
+
+   
+
+
+    
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+              <div class="box-tools pull-right">                         
+                        </div>
+            </div>
+
+            
+            <div class="table-responsive">
+           
+            <div class="box-body">
+            
+
+               <table id="example" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>User Name</th>
+                  <th>Reward Amount (USDT)</th>
+                  <th>Commission Level</th>
+                  <th>pirce</th>
+                  <th>Created On</th>
+                  <th>Delete</th>
+
+
+                  
+                </tr>
+                </thead>
+               
+                <tbody id="user_upline_ref_id">
+                    
+              </tbody>
+               </table>
+
+            </div>
+
+            
+            
+             </div>
+        
+            
+          </div>
+
+      </div>
+
+    </section>
+ </div>
+ </div>
+
+    
+ {% endblock Content_Area %}
+ {% block Java_Scripts %}
+
+ <script>
+  function search_table(){
+
+    
+     var user = $("#all_user_list").val();
+     
+     var obj = JSON.parse(user)
+     
+     var len = Object.keys(obj).length
+     if (obj) {
+       
+       $("#user_upline_ref_id").empty();
+     k = 1
+     for (var i = 0; i < len; i++) {
+       table = $("#user_upline_ref_id").append("<tr><td>"+obj[i+1].sno+"</td><td>"+obj[i+1].username+"</td><td>"+obj[i+1].Reward+"</td><td>"+obj[i+1].level+"</td><td>"+obj[i+1].marekt_api+"</td><td>"+obj[i+1].created_on+"</td><td><a href='/tradeadmin/delete_referral/"+obj[i+1].id+"/'target='_blank'><i class='fa fa-edit'></i></a></td></tr>");  
+      //  table1 = ("<td>"+obj[i+1].date+"</td><td>"+obj[i+1].user_type+"</td");
+        
+       k++  
+       
+         
+     }
+     } else {
+       
+     }
+     
+  }
+  search_table()
+</script>
+
+
+<script>
+  $("#reset-search").click(function(){
+     window.location = "/tradeadmin/uplineuser_referal_history_table/";
+     });
+   
+</script>
+
+{% endblock %}

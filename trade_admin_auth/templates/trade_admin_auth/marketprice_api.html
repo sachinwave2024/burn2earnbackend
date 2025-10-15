@@ -1,0 +1,256 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+
+
+                  <div class="form-group">
+                    <label >Select which one want to you
+                      <span class="text-danger"> * </span>
+                    </label>
+                    <select class="form-control" name="status" required="" selected="" id="id_select_option"  onclick="API_select()" >                          
+                            <option value="{{market.status}}" selected>-------</option>
+                            {% if market.status == 0 %}
+                            <option value="0" selected >Manual</option>  
+                            {% else %}     
+                            <option value="0" >Manual</option>  
+                            {% endif %}    
+                            {% if market.status == 1 %}     
+                            <option value="1" selected>API</option>   
+                            {% else %}                               
+                            <option value="1" >API</option>
+                            {% endif %}
+                      </select>
+                     
+                  </div>
+
+
+                  <div class="form-group"  style="display: none;" id="id_show_1">
+                    <label >Select API
+                      <span class="text-danger"> * </span>
+                    </label>
+                    <select name="API" class="form-control" required="" selected="" id="id_select_api" onclick="value_get()" >                          
+                            <option value="{{market.API}}" selected>-------</option>
+                            {% if market.API == 0 %}
+                            <option value="0" selected >Coingecko</option> 
+                            {% else%} 
+                            <option value="0" >Coingecko</option> 
+                            {% endif %}
+                            {% if market.API == 1 %}
+                            <option value="1" selected >Coinpaprika</option> 
+                            {% else%} 
+                            <option value="1" >Coinpaprika</option> 
+                            {% endif %}
+                            {% if market.API == 2 %}
+                            <option value="2" selected >Livecoinwatch</option> 
+                            {% else%} 
+                            <option value="2" >Livecoinwatch</option> 
+                            {% endif %}    
+                            {% if market.API == 3 %}
+                            <option value="3" selected >coinmarketcap</option> 
+                            {% else%} 
+                            <option value="3" >coinmarketcap</option> 
+                            {% endif %}                           
+                      </select>
+                     
+                  </div>
+
+
+
+                  <div class="form-group" >
+                    <label >Price   
+                      <span class="text-danger"> * </span>
+                    </label>
+                   <input type="text" id="id_price" name="market_price" class="form-control" placeholder="Tansaction Hash" required="" value="{{market.market_price}}">
+                     
+                  </div>
+
+                  
+
+                
+            </div>
+           </div>
+           </div>
+           <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            &nbsp;&nbsp; &nbsp;&nbsp;
+            <a href="tradeadmin/dashboard/" class="btn btn-primary" >Back</a>
+     </div>
+           </form>
+            <div class="col-md-6">
+             
+           
+            </div>
+          </div>
+           
+   
+
+     
+
+    </section>
+   
+
+
+    <script>
+      function API_select(){
+        var api_type = $("#id_select_option").val();
+        if (api_type == 0) {
+          $("#id_show_1").hide();
+        }else{
+            $("#id_show_1").show();
+        }
+      }
+      API_select()
+    </script>
+
+
+<script>
+  async function  value_get(){
+    var val = document.getElementById('id_select_api').value
+    
+    if(val == 0){
+    fetch('https://api.coingecko.com/api/v3/simple/price?ids=jasan-wellness&vs_currencies=usd')
+    .then(response => response.json())
+    .then(data => {
+    const price = data['jasan-wellness'];
+    document.getElementById('id_price').value = price['usd']
+    });
+    }
+    if(val == 1){
+    fetch('https://api.coinpaprika.com/v1/tickers/jw-jasan-wellness')
+    .then(response => response.json())
+    .then(data => {
+      
+    const quotes = data.quotes;
+    const price = quotes.USD;
+    const market_price = price.price;
+    document.getElementById('id_price').value = market_price
+    
+    });
+  }if (val == 2){
+    const url = 'https://cors-anywhere.herokuapp.com/https://api.livecoinwatch.com/coins/single';
+    const params = {
+        currency: 'USD',
+        code: 'JW',
+        meta: true
+    };
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': '909ce001-5983-4d07-9e2d-034c94c4dfb6',
+        'Access-Control-Allow-Origin' : '*' ,
+        'Access-Control-Allow-Credentials' : 'true',
+        'Access-Control-Allow-Methods' : 'POST', 
+        'Access-Control-Allow-Headers' : "Access-Control-Allow-Headers, Origin,Accept, x-api-key, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(params)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const price = data.rate;
+            
+            document.getElementById('id_price').value = price
+          
+        })
+        .catch(error => console.error(error));
+
+  }
+
+  if (val == 3) {
+      const url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest';
+      const params = {
+        symbol: 'JW',
+        convert: 'USD'
+      };
+      const headers = {
+        'Accepts': 'application/json',
+        'X-CMC_PRO_API_KEY': 'cc156b02-073e-4dfa-888a-80eea969e812'
+      };
+
+      fetch(url + '?' + new URLSearchParams(params), {
+        method: 'GET',
+        headers: headers
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.status.error_code === 0) {
+            const price = data.data.JW.quote.USD.price;
+            document.getElementById('id_price').value = price;
+          } else {
+            throw new Error(data.status.error_message);
+          }
+        })
+        .catch(error => console.error(error));
+    }
+  }
+</script>
+
+<!-- if (val == 3){
+  fetch('https://api.dex-trade.com/v1/public/ticker?pair=JWUSDT')
+  .then(response => response.json())
+  .then(data => {
+  const market_price = data.data.last;
+  document.getElementById('id_price').value = market_price
+  });
+} -->
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

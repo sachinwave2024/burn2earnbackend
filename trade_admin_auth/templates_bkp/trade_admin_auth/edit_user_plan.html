@@ -1,0 +1,275 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+ <style>
+  body {font-family: Arial, Helvetica, sans-serif;}
+  
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  </style>
+   <div class="row">
+    <div class="col-md-6" style="min-height:500px;">
+    <section class="content">
+      <input type="hidden" id="user_id" value="{{obj_user.Email}}">
+
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <label >Plan Name   
+                      <span class="text-danger"> * </span>
+                    </label>
+                    <select name="plan_name" class="form-control" placeholder="Plan Name"  selected="" id="id_plan_name">                          
+                            <option value="">-------</option>   
+                          {% for item in obj_plan %} 
+                            <option value="{{item.plan_name}}">{{item.plan_name}}</option>              
+                        {% endfor %}
+                      </select>
+                     
+                  </div>
+
+                  <div class="form-group">
+                    <label >Plan Duration   
+                      <span class="text-danger"> * </span>
+                    </label>
+                    <select name="plan_duration" class="form-control" placeholder="Plan Duration"  selected="" id="id_plan_duration">                          
+                            <option value="">-------</option>
+                            <option value="Monthly" >Monthly</option>                               
+                      </select>
+                     
+                  </div>
+                  <div class="form-group">
+                    <label >API Price   
+                      <span class="text-danger"> * </span>
+                    </label>
+                    <select name="price" class="form-control" placeholder="Plan Duration"  selected="" id="price">                          
+                            <option value="">-------</option>
+                            <option value="{{market}}" >Market price</option>     
+                            <option value="{{fixed}}" >Fixed price</option>                               
+                      </select>
+                     
+                  </div>
+
+                
+
+
+        
+
+                </div>
+              </div>
+              </div>
+              <div class="box-footer">
+                <a class="btn btn-primary" id="myBtn">Submit</a>
+               &nbsp;&nbsp; &nbsp;&nbsp;
+               <a href="/tradeadmin/user_history_table/{{obj_user.id}}" class="btn btn-primary" >Back</a>
+        </div>
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Are you sure want to buy <span id="plan_show"></span> plan for this user <span id="User_name"></span> </p>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        
+        </div>
+              </form>
+           
+            <div class="col-md-6">
+             
+           
+            </div>
+          </div>
+        
+    </section>
+</div>
+<div class="col-md-6" style="min-height:500px;">
+  <section class="content">
+  
+     
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <h3 class="box-title">Current Plan</h3>
+        <div class="box-tools pull-right">
+        </div>
+      </div>
+   
+
+  
+    <style>
+      .pagination{
+        padding-left: 1015px;
+      }
+      .form{
+        display: flex;
+      }
+      .form .control-group{
+     
+        margin-right: 15px;
+        margin-bottom: 15px;
+      }
+      #example1_info {
+ padding: 25px 0;
+}
+
+.pagination {
+ /* padding-left: 1015px; */
+ float: right;
+}
+    </style>
+
+ 
+<input type="hidden" name="" id="" value="{{plan_hist_user}}">
+
+  
+   <div class="box">
+          <div class="box-header">
+            <h3 class="box-title"></h3>
+            <div class="box-tools pull-right">                         
+                      </div>
+          </div>
+
+          
+          <div class="table-responsive">
+          <div class="box-body">
+            <b>User Email : {{obj_user.Email}}</b> <br>  <br>
+            {% if plan_hist_user %}
+            <b>Plan Name : {{plan_hist_user.plan_id.plan_name}}</b>  <br> <br>
+            <b>Wallet Type : {{plan_hist_user.user_wallet_type}}</b> <br>  <br> 
+            <b>Plan Start Date : {{plan_start_date}}</b>  <br>   <br>
+            <b>Plan End Date : {{plan_end_date}}</b> <br>   <br>
+            <b>Type : {{plan_hist_user.buy_type}}</b>     
+
+            {% else %}
+            <b>Plan Name : Free Plan</b>   <br> <br>
+            <b>Wallet Type : -----------</b>   <br> <br>
+            <b>Plan Start Date : -----------</b>     <br> <br>
+            <b>Plan End Date : -----------</b>    <br> <br>
+            <b>Type : -----------</b>     
+
+            {% endif %}
+           
+
+
+
+          </div>
+
+          
+          
+           </div>
+      
+          
+        </div>
+
+    </div>
+
+  </section>
+    </div>
+  </div>
+
+   
+    
+
+<script>
+  var modal = document.getElementById("myModal");
+  var btn = document.getElementById("myBtn");
+  var span = document.getElementsByClassName("close")[0];
+  btn.onclick = function() {
+    var plan = document.getElementById("id_plan_name").value;
+    document.getElementById("plan_show").innerHTML=plan
+    var username = document.getElementById("user_id").value;
+    document.getElementById("User_name").innerHTML=username
+    modal.style.display = "block";
+  }
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+
+  
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

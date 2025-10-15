@@ -1,0 +1,151 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+
+                  <div class="form-group">
+                    <label>Access Token
+                     </label>
+                       <input type="text" name="access_token" maxlength="5000" class="form-control" placeholder="Access Token" id="access_token_id" required="" value="{{access_token}}">
+                       <p class="mt-2" id = "blankMsg" style="color:red"> </p>
+                   </div>
+                  
+
+                  <div class="form-group">
+                    <label >Date
+                    </label>
+                    <input type="date" name ="Date" class="form-control" placeholder="Date" id = "Date_id" required="" value ="{{Date}}">
+                    <p class="mt-2" id = "blankName" style="color:red"> </p>
+                     
+                  </div>
+
+                  <div class="box-footer">
+                    <a  class="btn btn-primary" onclick="submit_func()">GET</a>
+                <button type="submit" class="btn btn-primary" style="display: none;" id="final">GET</button>
+                  &nbsp;&nbsp; &nbsp;&nbsp;
+                  </div>
+                  </div>
+                  </div>
+
+
+                  <div class="row" >
+                      <div class="col-md-6">
+                            <div class="form-group">
+                            <label >Steps
+                            </label>
+                            <input type="text" class="form-control" name="steps" value="{{stepvalue}}" required="" readonly>
+                        </div>
+
+         <div class="box-footer">
+          {% if stepvalue != "" and stepvalue != None %}
+          <a href="/tradeadmin/check_valid/{{id}}/{{Date}}/{{stepvalue}}/" class="btn btn-primary" >Check Valid</a>
+          {% endif %} 
+                
+                <!-- <button  type="submit" class="btn btn-primary">Submit</button> -->
+                {% if sum == 0 %}
+                <a href="/tradeadmin/step_update_access_token/{{id}}/{{Date}}/{{stepvalue}}/" class="btn btn-primary" >Update Reward</a>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                {% endif %}
+                <a href="tradeadmin/List_User_Management/" class="btn btn-primary" >Back</a>
+         </div>
+         </div>
+         </div>
+
+     
+         
+
+    </section>
+   
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+    <!-- <script>
+        jQuery('#datetimepicker3').datetimepicker({
+       format:'d.m.Y H:i',
+       inline:true,
+       lang:'ru'
+     });
+      </script> -->
+
+<script>
+    $( function() {
+      $('#datetimepicker3').datetimepicker({
+  format:'d.m.Y',
+  timepicker:false,
+});
+});
+    </script>
+
+<script>
+  function submit_func(event){
+    Min_count = document.getElementById('access_token_id').value
+    Max_Count = document.getElementById('Date_id').value
+    if(Min_count == "" ||  Max_Count == ""){
+    if (Min_count == ""){
+      document.getElementById("blankMsg").innerHTML = 'Enter Access Token';
+      
+    }else if (Min_count != ""){
+      document.getElementById("blankMsg").innerHTML = '';
+      
+    }
+    if(Max_Count == ""){
+      document.getElementById("blankName").innerHTML = 'Enter Date';
+    }else if(Max_Count != ""){
+      document.getElementById("blankName").innerHTML = '';
+    }
+  }else{
+
+          $('#final').click()
+        } 
+  }
+</script>
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

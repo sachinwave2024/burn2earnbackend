@@ -1,0 +1,52 @@
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_currency == 0 %}
+<li class="{% if activecls == 'currencydetailadmin'%} active {% endif %} treeview">
+          <a href="#">
+            <i class="fa fa-money"></i> <span>Currency Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'trade_currency:currencylist' %}"><i class="fa fa-money"></i> Currency </a></li>
+            {% if request.user.admin_user_profile.role == 0  or menu_permissions_context_marketprice == 0 %}
+            <li>
+              <a href="{% url 'trade_admin_auth:marketprice_api' %}">
+                <i class="fa fa-money"></i> <span>Marketprice</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'staking:Stake_MarketPrice_API' %}">
+                <i class="fa fa-money"></i> <span>Stake Marketprice</span>
+              </a>
+            </li>
+            {% endif %}
+             
+          </ul>
+</li>
+{% endif %}
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_admin_profit == 0 %}
+<li>
+  <a href="{% url 'trade_admin_auth:List_Admin_profit_Request' %}">
+    <i class="fa fa-star"></i> <span>Admin profit</span>
+  </a>
+</li>
+{% endif %}
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_step == 0 %}
+<li>
+  <a href="{% url 'trade_admin_auth:ListSteps_Management' %}">
+    <i class="fa fa-blind"></i> <span>Step Management</span>
+  </a>
+</li>
+{% endif %}
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_ref_reward == 0 %}
+<li>
+  <a href="{% url 'trade_admin_auth:List_Referral_reward' %}">
+    <i class="fa fa-server"></i> <span>Referral Reward Management</span>
+  </a>
+</li>
+{% endif %}

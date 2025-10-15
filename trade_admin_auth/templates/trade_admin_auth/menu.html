@@ -1,0 +1,239 @@
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_manage_user == 0 %}
+<li class="{% if activecls == 'useraddressadmin'%} active {% endif %} treeview">
+          <a href="#">
+            <i class="fa fa-users"></i> <span>Manage User</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+{% if request.user.admin_user_profile.role == 0  or sub_menu_permissions_context_userlist == 0 %}           
+            <li><a href="{% url 'trade_admin_auth:List_User_Management' %}"><i class="fa fa-users"></i> User List</a></li>
+{% endif %}
+{% if request.user.admin_user_profile.role == 0  or sub_menu_permissions_context_adduser == 0 %}
+            <li><a href="{% url 'trade_admin_auth:Add_Register_User' %}"><i class="fa fa-users"></i> Add User</a></li>
+{% endif %}
+{% if request.user.admin_user_profile.role == 0 or sub_menu_permissions_context_walletaddress == 0 %}
+<li><a href="{% url 'trade_admin_auth:wallet_address_users_listing' %}"><i class="fa fa-users"></i> Wallet Address List</a></li>
+{% endif %}
+{% if request.user.admin_user_profile.role == 0 or sub_menu_permissions_context_walletaddress == 0 %}
+<li><a href="{% url 'trade_admin_auth:hash_users_listing' %}"><i class="fa fa-users"></i> Hash List</a></li>
+{% endif %}
+{% if request.user.admin_user_profile.role == 0 or sub_menu_permissions_context_walletaddress == 0 %}
+<li><a href="{% url 'trade_admin_auth:device_unique' %}"><i class="fa fa-users"></i> Device List</a></li>
+{% endif %}
+{% if request.user.admin_user_profile.role == 0 or sub_menu_permissions_context_walletaddress == 0 %}
+<li><a href="{% url 'trade_admin_auth:device_empty_unique' %}"><i class="fa fa-users"></i> Device Empty List</a></li>
+{% endif %} 
+{% if request.user.admin_user_profile.role == 0 or sub_menu_permissions_context_walletaddress == 0 %}
+<li><a href="{% url 'trade_admin_auth:manage_emails' %}"><i class="fa fa-users"></i> Manage Emails</a></li>
+{% endif %}             
+          </ul>
+        </li>
+{% endif %}
+
+{% if request.user.admin_user_profile.role == 0 %}
+<li class="{% if activecls == 'subdetailadmin'%} active {% endif %}treeview">
+          <a href="#">
+            <i class="fa fa-user"></i> <span>Manage Sub Admin</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'trade_admin_auth:subadminlist' %}"><i class="fa fa-circle-o"></i> View Subadmin</a></li>
+          </ul>
+        </li>
+{% endif%}
+
+
+{% comment %}
+<li class="{% if activecls == 'userdetailadmin'%} active {% endif %} treeview">
+          <a href="#">
+            <i class="fa fa-users"></i> <span>Manage User</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'trade_admin_auth:tradeuserlist' %}"><i class="fa fa-circle-o"></i> User List</a></li>
+            <li><a href="{% url 'trade_admin_auth:deactivateuserlist' %}"><i class="fa fa-circle-o"></i> Deactivate User List</a></li>
+         
+           <li><a href="{% url 'trade_admin_auth:balanceuserlist' %}"><i class="fa fa-circle-o"></i> User Balance List</a></li>
+            <li><a href="{% url 'trade_admin_auth:twofalist' %}"><i class="fa fa-circle-o"></i> TwoFA List</a></li>
+            <li><a href="{% url 'trade_admin_auth:List_Withdraw_Request' %}"><i class="fa fa-circle-o"></i> User Activity List</a></li>
+          </ul>
+        </li>
+
+{% endcomment %}
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_frontpage == 0 %}
+<li class="{% if activecls == 'Listwallet'%} active {% endif %} treeview">
+  <a href="">
+    <i class="fa fa-circle-o"></i> <span>Front Page Management</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+    <li><a href="{% url 'trade_admin_auth:List_front_page_management' %}"><i class="fa fa-circle-o"></i>Front Page Management</a></li>         
+  </ul>
+</li>
+{% endif %}
+
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_transaction == 0 %}
+<li class="{% if activecls == 'transaction'%} active {% endif %} treeview">
+          <a href="">
+            <i class="fa fa-exchange"></i> <span>Transaction</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <!-- <li><a href=""><i class="fa fa-circle-o"></i>Deposit History</a></li> -->
+            <li><a href="{% url 'trade_admin_auth:List_Withdraw_Request' %}"><i class="fa fa-circle-o"></i>Withdraw History</a></li>
+            <li><a href="{% url 'trade_admin_auth:manual_Withdraw' %}"><i class="fa fa-circle-o"></i>Pending Withdraw History</a></li>
+            <li><a href="{% url 'trade_admin_auth:manual_withdraw_USDT' %}"><i class="fa fa-circle-o"></i>Pending USDT Withdraw History</a></li>
+            <li><a href="{% url 'trade_admin_auth:manual_withdraw_INR' %}"><i class="fa fa-circle-o"></i>Pending INR Withdraw History</a></li>
+            <li><a href="{% url 'trade_admin_auth:BURNWITHDRAW' %}"><i class="fa fa-circle-o"></i> Burn Withdraw History</a></li> 
+            <li><a href="{% url 'trade_admin_auth:manual_withdrawburntoearn' %}"><i class="fa fa-circle-o"></i>Pending Burn Withdraw History</a></li>
+            <li><a href="{% url 'trade_admin_auth:hold_manual_withdraw' %}"><i class="fa fa-circle-o"></i>Hold Payout Withdraw History</a></li>
+            <li><a href="{% url 'trade_admin_auth:stake_manual_withdraw' %}"><i class="fa fa-circle-o"></i>Pending Stake Withdraw </a></li>
+            <li><a href="{% url 'trade_admin_auth:hold_stake_manual_withdraw' %}"><i class="fa fa-circle-o"></i>Hold Payout Stake Withdraw </a></li>
+          </ul>
+        </li>
+{% endif %}
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_transaction == 0 %}
+<li class="{% if activecls == 'transaction_'%} active {% endif %} treeview">
+          <a href="">
+            <i class="fa fa-exchange"></i> <span>Premium Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'trade_admin_auth:premium_wallet_manage' %}"><i class="fa fa-circle-o"></i>Premium Deposit Management</a></li>
+                    </ul>
+
+        </li>
+{% endif %}       
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_plan == 0 %}
+        <li class="{% if activecls == 'maketplace'%} active {% endif %} treeview">
+          <a href="">
+            <i class="fa fa-money"></i> <span>Plan Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'trade_admin_auth:List_plan' %}"><i class="fa fa-circle-o"></i>Plan</a></li>         
+          </ul>
+        </li>
+{% endif %}
+
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_referral == 0 %}
+        <li class="{% if activecls == 'maketplace'%} active {% endif %} treeview">
+          <a href="">
+            <i class="fa fa-money"></i> <span>Referral Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'trade_admin_auth:List_referral_level' %}"><i class="fa fa-circle-o"></i>Referral Level</a></li>
+            <!-- <li><a href="{% url 'trade_admin_auth:List_user_referral' %}"><i class="fa fa-circle-o"></i>User Referral Level</a></li>          -->
+
+          </ul>
+        </li>
+{% endif %}
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_withdraw == 0 %}
+        <li class="{% if activecls == 'maketplace'%} active {% endif %} treeview">
+          <a href="">
+            <i class="fa fa-money"></i> <span>Withdraw Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'trade_admin_auth:List_Withdraw_values_internal' %}"><i class="fa fa-circle-o"></i>Withdraw</a></li>         
+          </ul>
+        </li>
+{% endif %}
+
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_wallet == 0 %}
+        <li class="{% if activecls == 'Listwallet'%} active {% endif %} treeview">
+          <a href="">
+            <i class="fa fa-bank"></i> <span>Wallet Management</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{% url 'trade_admin_auth:List_wallet' %}"><i class="fa fa-circle-o"></i>Wallet Management</a></li>
+            <li><a href="{% url 'trade_admin_auth:wallet_address_block' %}"><i class="fa fa-circle-o"></i>Wallet Address Block</a></li>       
+            <li><a href="{% url 'trade_admin_auth:wallet_address_block_list' %}"><i class="fa fa-circle-o"></i>Wallet Address Block List</a></li>     
+            <li><a href="{% url 'trade_admin_auth:USERPW' %}"><i class="fa fa-circle-o"></i>USER Detail Premium Wallet</a></li>  
+            <li><a href="{% url 'trade_admin_auth:SWAP' %}"><i class="fa fa-circle-o"></i> SWAP</a></li> 
+          </ul>
+        </li>
+{% endif %}
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_notify == 0 %}
+          <li class="{% if activecls == 'Listwallet'%} active {% endif %} treeview">
+            <a href="">
+              <i class="	fa fa-bell-o"></i> <span>Notification Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'trade_admin_auth:List_admin_notification_message' %}"><i class="fa fa-circle-o"></i>Notification Management</a></li>   
+              <li><a href="{% url 'trade_admin_auth:PROMOBONUS' %}"><i class="fa fa-circle-o"></i>USER Detail PROMOBONUS</a></li>         
+            </ul>
+          </li>
+{% endif %}
+  
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_transfer == 0 %}
+          <li class="{% if activecls == 'Listwallet'%} active {% endif %} treeview">
+            <a href="">
+              <i class="fa fa-exchange"></i> <span>Transfer Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'trade_admin_auth:List_Send_Withdraw_History' %}"><i class="fa fa-circle-o"></i>Transfer Management</a></li>         
+            </ul>
+          </li>
+{% endif %}
+  
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_rpc == 0 %}
+          <li class="{% if activecls == 'Listwallet'%} active {% endif %} treeview">
+            <a href="">
+              <i class="fa fa-exchange"></i> <span>RPC Management</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'trade_admin_auth:Edit_RPC' %}"><i class="fa fa-circle-o"></i>RPC Management</a></li>         
+            </ul>
+          </li>
+{% endif %}
+
+
+

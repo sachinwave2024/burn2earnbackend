@@ -1,0 +1,28 @@
+[
+{
+    "model": "trade_admin_auth.adminuser_profile",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "gender": 0,
+        "date_of_birth": "2021-10-09",
+        "emailaddress": "Vt+CkhcYv0dMZbAnEdy78CEGfzMs/6mvvpcEfdR6hog=",
+        "address1": "new address",
+        "address2": "dsd",
+        "city": "dsd",
+        "state": "dsd",
+        "country": null,
+        "agree": false,
+        "postcode": "625001",
+        "phone1": "09789306115",
+        "photo": "",
+        "role": 0,
+        "pattern_code": 123,
+        "country_code": null,
+        "twofa": false,
+        "google_id": null,
+        "status": 1,
+        "pattern_status": 1
+    }
+}
+]

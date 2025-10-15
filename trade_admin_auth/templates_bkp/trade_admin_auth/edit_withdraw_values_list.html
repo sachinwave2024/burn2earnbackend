@@ -1,0 +1,163 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+                          
+               <div class="form-group">
+                 <label >{{form.first_withdraw_value.label}}
+                    {% if form.first_withdraw_value|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.first_withdraw_value class+="form-control" id+="first_withdraw_value" placeholder=form.first_withdraw_value.label min+="0"%}
+                    {% if form.first_withdraw_value.errors %}
+                  {% for error in form.first_withdraw_value.errors %}
+                   <span class="text-danger">* {{ error|escape }} </span>
+                  {% endfor %}
+                {% endif %}
+                </div>
+
+
+                <div class="form-group">
+                  <label >{{form.Health_wallet_minimum_withdraw_limit.label}}
+                     {% if form.Health_wallet_minimum_withdraw_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Health_wallet_minimum_withdraw_limit class+="form-control" id+="Health_wallet_minimum_withdraw_limit" placeholder=form.Health_wallet_minimum_withdraw_limit.label min+="0"%}
+                     {% if form.Health_wallet_minimum_withdraw_limit.errors %}
+                   {% for error in form.Health_wallet_minimum_withdraw_limit.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                   {% endfor %}
+                 {% endif %}
+                 </div>
+
+                 <div class="form-group">
+                  <label >{{form.Health_wallet_maximum_withdraw_limit.label}}
+                     {% if form.Health_wallet_maximum_withdraw_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Health_wallet_maximum_withdraw_limit class+="form-control" id+="Health_wallet_maximum_withdraw_limit" placeholder=form.Health_wallet_maximum_withdraw_limit.label min+="0"%}
+                     {% if form.Health_wallet_maximum_withdraw_limit.errors %}
+                   {% for error in form.Health_wallet_maximum_withdraw_limit.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                   {% endfor %}
+                 {% endif %}
+                 </div>
+
+
+                 <div class="form-group">
+                  <label >{{form.Referral_wallet_minimum_withdraw_limit.label}}
+                     {% if form.Referral_wallet_minimum_withdraw_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Referral_wallet_minimum_withdraw_limit class+="form-control" id+="Referral_wallet_minimum_withdraw_limit" placeholder=form.Referral_wallet_minimum_withdraw_limit.label min+="0"%}
+                     {% if form.Referral_wallet_minimum_withdraw_limit.errors %}
+                   {% for error in form.Referral_wallet_minimum_withdraw_limit.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                   {% endfor %}
+                 {% endif %}
+                 </div>
+
+                 <div class="form-group">
+                  <label >{{form.Referral_wallet_maximum_withdraw_limit.label}}
+                     {% if form.Referral_wallet_maximum_withdraw_limit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Referral_wallet_maximum_withdraw_limit class+="form-control" id+="Referral_wallet_maximum_withdraw_limit" placeholder=form.Referral_wallet_maximum_withdraw_limit.label min+="0"%}
+                     {% if form.Referral_wallet_maximum_withdraw_limit.errors %}
+                   {% for error in form.Referral_wallet_maximum_withdraw_limit.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                   {% endfor %}
+                 {% endif %}
+                 </div>
+
+
+                 <div class="form-group">
+                  <label >{{form.Minimum_BNB_Balance.label}}
+                     {% if form.Minimum_BNB_Balance|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Minimum_BNB_Balance class+="form-control" id+="Minimum_BNB_Balance" placeholder=form.Minimum_BNB_Balance.label min+="0"%}
+                     {% if form.Minimum_BNB_Balance.errors %}
+                   {% for error in form.Minimum_BNB_Balance.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                   {% endfor %}
+                 {% endif %}
+                 </div>
+             
+            </div>
+           
+            <div class="col-md-6">
+            </div>
+          </div>
+           
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="tradeadmin/List_Withdraw_values_internal" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+
+      <script>
+        $("#ip_address").keyup('keyup blur',function(){  
+         var node = $(this);   
+          node.val(node.val().replace(/[^0-9.]/g,'') );   
+      }); 
+      </script>
+
+    </section>
+   
+
+
+<script>
+  $(document).ready(function(){
+     document.getElementById('id_ip_level').readOnly= true;  
+    $('#id_ip_option').on('change',function(){
+        var optionText = $("#id_ip_option option:selected").text();
+        document.getElementById("id_ip_level").value = optionText;
+       
+    });
+});
+</script>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

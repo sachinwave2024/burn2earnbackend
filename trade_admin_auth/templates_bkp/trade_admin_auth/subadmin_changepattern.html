@@ -1,0 +1,295 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+<link rel="stylesheet" href="{% static "admin_assets/pattern/patternLock.css" %}">
+
+ 
+<style type="text/css">
+    #patternHolder7 .patt-wrap {
+  z-index: 10;
+}
+#patternHolder7 .patt-circ.hovered {
+  background-color: #3382c0;
+  border: none;
+}
+#patternHolder7 .patt-circ.hovered .patt-dots {
+  display: none;
+}
+#patternHolder7 .patt-circ.dir {
+  background-image: url('../images/icon-arrow.png');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#patternHolder7 .patt-circ.e {
+  -webkit-transform: rotate(0);
+  transform: rotate(0);
+}
+#patternHolder7 .patt-circ.s-e {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+#patternHolder7 .patt-circ.s {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+#patternHolder7 .patt-circ.s-w {
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+#patternHolder7 .patt-circ.w {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+#patternHolder7 .patt-circ.n-w {
+  -webkit-transform: rotate(225deg);
+   transform: rotate(225deg);
+}
+#patternHolder7 .patt-circ.n {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+#patternHolder7 .patt-circ.n-e {
+  -webkit-transform: rotate(315deg);
+  transform: rotate(315deg);
+}
+
+#patternContainer, #patternContainernew,#patternContainerconfirm {
+width: 350px;
+}
+
+@media screen and (min-width:768px) and (max-width:1280px){
+#patternContainer, #patternContainernew, #patternContainerconfirm {
+width: 350px;
+}
+}
+@media screen and (min-width:0px) and (max-width:767px){
+#patternContainer, #patternContainernew ,#patternContainerconfirm{
+width: 100%;
+}
+}
+
+.error {
+    color: red;
+}
+  </style>
+
+
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class=""><a href="/tradeadmin/sub_admin_profile_settings/{{user.id}}/" ><h3 class="box-title">Profile Settings</h3></a></li>
+              <li class=""><a href="/tradeadmin/subadmin_change_password/{{user.id}}/" ><h3 class="box-title">Change Password</h3></a></li>
+               <li class="active"><a href="#tab_2" data-toggle="tab"><h3 class="box-title">{{ Title}}</h3></a></li>
+               <li class=""><a href="/tradeadmin/subadmin_edit_permission/{{user.id}}" ><h3 class="box-title">Menu Permissions</h3></a></li>
+               <li class=""><a href="/tradeadmin/subadmin_submenu_edit_permission/{{user.id}}" ><h3 class="box-title">Sub Menu Permissions</h3></a></li>
+              <li class=""><a href="/tradeadmin/subadmin_iconmenu_edit_permission/{{user.id}}" ><h3 class="box-title">Icon Menu Permissions</h3></a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+                {% if messages %}
+                {% for message in messages %}
+               <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+              </div>
+              {% endfor %}
+              {% endif %}
+
+              {{form}}
+         <!-- form start -->
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate" id="changepatternid">
+             {% csrf_token %} 
+             {{ form.media }}
+        <!-- /.box-header -->
+       <div class="box-body">
+          <div class="row">
+            <div class="col-md-5">
+              {{form.errors}}
+              <!-- /.form-group -->
+              <div class="form-group">
+                  <label >Old Pattern
+                  <span class="text-danger"> * </span>
+                  </label>
+                   <div id="patternContainer"></div>
+                <input type="hidden"  name="old_pattern_code"  id="oldpatterncode" value="">
+                <p id="t1"></p>
+                </div>
+               <div class="form-group">
+                
+                  <label > New  Pattern
+                  </label>
+                  <div id="patternContainernew"></div>
+                   <input type="hidden"  name="pattern_code" id="id_pattern_code" value="">
+                   <p id="t2"></p>
+                </div>
+
+                <div class="form-group">
+                
+                  <label > Confirm New Pattern
+                  </label>
+                  <div id="patternContainerconfirm"></div>
+                   <input type="hidden"  name="confirmpattern_code" id="id_confirmpattern_code" value="">
+                   <p id="t3"></p>
+                </div>
+               
+            </div>
+            <!-- /.col -->
+            <div class="col-md-7">
+         
+            </div>
+          </div>
+           <!-- /.second row -->
+        <!-- /.box-body -->
+         <div class="box-footer">
+                <a onclick="vali()" class="btn btn-primary">Submit</a>
+                <button type="submit" style="display: none;" id="submitbtn" class="btn btn-primary">Submit</button>
+         </div>
+          </form>
+
+
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2">
+               
+              </div>
+              <!-- /.tab-pane -->
+             
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- nav-tabs-custom -->
+          
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     
+      </div>
+
+    </section>
+    <!-- /.content -->
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+<script src="{% static "admin_assets/pattern/patternLock.js" %}"></script>
+<script src="{% static "admin_assets/plugins/iCheck/icheck.min.js" %}"></script>
+<script src="{% static 'admin_assets/js/jquery.validate.min.js' %}"></script>
+ <script src="{% static 'admin_assets/js/admin_login_validation.js' %}"></script>
+<script>
+  $(function () {
+
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' /* optional */
+    });
+    /*
+    var lock = new PatternLock("#patternContainer",{
+    onDraw:function(pattern){
+    word(lock)
+   
+    }*/
+    //var patternvalue ='{{ pattern }}'
+    /*
+    var lock = new PatternLock('#patternContainer',{enableSetPattern : true});
+    lock.setPattern(patternvalue);
+    $("#patterncode").val(patternvalue);
+    lock.disable();
+    */
+    lock = new PatternLock("#patternContainer",{
+      onDraw:function(pattern){
+      wordold(lock)
+     
+      }
+      });
+
+
+    lock_new = new PatternLock("#patternContainernew",{
+      onDraw:function(pattern){
+      word(lock_new)
+     
+      }
+      });
+
+    lock_confirm = new PatternLock("#patternContainerconfirm",{
+      onDraw:function(pattern){
+      wordconfirm(lock_confirm)
+     
+      }
+      });
+
+    });
+  function wordold(lock) {
+        var pat = lock.getPattern();
+        $("#oldpatterncode").val(pat);
+   } 
+  function word(lock) {
+        var pat = lock_new.getPattern();
+        $("#id_pattern_code").val(pat);
+   }  
+  function wordconfirm(lock) {
+        var pat = lock_confirm.getPattern();
+        $("#id_confirmpattern_code").val(pat);
+   } 
+</script>
+
+<script>
+  function vali(){
+    old = document.getElementById('oldpatterncode').value
+    new_patt = document.getElementById('id_pattern_code').value
+    con = document.getElementById('id_confirmpattern_code').value
+    
+    
+    
+    if(old == ''){
+      tr = "Enter Old Pattern ";
+			document.getElementById("t1").innerHTML = tr.fontcolor("red");
+      return false;
+    }else if(old != "{{patterncode}}"){
+        
+        tr = "Enter Old Pattern Correctly ";
+			  document.getElementById("t1").innerHTML = tr.fontcolor("red");
+        return false;
+      }else{
+      if(new_patt == ''){
+        tr = "Enter Confirm Pattern ";
+			 document.getElementById("t2").innerHTML = tr.fontcolor("red");
+       return false;
+      }else{
+        if(con == ''){
+        tr = "Enter New Pattern ";
+			 document.getElementById("t3").innerHTML = tr.fontcolor("red");
+       return false;
+      }else{
+        $('#submitbtn').click()
+      }
+      }
+
+    }
+}
+</script>
+<script>
+  function vali_old(){
+    
+  }
+</script>
+
+ {% endblock %}
+
+

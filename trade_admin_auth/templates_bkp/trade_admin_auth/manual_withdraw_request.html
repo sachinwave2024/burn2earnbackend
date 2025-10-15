@@ -1,0 +1,156 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+ <style>
+  body {font-family: Arial, Helvetica, sans-serif;}
+  
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  </style>
+    <section class="content">
+      <input type="hidden" id="" name="withdraw" value="{{withdraw}}">
+      <input type="hidden" id="" name="user_details" value="{{user_details}}">
+      <input type="hidden" id="user_id" name="user_details" value="{{user_details.Email}}">
+
+      
+
+
+
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+    
+                <b>User Email : {{user_details.Email}}</b> <br>  <br>
+                <b>Original Amount (USDT) : {{withdraw.Amount}} </b>  <br> <br>
+                <b>Fees (%): {{withdraw.Withdraw_fee}}</b> <br>  <br> 
+                <b>Stake Credit (%) : {{withdraw.Month_stake}}</b>  <br>   <br>
+                <b>Withdraw USDT : {{withdraw.Withdraw_USDT}}</b>    <br>   <br>
+                <b>Withdraw JW: {{withdraw.Withdraw_JW}}</b>    <br>   <br>
+                <b>To Address: {{withdraw.Address}}</b>    <br>   <br>
+                <b>Withdraw Request Time : {{withdraw.created_on}}</b> <br>   <br>  
+    
+
+
+                </div>
+              </div>
+              </div>
+              <div class="box-footer">
+                <a class="btn btn-primary" id="myBtn">Approve</a>
+               &nbsp;&nbsp; &nbsp;&nbsp;
+               
+        </div>
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Are you sure want to Approve Withdraw for this user <span id="User_name"></span> </p>
+            <a href="/tradeadmin/Admin_approve_withdraw/{{id}}/"  class="btn btn-primary">Submit</a>
+          </div>
+        
+        </div>
+           
+            <div class="col-md-6">
+             
+           
+            </div>
+          </div>
+        
+    </section>
+   
+
+<script>
+  var modal = document.getElementById("myModal");
+  var btn = document.getElementById("myBtn");
+  var span = document.getElementsByClassName("close")[0];
+  btn.onclick = function() {
+    var username = document.getElementById("user_id").value;
+    document.getElementById("User_name").innerHTML=username
+    modal.style.display = "block";
+  }
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

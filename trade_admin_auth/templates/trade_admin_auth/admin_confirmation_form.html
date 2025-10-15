@@ -1,0 +1,169 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    
+    <section class="content">
+   
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+        
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+              
+               <div class="form-group">
+                 <label >Email <span class="text-danger"> * </span>
+                  </label>
+                    <input type="email" name="Email" id ="email" class="form-control" placeholder="Email Address" oninput="validateemail()" value="" required/>
+                    <p id="t1"></p>
+                    <p id="t2"></p>
+                </div>
+
+                <div class="form-group">
+                 <label >Password <span class="text-danger"> * </span>
+                  </label>
+                    <input type="password" name="Password" id="password" class="form-control" placeholder="Password" value="" required/>
+                    <p id="t3"></p> 
+                </div>
+                            
+            </div>
+          
+            <div class="col-md-6">
+             
+            
+            </div>
+          </div>
+        
+         <div class="box-footer">
+                <a class="btn btn-primary" onclick="validate()">Submit</a>
+
+                <button type="submit" class="btn btn-primary"  style="display: none;" id="submitbtn" >Submit1</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="/tradeadmin/DetailWithdraw/{{id}}/" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+
+    </section>
+
+
+
+<script>
+  $(document).ready(function(){
+     document.getElementById('id_ip_level').readOnly= true;  
+    $('#id_ip_option').on('change',function(){
+        var optionText = $("#id_ip_option option:selected").text();
+        document.getElementById("id_ip_level").value = optionText;
+       
+    });
+});
+</script>
+
+<script>
+	var field = document.querySelector('[name="Email"]');
+field.addEventListener('keypress', function ( event ) {  
+   var key = event.keyCode;
+    if (key === 32) {
+      event.preventDefault();
+    }
+});
+</script>
+
+<script>  
+  function validateemail()  
+  {  
+  var x=document.querySelector('[name="Email"]').value; 
+  
+  var atposition=x.indexOf("@");  
+  var dotposition=x.lastIndexOf(".");  
+  if (atposition<1 || dotposition<atposition+2 || dotposition+2>=x.length){  
+    tr = "Enter A Valid Email Address*** ";
+    document.getElementById("t1").innerHTML = tr.fontcolor("red");
+    return false; 
+    }
+    else{
+    tr = "";
+    document.getElementById("t1").innerHTML = tr.fontcolor("red");
+    return true;  
+    }
+    
+  }  
+  </script>
+
+<script>
+	$("#phone_number").keyup('keyup blur',function(){  
+	 var node = $(this);   
+	  node.val(node.val().replace(/[^0-9.]/g,'') );   
+}); 
+</script>
+
+<script>
+	$("#over_all_stepcount").keyup('keyup blur',function(){  
+	 var node = $(this);   
+	  node.val(node.val().replace(/[^0-9.]/g,'') );   
+}); 
+</script>
+<script>
+    function validate(){
+        
+        email = document.getElementById('email').value
+        
+        pass = document.getElementById('password').value
+        
+        if (email == ''){
+            
+            tr = "Enter Email Address*** ";
+            document.getElementById("t2").innerHTML = tr.fontcolor("red");
+            return false;
+        }else{
+            
+            if(pass == ''){
+            
+            tr = "Enter Password*** ";
+            document.getElementById("t3").innerHTML = tr.fontcolor("red");
+            return false;
+        }else{
+          $('#submitbtn').click()
+        }
+    }
+    }
+</script>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

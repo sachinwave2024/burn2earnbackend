@@ -1,0 +1,12 @@
+[
+{
+    "model": "company.company_settings",
+    "pk": 1,
+    "fields": {
+        "company_settings_name": 1,
+        "site_maintenance_status": 0,
+        "site_maintenance": "",
+        "adminipaddress": null
+    }
+}
+]

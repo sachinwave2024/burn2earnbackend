@@ -1,0 +1,173 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    
+    <section class="content">
+     
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab"><h3 class="box-title">{{ Title}}</h3></a></li>
+              <li><a href="{% url 'trade_admin_auth:change_password' %}"><h3 class="box-title">Change Password</h3></a></li>
+               <li class=""><a href="/tradeadmin/patternchange/{{request.user.id}}/" ><h3 class="box-title">Change Pattern</h3></a></li>
+                <li class=""><a href="/tradeadmin/admin2fa/" ><h3 class="box-title">TwoFactor Authentication</h3></a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+                {% if messages %}
+                {% for message in messages %}
+               <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+              </div>
+              {% endfor %}
+              {% endif %}
+
+
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+        
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+               
+                 <div class="form-group">
+                  <label >Username 
+                    <span class="text-danger"> * </span>
+                  </label>
+                    <input type="email" name="username" value="{{request.user}}" maxlength="100" class="form-control" placeholder="User Name" id="id_username">
+                    <p id="t1"></p>
+                </div> 
+                 <div class="form-group">
+                  <label >Email
+                    <span class="text-danger"> * </span>
+                  </label>
+                    <input type="email" name="email" value="{{usermail}}" maxlength="100" class="form-control" placeholder="Email Address" id="id_email" required>
+                    <p id="t2"></p>
+                </div>
+                  <div class="form-group" hidden="">
+                  <label >Email Address 
+                    <span class="text-danger"> * </span>
+                  </label>
+                    <input type="email" name="emailaddress" value="{{decrypt_user_emailaddress}}" maxlength="100" class="form-control" placeholder="Email Address" id="id_emailaddress" required>
+                   
+                </div>
+                 <div class="form-group">
+                  <label >Phone number: <span class="text-danger"> * </span>
+                  </label>
+                    <input type="text" name="phone1" value="{{phoneno}}" class="form-control" maxlength="10" id="id_phone1" onkeypress="return /[0-9]/i.test(event.key)">
+                    <p id="t3"></p>
+                </div>
+
+                  <div class="form-group">
+                        <label>Profile Picture: <span class="text-danger"> * </span>
+                        </label>
+                        <input type="file" name="photo" accept="image/*" onchange="back_image_fun()" id="id_photo">
+                        <p id="t4"></p>
+                        <br>
+                        <input type="hidden" name="backval" id="backval" value="1">
+                      <img src="{% if profilepic.url != '' %}{{profilepic.url}} {% endif %}" alt="Profile Image" width='100' height='100'>
+                  </div>
+                  <script>
+                    function back_image_fun() {
+                       val=id_photo.value.split('.')[1]
+                       if ((val=='png')||(val=='jpeg'||(val == 'jpg'))) {
+                          $('#backval').val(1)
+                          return true;
+                       }else{
+                          
+                          tr = "Give Correct Image Format*** ";
+                          document.getElementById("t4").innerHTML = tr.fontcolor("red");
+                          $('#backval').val(0)
+                          return false;
+                       }
+                       
+                    }
+                 </script>
+                
+            </div>
+            
+            <div class="col-md-6">
+
+             
+            </div>
+          </div>
+        
+         <div class="box-footer">
+                <a  onclick="fun()" class="btn btn-primary">Submit</a>
+                <button type="submit" style="display: none;" id="submitbtn" class="btn btn-primary">Submit</button>
+         </div>
+          </form>
+
+
+              </div>
+              
+              <div class="tab-pane" id="tab_2">
+               
+              </div>
+             
+             
+            </div>
+            
+          </div>
+        
+          
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     
+      </div>
+<script>
+  function fun()
+  {
+    
+    var name = document.getElementById('id_username').value
+    var email = document.getElementById('id_email').value
+    var number = document.getElementById('id_phone1').value
+    
+    if (name == ''){
+      tr = "Enter User Name ";
+			document.getElementById("t1").innerHTML = tr.fontcolor("red");
+			return false;
+    }else{
+      if(email == ''){
+        tr = "Enter Email ID ";
+			  document.getElementById("t2").innerHTML = tr.fontcolor("red");
+			  return false;
+      }else{
+        if(number == ''){
+          tr = "Enter Phone Number ";
+			    document.getElementById("t3").innerHTML = tr.fontcolor("red");
+			    return false; 
+        }else{
+          $('#submitbtn').click()
+        }
+      }
+    }
+  }
+</script>
+    </section>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

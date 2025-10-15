@@ -1,0 +1,284 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+ 
+    <section class="content">
+    
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    
+   
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+            </div>
+            <div class="table-responsive">
+            
+            <div class="box-body">
+              {% comment %}
+               {% render_table table %} 
+              {% endcomment %}
+              <div class="row ">   
+                <div class="col-md-6 col-xs-12 pull-right"> 
+                     <div class="panel-group accordion" id="accordion1">
+                                                           <div class="panel panel-default">
+                                                               <div class="panel-heading">
+                                                                   <div class="panel-title">
+                                                                       <a id="accordion-search" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" aria-expanded="false">
+                                                                        <i class="fa fa-search font-dark"></i>
+                                                                  <span class="caption-subject font-dark bold uppercase">Advanced Search</span>
+                                                                  <span style="float:right"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                                                                       </a>
+                                                                       
+                                                                   </div>
+                                                                   
+                                                               </div>
+                                                               <div id="collapse_1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                                   <div class="panel-body">
+                                                                      
+                                                                        <form class="form-horizontal" id="Bill_Search_Form" method="get"> 
+                                                                          
+                                                                          <div class="form">
+                                                                          <div id="div_id_username" class="control-group"> 
+                                                                            <label for="id_username" class="control-label ">
+                                                                          
+                                                                                        User Name
+                                                                          </label> 
+                                                                          <div class="controls">
+                                                                            {% if request.GET.username != None %} 
+                                                                            <input type="text" name="username" class="textinput textInput" value=" {{request.GET.username}}" id="id_username"> 
+                                                                            {% else %}
+                                                                            <input type="text" name="username" class="textinput textInput" id="id_username"> 
+                                                                            {% endif%}
+                                                                          </div> 
+                                                                        </div> 
+                                                                        <div id="div_id_Email" class="control-group">
+                                                                           <label for="id_Email" class="control-label ">
+                                                                                        User Email Address
+                                                                                    </label>
+                                                                                     <div class="controls"> 
+                                                                                      {% if request.GET.Email != None %}
+                                                                                       <input type="text" name="Email" class="textinput textInput" value=" {{request.GET.Email}}" id="id_Email"> 
+                                                                                       {% else %}
+                                                                                       <input type="text" name="Email" class="textinput textInput" id="id_Email"> 
+                                                                                       {% endif %}
+                                                                                      </div> 
+                                                                                    </div> 
+                                                                                    
+                                                                      
+                                                                        </div>
+                                                                        <div class="form-actions"> 
+                                                                          <input type="submit" name="submit" value="Search" class="btn btn-primary" id="submit-id-submit">
+                                                                           <input type="reset" name="reset-search" value="Reset Search" class="btn btn-inverse btn btn-default" id="reset-search">
+                                                                           </div> 
+                                                                         </form>
+                                                                      </div>
+                                                                                 
+                                                                        
+                                                                                                                                 
+                                                                   </div>
+                                                               </div>
+                                                           </div>
+                                                       </div>  
+                                                  
+                </div>
+               <table id="example" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Steps</th>
+                  <th>status</th>
+                 
+                  <th>Created on</th>
+                  
+
+
+                </tr>
+                </thead>
+               
+                <tbody id="user_step_history_id">
+
+                    
+                 {% if adminuser_qs %}
+                 {% for item in adminuser_qs %}
+                 <tr>
+                  <td>{{ forloop.counter}}</td>
+                  <td>{{ item.user}}</td>
+                  <td>{{ item.user.Email}}</td>
+                  <td>{{ item.steps}}</td>
+                  {% if item.status == 0 %}
+                  <td>Unclaimed</td>
+                  {% else %}
+                  <td>Claimed</td>
+                  {% endif %}
+                  
+                  <td>{{ item.created_on}}</td>
+                </tr>
+                 {% endfor %}
+                {% else %}
+                     <tr><td colspan=5><h5>There are no records yet</h5></td></tr>
+                {% endif %}
+              </tbody>
+               </table>
+
+            </div>
+            <div class="row">
+              <div class="col-sm-5">
+            <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
+              Showing {{start_value}} to {{end_value}} of {{usr_count}} entries
+            </div>
+            </div>
+            <div class="paginattion-inn d-flex justify-content-end" >
+              <div class="col-sm-7">
+              {% if adminuser_qs.has_other_pages %}
+              <ul class="pagination pagination mr-md-4">
+                 {% if adminuser_qs.has_previous %}
+                <li class="page-item"><a class="page-link font-secondary" href="?pageno={{ adminuser_qs.previous_page_number }}"><i class="fas fa-long-arrow-alt-left mr-2"></i>Previous</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link font-secondary" href="#"><i class="fas fa-long-arrow-alt-left mr-2"></i>Previous</a></li>
+                {% endif %}
+                {% for i in adminuser_qs.paginator.page_range %}
+                {% if adminuser_qs.number == i %}
+                <li class="page-item"><a class="page-link font-secondary " href="#">{{ i }}</a></li>
+                {% else %}
+                {% if request.GET.username != None and request.GET.Email != None %} 
+                <li class="page-item"><a class="page-link font-secondary " href="?username={{request.GET.username}}&Email={{request.GET.Email}}&submit=Search&pageno={{ i }}">{{ i }}</a></li>
+                {% else %}
+                {% if  i == startpage %}
+                <li class="page-item"><a class="page-link font-secondary " href="?pageno={{ i }}">{{ i }}</a></li>
+                {% elif i == endpage %}
+                <li class="page-item"><a class="page-link font-secondary " href="?pageno={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                 {% if adminuser_qs.has_next %}
+                <li class="page-item"><a class="page-link font-secondary" href="?pageno={{ adminuser_qs.next_page_number }}">Next <i class="fas fa-long-arrow-alt-right ml-2"></i></a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link font-secondary" href="#">Next <i class="fas fa-long-arrow-alt-right ml-2"></i></a></li>
+                {% endif %}
+              </ul>
+              {% endif %}
+              </div>
+              </div>
+            </div>
+            
+
+            </div>
+           
+          </div>
+        
+      </div>
+
+    </section>
+    <style>
+      .head-user {
+          align-content: end;
+          width: 100%;
+        }
+        .p-3 {
+            padding: 1rem !important;
+          }
+        .justify-content-end {
+            justify-content: flex-end !important;
+          }
+      .d-flex {
+          display: flex !important;
+        }
+        .user-wrapper {
+          display: flex;
+          align-items: center;
+        }
+        .right-inner-addon {
+            position: relative;
+          }
+          .pagination{
+            /* padding-left: 1300px; */
+            float: right;
+          }
+          .form{
+            display: flex;
+          }
+          .form .control-group{
+     margin-right: 15px;
+     margin-bottom: 15px;
+   }
+   #example1_info {
+ padding: 25px;
+}
+   
+    </style>
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ 
+
+ <script>
+   function search_table(){
+     
+      var user = $("#all_user_list").val();
+      var obj = JSON.parse(user)
+      var len = Object.keys(obj).length
+      if (obj) {
+        
+        $("#user_step_history_id").empty();
+      k = 1
+      for (var i = 0; i < len; i++) {
+        table = ("<td>"+obj[i+1].sno+"</td><td>"+obj[i+1].username+"</td><td>"+obj[i+1].email+"</td>");
+        table1 = ("<td>"+obj[i+1].steps+"</td><td>"+obj[i+1].date+"</td");
+        if (obj[i+1].status == 0) {
+          $("#user_step_history_id").append("<tr>"+table+"<td>"+"Unclaimed"+"</td>"+table1+"</tr>")
+          k++;
+        } else {
+          $("#user_step_history_id").append("<tr>"+table+"<td>"+"Claimed"+"</td>"+table1+"</tr>")
+          k++;
+        }
+          
+      }
+      } else {
+        
+      }
+      
+   }
+   search_table()
+ </script>
+
+ <script>
+   $("#reset-search").click(function(){
+      window.location = "/tradeadmin/dashboard/";
+      });
+    
+ </script>
+
+ {% endblock %}

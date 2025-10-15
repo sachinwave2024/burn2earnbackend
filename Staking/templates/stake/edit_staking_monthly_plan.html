@@ -1,0 +1,359 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+             <div class="box-body">
+              <div class="row">
+                <div class="col-md-6">
+                  
+    
+                    <div class="form-group">
+                     <label>Stake Period
+                        <span class="text-danger"> * </span>(Enter in months)
+                      </label>
+                        <input type="number" name="stake_period" value="{{obj_stake_manage.stake_period}}" onkeypress="return event.charCode >= 48,event.charCode <= 57" min="0" required="required" class="form-control" placeholder="Stake Period" id="id_stake_period">
+                        
+                    </div>
+    
+                  </div>
+                  </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Reward Percent (%)
+                        <span class="text-danger"> * </span>
+                        </label>
+                        <input type="number" name="reward_percent" value="{{obj_stake_manage.reward_percent}}" step="0.1" min="0" required="required" class="form-control" placeholder="Reward Percent" id="id_reward_percent">
+                        
+                        
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" id="plan_stake">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Eligible plan 
+                        <span class="text-danger"> *</span>(Plans After the selected plan Will be eligible for stake) 
+                        </label>
+                        <select name="eligible_plan" class="form-control" placeholder="Status" required="" selected="">
+                          {% if obj_stake_manage.eligible_plan != 0 and obj_stake_manage.eligible_plan != "" %}
+                          <option value="{{obj_stake_manage.eligible_plan}}" style="display:none;" selected=selected >{{select_plan.plan_name}}</option> 
+                          {% else %}
+                          <option value="0" style="display:none;" selected=selected >--------------</option>
+                          {% endif %}
+                          {% for i in plan_obj %}          
+                          <option value="{{i.id}}">{{i.plan_name}}</option>                 
+                          {% endfor %}
+                        </select>
+                        
+                        
+                  </div>
+                </div>
+              </div>
+              
+              <!--------------------------------------------------------- Stake ----------------------------------------->
+              <br>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label >Status   
+                      <span class="text-danger"> * </span>
+                    </label>
+                    <select name="status" class="form-control" placeholder="Status" required="" selected="" id="id_status" onclick="stake_status_click()">
+                                            
+                      <option value="{{obj_stake_manage.status}}" style="display:none;" selected=selected >{{obj_stake_manage.get_status_display}}</option> 
+                      <option value="0" {% if obj_stake_manage.status == '0' %} selected=selected {% endif %}>Active</option>                 
+                      <option value="1" {% if obj_stake_manage.status == '1' %} selected=selected {% endif %}>Inactive</option> 
+                      
+                      </select>
+                  </div>
+                  </div>
+
+                <div class="col-md-4" id="min_stake">
+                  <div class="form-group">
+                    <label>Minimum Stake Amount USDT
+                        <span class="text-danger"> * </span>(If 0 no minimum limit)
+                        </label>
+                        <input type="number" name="minimum_stake" value="{{obj_stake_manage.minimum_stake}}" min="0" required="required" class="form-control" placeholder="Minimum Stake Amount" id="id_minimum_stake">
+                        
+                        
+                  </div>
+                </div>
+                <div class="col-md-4" id="max_stake">
+                  <div class="form-group">
+                    <label>Maximum Stake Amount USDT
+                        <span class="text-danger"> * </span>(If 0 no maximum limit)
+                        </label>
+                        <input type="number" name="maximum_stake" value="{{obj_stake_manage.maximum_stake}}" min="0" required="required" class="form-control" placeholder="Maximum Stake Amount" id="id_maximum_stake">
+                        
+                        
+                  </div>
+                </div>
+              </div>
+    
+              <!--------------------------------------------------------- Withdraw -------------------------------------->
+              <br>
+              <br>
+              <div class="row" >
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label >Withdraw Status
+                        <span class="text-danger"> * </span>
+                        </label>
+                        <select name="withdraw_status" class="form-control" placeholder="Status" required="" selected="" id="id_withdraw_status" onclick="withdraw_status_click()">
+                                            
+                          <option value="{{obj_stake_manage.withdraw_status}}" style="display:none;" selected=selected >{{obj_stake_manage.get_withdraw_status_display}}</option> 
+                          <option value="0" {% if obj_stake_manage.withdraw_status == '0' %} selected=selected {% endif %}>Active</option>                 
+                          <option value="1" {% if obj_stake_manage.withdraw_status == '1' %} selected=selected {% endif %}>Inactive</option> 
+                          
+                          </select>
+                  </div>
+                </div>
+
+                
+
+                
+    
+                <div class="col-md-4" id="min_with">
+                  <div class="form-group">
+                    <label >Minimum Withdraw 
+                        <span class="text-danger"> * </span>(Stake Withdraw Wallet) USDT  
+                        </label>
+                        <input type="number" name="minimum_withdraw" value="{{obj_stake_manage.minimum_withdraw}}" min="0" required="required" class="form-control" placeholder="Minimum Stake Amount" id="id_minimum_withdraw">
+                  </div>
+                </div>
+
+                <div class="col-md-4" id="max_with">
+                  <div class="form-group">
+                    <label >Maximum Withdraw 
+                        <span class="text-danger"> * </span>(Stake Withdraw Wallet) USDT (%)
+                        </label>
+                        <input type="number" name="maximum_withdraw" value="{{obj_stake_manage.maximum_withdraw}}" min="0" required="required" class="form-control" placeholder="Maximum Stake Amount" >
+                  </div>
+                </div>
+    
+              </div>
+              
+              
+
+
+              <!----------------------------------------------------------- Referral ---------------------------------------->
+
+          <div class="row" >
+            <div class="col-md-4">
+              <div class="form-group">
+                <label >Community Support Fees
+                    <span class="text-danger"> * </span>
+                    </label>
+                    <input type="number" name="stake_withdraw_transaction_fee" value="{{obj_stake_manage.stake_withdraw_transaction_fee}}" min="0" required="required" class="form-control" placeholder="Community Support fees">
+              </div>
+            </div>
+
+            <div class="col-md-4" id="min_with_ref">
+              <div class="form-group">
+                <label> Minimum Withdraw Referral
+                    <span class="text-danger"> * </span>  (Stake Referral Wallet) USDT    
+                    </label>
+                    <input type="number" name="minimum_withdraw_referal" value="{{obj_stake_manage.minimum_withdraw_referal}}" min="0" required="required" class="form-control" placeholder="Maximum Stake Amount" id="id_minimum_withdraw_referal">
+              </div>
+            </div>
+            <div class="col-md-4" id="max_with_ref">
+              <div class="form-group">
+                <label> Maximum Withdraw Referral
+                    <span class="text-danger"> * </span>  (Stake Referral Wallet) USDT (%)  
+                    </label>
+                    <input type="number" name="maximum_withdraw_referal" value="{{obj_stake_manage.maximum_withdraw_referal}}" min="0" required="required" class="form-control" placeholder="Maximum Stake Amount" >
+              </div>
+            </div>
+          </div>
+
+           <!--------------------------------------------------------- Claim -------------------------------------->
+           <br>
+           <h5><b>Withdraw Reward Percentage</b></h5><br>
+           <div class="row" >
+            <div class="col-md-4">
+              <div class="form-group">
+                <label >Stake wallet Reward(%)
+                    <span class="text-danger"> * </span>
+                    </label>
+                    <input type="number" name="stake_wallet_percentage" value="{{obj_stake_manage.stake_wallet_percentage}}" min="0" required="required" class="form-control" placeholder="Minimum Stake Amount" id="id_wallet_percentage" oninput="wallet_claim_percentage()">
+              </div>
+            </div>
+
+            <div class="col-md-4" id="min_with">
+              <div class="form-group">
+                <label >Withdraw wallet Reward(%)
+                    <span class="text-danger"> * </span>
+                    </label>
+                    <input type="number" name="withdraw_wallet_percentage" value="{{obj_stake_manage.withdraw_wallet_percentage}}" min="0" required="required" class="form-control" placeholder="Minimum Stake Amount" id="id_withdraw_wallet_percentage" oninput="wallet_withdraw_claim_percentage()">
+              </div>
+            </div>
+
+          </div>
+    
+              <script>
+                $( document ).ready(function() {
+                  var h = $('#referral_status').val()
+                  if(h == 1){
+                  $('#referral_level').hide()
+                  }
+                  if(h ==0){
+                    $('#referral_level').show()
+                  }
+                });
+            </script>
+    
+    
+    <script>
+      function referal_status_id(event){
+      // id_referral_status
+      referral_status = document.getElementById('referral_status').value 
+      if(referral_status == 1){
+      $('#referral_level').hide()
+      }
+      if(referral_status == 0){
+      $('#referral_level').show()
+      }
+      }
+    </script>
+    
+              <style>
+                .column {
+                  float: left;
+                  width: 33.33%;
+                  padding: 5px;
+                }
+                
+                .row::after {
+                  content: "";
+                  clear: both;
+                  display: table;
+                }
+              </style>
+    
+              
+          </div>
+
+       
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+         </div>
+          </form>
+      </div>
+
+      </section>
+
+
+      <script>
+        function stake_status_click(){
+          var stake_status = $("#id_status").val();
+          if (stake_status == 0){
+            $("#min_stake").show();
+            $("#max_stake").show();
+          }else{
+           $("#min_stake").hide();
+           $("#max_stake").hide();
+          }
+        }
+        stake_status_click()
+      </script>
+<script>
+  $("#plan_stake").hide();
+</script>
+<script>
+  function withdraw_status_click() {
+   var withdraw_status = $("#id_withdraw_status").val();
+   if (withdraw_status == 0) {
+     $("#min_with").show();
+     $("#max_with").show();
+     $("#min_with_ref").show();
+     $("#max_with_ref").show();
+    } else {
+     $("#min_with").hide();
+     $("#max_with").hide();
+     $("#min_with_ref").hide();
+     $("#max_with_ref").hide();
+    }
+  }
+  withdraw_status_click()
+</script>
+
+
+<script>
+  function wallet_claim_percentage(){
+    // var withdraw_wallet_percentage = $("#id_withdraw_wallet_percentage").val()
+    var wallet_percentage = $("#id_wallet_percentage").val()
+    console.log(wallet_percentage,'wallet_percentage wallet_percentage wallet_percentage');
+
+    var val = parseInt(100) - parseInt(wallet_percentage)
+
+    document.getElementById('id_withdraw_wallet_percentage').value = val
+    
+
+  }
+</script>
+
+
+
+<script>
+  function wallet_withdraw_claim_percentage(){
+    var withdraw_wallet_percentage = $("#id_withdraw_wallet_percentage").val()
+    // var wallet_percentage = $("#id_wallet_percentage").val()
+    console.log(withdraw_wallet_percentage,'withdraw_wallet_percentage withdraw_wallet_percentage withdraw_wallet_percentage');
+
+    var val = parseInt(100) - parseInt(withdraw_wallet_percentage)
+
+    document.getElementById('id_wallet_percentage').value = val
+    
+
+  }
+</script>
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

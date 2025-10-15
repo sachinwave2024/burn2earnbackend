@@ -1,0 +1,31 @@
+[
+{
+    "model": "company.company",
+    "pk": 1,
+    "fields": {
+        "name": "HotBitDeal Auctions",
+        "caption": null,
+        "director": null,
+        "reg_info": null,
+        "address1": "new adress",
+        "city": null,
+        "state": null,
+        "country": null,
+        "postcode": null,
+        "phone1": null,
+        "website": null,
+        "email": "info@hotbitdeal.com",
+        "company_logo": "logo/logo.png",
+        "company_fav": "",
+        "copy_right": "Copyright @ 2021 HBD All Rights Reserved",
+        "admin_redirect": null,
+        "fb": "",
+        "twitter": "",
+        "telegram": "",
+        "instagram": "",
+        "linkedin": "",
+        "created_on": "2021-08-30T07:52:37.973",
+        "modified_on": "2021-10-09T17:27:37.046"
+    }
+}
+]

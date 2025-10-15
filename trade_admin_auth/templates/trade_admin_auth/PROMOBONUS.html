@@ -1,0 +1,152 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+
+{% block Style_sheets %}
+<!-- Include DataTables CSS -->
+<link rel="stylesheet" href="{% static 'css/datatables.css' %}">
+{% endblock Style_sheets %}
+
+{% block Content_Area %}
+<section class="content">
+    <div class="box box-default">
+
+        <!-- Filters -->
+        <div class="box-body">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="text" id="email" class="form-control" placeholder="Search Email">
+            </div>
+            
+            <div class="form-group">
+                <label>Date:</label>
+                <input type="date" id="created_on" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Status:</label>
+                <select id="status" class="form-control">
+                    <option value="">All</option>
+                    <option value="3">Pending</option>
+                    <option value="1">Approved</option>
+                    <option value="2">Rejected</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="fetchData()">Search</button>
+        </div>
+
+        <!-- Total Claim Amount -->
+        <div class="box-body">
+            <h4>Total Claim Amount: <span id="totalClaimAmount">0</span></h4>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table id="promoBonusTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User ID</th>
+                        <th>Email</th>
+                        <th>Claim Amount</th>
+                        <th>Link</th>
+                        <th>Content</th>
+                        <th>Created On</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock Content_Area %}
+
+{% block Java_Scripts %}
+<!-- ✅ Load jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    function fetchData() {
+        let data = {
+            email: $('#email').val().trim(),
+            status: $('#status').val(),
+            created_on: $('#created_on').val(),  // ✅ Include the date filter
+            start: 0,
+            length: 100,
+            draw: 1,
+        };
+
+        $.ajax({
+            url: "{% url 'trade_admin_auth:get_promobonus_details' %}",
+            type: "POST",
+            data: data,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            },
+            success: function(response) {
+                let rows = "";
+                if (response.data.length === 0) {
+                    rows = `<tr><td colspan="9" class="text-center">No records found</td></tr>`;
+                } else {
+                    response.data.forEach(item => {
+                        rows += `<tr>
+                            <td>${item.id}</td>
+                            <td>${item.user_id}</td>
+                            <td>${item.email}</td>
+                            <td>${item.claim_amount}</td>
+                            <td>${item.link ? '<a href="' + item.link + '" target="_blank">View</a>' : 'N/A'}</td>
+                            <td>${item.content}</td>
+                            <td>${item.created_on}</td>
+                            <td>${item.status == 3 ? 'Pending' : item.status == 1 ? 'Approved' : 'Rejected'}</td>
+                            <td>
+                                ${item.status == 3 ? `
+                                    <button class="btn btn-success btn-sm" onclick="updateStatus(${item.id}, 1)">Approve</button>
+                                    <button class="btn btn-danger btn-sm" onclick="updateStatus(${item.id}, 2)">Reject</button>
+                                ` : '—'}
+                            </td>
+                        </tr>`;
+                    });
+                }
+                $("#table-body").html(rows);
+                $("#totalClaimAmount").text(response.total_claim_amount.toFixed(2));
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+                alert("Failed to fetch data. Please try again.");
+            }
+        });
+    }
+
+    // ✅ Trigger fetchData when the date filter changes
+    $('#email, #status, #created_on').on('change keyup', function () {
+        fetchData();
+    });
+
+    function updateStatus(id, newStatus) {
+        $.ajax({
+            url: "{% url 'trade_admin_auth:update_promobonus_status' %}",
+            type: "POST",
+            data: {
+                id: id,
+                status: newStatus,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function(response) {
+                alert(response.message);
+                fetchData();  // Refresh table after update
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+                alert("Failed to update status.");
+            }
+        });
+    }
+
+    $(document).ready(fetchData);
+</script>
+{% endblock Java_Scripts %}
+
+

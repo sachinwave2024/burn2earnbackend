@@ -1,0 +1,99 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <!-- form start -->
+   
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+              <div class="box-tools pull-right">
+                         
+                        </div>
+            </div>
+            <div class="table-responsive">
+            <!-- /.box-header -->
+            <div class="box-body">
+            
+
+               <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                   <th>S.No</th>
+                  <th>Email</th>
+                  <th>IP Address</th>
+                  <th>Failed Logins</th>
+                  <th>DateTime</th>
+                  <th>Actions</th>
+                </tr>
+                </thead>
+               
+                <tbody>
+
+
+                 {% if attempt_qs %}
+                 {% for item in attempt_qs %}
+                 <tr>
+                  <td>{{ forloop.counter}}</td>
+                  <td>{{ item.emailaddress}}</td>
+                  <td>{{ item.ip_address }}</td>
+                  <td>{{ item.failedcount}}</td>
+                  <td>{{ item.datetime  }}</td>
+                  <td>
+                    <a href="{% url 'trade_admin_auth:attempt_deleteblockip' item.id %}" title="Delete" class="btn btn-danger btn-xs">Delete</a>
+                  </td>
+                </tr>
+                 {% endfor %}
+                {% else %}
+                     <tr><td colspan=5><h5>There are no records yet</h5></td></tr>
+                {% endif %}
+              </tbody>
+               </table>
+
+            </div>
+             </div>
+            <!-- /.box-body -->
+          </div>
+        
+      </div>
+
+    </section>
+    <!-- /.content -->
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+ <!-- DataTables -->
+
+ {% endblock %}
+
+

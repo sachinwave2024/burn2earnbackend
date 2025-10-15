@@ -1,0 +1,220 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+
+                <div class="form-group">
+                 <label >{{form.stake_period.label}} 
+                    <span class="text-danger"> * </span>(Enter number as month like 1)
+                  </label>
+                    {% render_field form.stake_period class+="form-control" placeholder=form.stake_period.label required+="required" min+=0 %}
+                    {% if form.stake_period.errors %}
+                        {% for error in form.stake_period.errors %}
+                        <span class="text-danger">* {{ error|escape }} </span>
+                        {% endfor %}
+                        {% endif %}
+                </div>
+
+              </div>
+              </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.reward_percent.label}} (%)
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.reward_percent class+="form-control" placeholder=form.reward_percent.label required+="required" min+=0 %}
+                    
+                    {% if form.reward_percent.errors %}
+                    {% for error in form.reward_percent.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.minimum_stake.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.minimum_stake class+="form-control" placeholder=form.minimum_stake.label required+="required" id+="id_min_stake" min+=0%}
+                    
+                    {% if form.minimum_stake.errors %}
+                    {% for error in form.minimum_stake.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.maximum_stake.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.maximum_stake class+="form-control" placeholder=form.maximum_stake.label required+="required" id+="id_max_stake" min+=0 %}
+                    
+                    {% if form.maximum_stake.errors %}
+                    {% for error in form.maximum_stake.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.referral_status.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.referral_status class+="form-control" placeholder=form.referral_status.label required+="required" id+="referral_status" onchange+="referal_status_id()" min+=0 %}
+                    
+                    {% if form.referral_status.errors %}
+                    {% for error in form.referral_status.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="row" id="referral_level">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.referral_level.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.referral_level class+="form-control" placeholder=form.referral_level.label required+="required"  min+=0 %}
+                    
+                    {% if form.referral_level.errors %}
+                    {% for error in form.referral_level.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <style>
+            .column {
+              float: left;
+              width: 33.33%;
+              padding: 5px;
+            }
+            
+            .row::after {
+              content: "";
+              clear: both;
+              display: table;
+            }
+          </style>
+
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="{% url Btn_url %}" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+
+     </section>
+
+
+
+<script>
+    function min_max_chk(event){
+      min_amount = document.getElementById("id_min_stake").value
+      max_amount = document.getElementById("id_max_stake").value
+      referral_min_amount = document.getElementById("referral_withdraw_minimum_limit").value
+      referral_max_amount = document.getElementById("referral_withdraw_maximum_limit").value
+      if (parseInt(health_min_amount) > parseInt(health_max_amount)){
+          document.getElementById("blank").innerHTML = 'Maximum Withdraw Limit should be Greater';
+          } else{
+            document.getElementById("blank").innerHTML = "";
+          }
+      if (parseInt(referral_min_amount) > parseInt(referral_max_amount)){
+        document.getElementById("blank0").innerHTML = 'Maximum Withdraw Limit should be Greater';
+      } else{
+        document.getElementById("blank0").innerHTML = "";
+      }
+
+
+    }
+</script>
+
+
+<script>
+  function referal_status_id(event){
+  // id_referral_status
+  referral_status = document.getElementById('referral_status').value 
+  
+  if(referral_status == 1){
+  $('#referral_level').hide()
+  }
+  if(referral_status == 0){
+  $('#referral_level').show()
+  }
+  }
+</script>
+
+
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

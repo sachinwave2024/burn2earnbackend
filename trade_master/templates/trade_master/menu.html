@@ -1,0 +1,100 @@
+{% comment %}
+<li>
+          <a href="{% url 'trade_master:roadmaplist' %}">
+            <i class="fa fa-road"></i> <span>Roadmap List</span>
+          </a>
+</li>
+
+<li>
+    <a href="{% url 'trade_master:currencylist' %}">
+      <i class="fa fa-exchange"></i> <span>Token List</span>
+    </a>
+</li>
+{% endcomment %}
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_cms == 0 %}
+      <li>
+          <a href="{% url 'trade_master:cmspagecontentlist' %}">
+            <i class="fa fa-file"></i> <span>CMS Management</span>
+            <span class="pull-right-container">
+            </span>
+         
+          </a>
+
+        </li>
+{% endif %}
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_faq == 0 %}
+<li>
+      <a  href="{% url 'trade_master:faqlist' %}"><i class="fa fa-question-circle"></i> <span>Manage FAQ</span>         </a>
+</li>
+{% endif %}
+
+
+{% comment %}
+<li>
+          <a href="{% url 'trade_master:contactlist' %}" >
+            <i class="fa fa-address-card"></i> <span>Manage NewsLetter</span>
+          </a>
+ </li>
+{% endcomment %}
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_email_template == 0 %}
+<li>
+          <a href="{% url 'trade_master:emailcontactlist' %}">
+            <i class="fa fa-envelope"></i> <span>Manage Email Template</span>
+          </a>
+ </li>
+ {% endif %}
+
+
+ {% comment %}
+<li>
+          <a href="{% url 'trade_admin_auth:blockiplist' %}">
+            <i class="fa fa-server"></i> <span>Block IP</span>
+          </a>
+ </li>
+{% endcomment %}
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_del_acc_reason == 0 %}
+<li>
+  <a href="{% url 'trade_admin_auth:List_Delete_Account_Reason' %}">
+    <i class="fa fa-user-times"></i> <span>Delete Account reason</span>
+  </a>
+</li>
+{% endif %}
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_del_acc_request == 0 %}
+<li>
+  <a href="{% url 'trade_admin_auth:List_Delete_Account_Request' %}">
+    <i class="fa fa-comments"></i> <span>Delete Account Requests</span>
+  </a>
+</li>
+{% endif %}
+
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_support == 0 %}
+<li class="{% if activecls == 'maketplace'%} active {% endif %} treeview">
+  <a href="">
+    <i class="fa fa-money"></i> <span>Support Management</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+    
+{% if request.user.admin_user_profile.role == 0  or sub_menu_permissions_context_ticket_category == 0 %}
+    <li><a href="{% url 'trade_master:supportcategorylist' %}"><i class="fa fa-circle-o"></i>Support Ticket Category</a></li>
+{% endif %}
+{% if request.user.admin_user_profile.role == 0  or sub_menu_permissions_context_ticket_request == 0 %}
+    <li><a href="{% url 'trade_master:User_request_list' %}"><i class="fa fa-circle-o"></i>Support Ticket User Request</a></li>
+{% endif %}
+
+ 
+  </ul>
+</li>
+{% endif %}

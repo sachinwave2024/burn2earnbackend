@@ -1,0 +1,136 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         <!-- form start -->
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+              <!-- /.form-group -->
+                <div class="form-group">
+                  <label >
+                        Name : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{staticcontent_qs.name}}
+                </div>
+              <div class="form-group">
+                  <label >
+                        Softcap : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{staticcontent_qs.softcap}}
+                </div>
+               <div class="form-group">
+                  <label >
+                        Hardcap : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{staticcontent_qs.hardcap}}
+                </div>
+                  
+                  <div class="form-group">
+                  <label >
+                        WhitePaper : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   <a href="{{staticcontent_qs.attachement.url}}" target="__blank" title="Click to view WhitePaper">White Paper</a>
+                </div>   
+                 <div class="form-group">
+                  <label >
+                        Timer Date : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{staticcontent_qs.timer_date}}
+                </div>  
+                {% if staticcontent_qs.buytoken_url %}
+                 <div class="form-group">
+                  <label >
+                        BuyToken Url : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   <a href="{{staticcontent_qs.buytoken_url}}" target="__blank">BuyToken Url</a>
+                </div>   
+                {% else %}
+                {% endif %}
+                {% if staticcontent_qs.video_url %}
+                <div class="form-group">
+                  <label >
+                      Video Url : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   <a href="{{staticcontent_qs.video_url}}" target="__blank">Video Url</a>
+                </div> 
+                {% else %} 
+                {% endif %}
+                <div class="form-group">
+                  <label >
+                     Status : 
+                  </label>
+                 &nbsp;&nbsp; &nbsp;&nbsp;
+                   {{staticcontent_qs.get_status_display}}
+                </div>     
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
+            
+          </div>
+           <!-- /.second row -->
+        <!-- /.box-body -->
+         <div class="box-footer">
+
+                 <a href="/trademaster/currencylist/" class="btn btn-primary">Back</a>
+         </div>
+          </form>
+      </div>
+
+    </section>
+    <!-- /.content -->
+
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

@@ -1,0 +1,119 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+    
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+
+          <div class="box-tools pull-right">
+           
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    
+   
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+              <div class="box-tools pull-right">
+                          
+              </div>
+            </div>
+             <div class="table-responsive">
+            
+            <div class="box-body">
+               <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Email Address</th>
+                  <th>Registered On</th>
+                  <th>Account Status</th>
+                  <th>TFA Status</th>
+                   
+                  <th>Actions</th>
+                </tr>
+                </thead>
+               
+                <tbody>
+
+
+                 {% if tradeuser_qs %}
+                 {% for item in tradeuser_qs %}
+                  
+                 <tr>
+                  <td>{{ item.username}}</td>
+                  <td>{{ item.email}}</td>
+                  <td>{{ item.date_joined|date:"d-m-y H:m:s"}}</td>
+                  <td> {% if item.is_active == 1 %}
+                          Active
+                       {%else%}
+                        Deactive
+                      {% endif %}
+                  </td>
+                  <td>{{ item.twofa}}
+                    {% if item.admin_user_profile.twofa == 1 %}
+                          Enabled
+                    {% elif item.admin_user_profile.twofa == 0 %}
+                        Disabled
+                    {% endif %}
+
+                  </td>
+                  <td>
+                    
+                      <a class="btn" href="/tradeadmin/delete_tradeuser/{{item.id}}/" title="Change Status" ><i class="fa fa-user-times"></i>  </a>
+                    
+                       
+                      <a class="btn" href="/tradeadmin/detail_tradeuser/{{item.id}}/" title="Edit" >
+                        <i class="fa fa-edit"></i>  </a>
+                     
+                  </td>
+                </tr>
+                 {% endfor %}
+                {% else %}
+                     <tr><td colspan=5><h5>There are no records yet</h5></td></tr>
+                {% endif %}
+              </tbody>
+               </table>
+
+            </div>
+            </div>
+          
+          </div>
+        
+      </div>
+
+    </section>
+ 
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+
+ {% endblock %}
+
+

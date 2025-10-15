@@ -1,0 +1,195 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    
+    <section class="content">
+   
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+        
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+              
+               <div class="form-group">
+                 <label >{{form.user_name.label}}
+                    {% if form.user_name|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.user_name class+="form-control" placeholder=form.user_name.label %}
+                </div>
+
+                <div class="form-group">
+                 <label >{{form.Email.label}}
+                    {% if form.Email|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.Email oninput+='validateemail()' class+="form-control" placeholder=form.Email.label %}
+                </div>
+                <p id="t1"></p>
+                <div class="form-group">
+                  <label >{{form.Name.label}}
+                     {% if form.Name|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Name class+="form-control" placeholder=form.Name.label %}
+                 </div>
+                 <div class="form-group">
+                  <label >{{form.device_unique_id.label}}
+                     {% if form.device_unique_id|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.device_unique_id class+="form-control" placeholder=form.device_unique_id.label %}
+                 </div>
+                 <div class="form-group">
+                  <label >{{form.user_profile_pic.label}}
+                     {% if form.user_profile_pic|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                   <br>
+                   <img src="{% if Pic.url != '' %}{{Pic.url}} {% endif %}" alt="Profile Image" width='100' height='100'>
+                   <br>
+                     {%render_field form.user_profile_pic class+="form-control" placeholder=form.user_profile_pic.label %}                     
+                 </div>
+
+                 <div class="form-group">
+                  <label >{{form.user_phone_number.label}}
+                     {% if form.user_phone_number|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.user_phone_number class+="form-control" placeholder=form.user_phone_number.label %}
+                 </div>
+
+                <div class="form-group">
+                 <label >{{form.status.label}}
+                    {% if form.status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.status class+="form-control" placeholder=form.status.label %}
+                </div>
+
+
+
+                <div class="form-group">
+                 <label >{{form.USER_INRID.label}}
+                    {% if form.USER_INRID|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.USER_INRID class+="form-control" placeholder=form.USER_INRID.label %}
+                </div>
+              
+             
+            </div>
+          
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.notes.label}}:
+                   {% if form.notes|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                 </label>
+                   {%render_field form.notes class+="form-control" placeholder=form.notes.label %}
+               </div>
+            
+            </div>
+            
+            </div>
+          </div>
+        
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="tradeadmin/List_User_Management" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+
+    </section>
+
+
+
+<script>
+  $(document).ready(function(){
+     document.getElementById('id_ip_level').readOnly= true;  
+    $('#id_ip_option').on('change',function(){
+        var optionText = $("#id_ip_option option:selected").text();
+        document.getElementById("id_ip_level").value = optionText;
+       
+    });
+});
+</script>
+
+<script>
+	var field = document.querySelector('[name="Email"]');
+field.addEventListener('keypress', function ( event ) {  
+   var key = event.keyCode;
+    if (key === 32) {
+      event.preventDefault();
+    }
+});
+</script>
+
+<script>  
+  function validateemail()  
+  {  
+  var x=document.querySelector('[name="Email"]').value; 
+  
+  var atposition=x.indexOf("@");  
+  var dotposition=x.lastIndexOf(".");  
+  if (atposition<1 || dotposition<atposition+2 || dotposition+2>=x.length){  
+    tr = "Enter A Valid Email Address*** ";
+    document.getElementById("t1").innerHTML = tr.fontcolor("red");
+    return false; 
+    }
+    else{
+    tr = "";
+    document.getElementById("t1").innerHTML = tr.fontcolor("red");
+    return true;  
+    }
+    
+  }  
+  </script>
+
+<script>
+	$("#phone_number").keyup('keyup blur',function(){  
+	 var node = $(this);   
+	  node.val(node.val().replace(/[^0-9.]/g,'') );   
+}); 
+</script>
+
+<script>
+	$("#over_all_stepcount").keyup('keyup blur',function(){  
+	 var node = $(this);   
+	  node.val(node.val().replace(/[^0-9.]/g,'') );   
+}); 
+</script>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

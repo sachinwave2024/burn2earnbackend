@@ -1,0 +1,174 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title }}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+
+                <div class="form-group">
+                 <label >Referral Levels
+                    <span class="text-danger"> * </span>
+                  </label>
+                  <input type="number" name="levels" value="{{obj_stake_manage.levels}}" min="0" required="required" class="form-control" placeholder="Referral Levels" id="id_levels">
+                </div>
+
+              </div>
+              </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label > Self Stake Amount (USDT) (%)
+                  <span class="text-danger"> * </span>
+                  </label>
+                  <input type="number" name="self_stake_Amount" value="{{obj_stake_manage.self_stake_Amount}}" oninput="range_off()" min="0" required="required" class="form-control" placeholder="Self Stake Amount (USDT)" id="id_self_stake_Amount">
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >Self Stake Amount Range (USDT)
+                    <span class="text-danger"> * </span>
+                    </label>
+                    <input type="number" name="self_stake_Amount_range" value="{{obj_stake_manage.self_stake_Amount_range}}" oninput="range_off_stake_range()" min="0" required="required" class="form-control" placeholder="Self Stake Amount Range (USDT)" id="id_self_stake_Amount_range">
+                    
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >First Level Stake Reward (%) 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    <input type="number" name="first_level_stake" value="{{obj_stake_manage.first_level_stake}}" step="1e-8" min="0" id="id_min_stake" required="required" class="form-control" placeholder="First Level Stake Reward (%)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >Second Level Stake Onwards Reward (%)
+                    <span class="text-danger"> * </span>
+                    </label>
+                    <input type="number" name="secound_level_stake" value="{{obj_stake_manage.secound_level_stake}}" step="1e-8" min="0" id="id_min_stake" required="required" class="form-control" placeholder="Second Level Stake Onwards Reward (%)">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >Status   
+                  <span class="text-danger"> * </span>
+                </label>
+                <select name="status" class="form-control" placeholder="Status" required="" selected="" id="id_status">
+                                        
+                  <option value="{{obj_stake_manage.status}}" style="display:none;" selected=selected >{{obj_stake_manage.get_status_display}}</option> 
+                  <option value="0" {% if obj_stake_manage.status == '0' %} selected=selected {% endif %}>Active</option>                 
+                  <option value="1" {% if obj_stake_manage.status == '1' %} selected=selected {% endif %}>Inactive</option> 
+                  
+                  </select>
+              </div>
+            </div>
+          </div>
+
+          <style>
+            .column {
+              float: left;
+              width: 33.33%;
+              padding: 5px;
+            }
+            
+            .row::after {
+              content: "";
+              clear: both;
+              display: table;
+            }
+          </style>
+
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="/stake/List_Staking_Referral/" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+
+     </section>
+
+
+
+<script>
+    function min_max_chk(event){
+      min_amount = document.getElementById("id_min_stake").value
+      max_amount = document.getElementById("id_max_stake").value
+      referral_min_amount = document.getElementById("referral_withdraw_minimum_limit").value
+      referral_max_amount = document.getElementById("referral_withdraw_maximum_limit").value
+      if (parseInt(health_min_amount) > parseInt(health_max_amount)){
+          document.getElementById("blank").innerHTML = 'Maximum Withdraw Limit should be Greater';
+          } else{
+            document.getElementById("blank").innerHTML = "";
+          }
+      if (parseInt(referral_min_amount) > parseInt(referral_max_amount)){
+        document.getElementById("blank0").innerHTML = 'Maximum Withdraw Limit should be Greater';
+      } else{
+        document.getElementById("blank0").innerHTML = "";
+      }
+
+
+    }
+</script>
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

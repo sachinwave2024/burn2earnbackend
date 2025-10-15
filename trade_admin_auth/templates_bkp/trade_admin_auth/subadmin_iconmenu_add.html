@@ -1,0 +1,322 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+<link rel="stylesheet" href="{% static "admin_assets/pattern/patternLock.css" %}">
+<style type="text/css">
+    #patternHolder7 .patt-wrap {
+  z-index: 10;
+}
+#patternHolder7 .patt-circ.hovered {
+  background-color: #cde2f2;
+  border: none;
+}
+#patternHolder7 .patt-circ.hovered .patt-dots {
+  display: none;
+}
+#patternHolder7 .patt-circ.dir {
+  background-image: url('../images/icon-arrow.png');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#patternHolder7 .patt-circ.e {
+  -webkit-transform: rotate(0);
+  transform: rotate(0);
+}
+#patternHolder7 .patt-circ.s-e {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+#patternHolder7 .patt-circ.s {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+#patternHolder7 .patt-circ.s-w {
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+#patternHolder7 .patt-circ.w {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+#patternHolder7 .patt-circ.n-w {
+  -webkit-transform: rotate(225deg);
+   transform: rotate(225deg);
+}
+#patternHolder7 .patt-circ.n {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+#patternHolder7 .patt-circ.n-e {
+  -webkit-transform: rotate(315deg);
+  transform: rotate(315deg);
+}
+
+#patternContainer{
+width: 350px;
+}
+
+@media screen and (min-width:768px) and (max-width:1280px){
+#patternContainer{
+width: 350px;
+}
+}
+@media screen and (min-width:0px) and (max-width:767px){
+#patternContainer {
+width: 100%;
+}
+}
+
+
+  </style>
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% comment %}
+        <div class="row">
+        <div class="col-md-6">
+        {% if form.errors %}
+         <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{form.errors}}
+         </div>
+        {% endif %}
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+    {% endcomment %}
+    {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+     </div>
+    {% endfor %}
+    {% endif %}
+         <!-- form start -->
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate" id ="subadminform">
+             {% csrf_token %} 
+             {{ form.media }}
+         
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h4><b>Access Module </b></h4>
+              {% for item in obj_icon_menu %}
+              
+              <div class="form-group">
+                <input type="hidden" id="module_id_{{forloop.counter}}" value="{{item}}">
+                <input type="checkbox" id="menu_access_id_{{forloop.counter}}" name="menu_access" value="0" {% if item.status == 1 %}checked=""{% endif %} onclick="check_access(`{{forloop.counter}}`)">
+                <label for="menu_access_id">{{ item }}</label>
+
+                
+              </div>
+              {% endfor %}
+
+              <input type="hidden" id="menu_perm_list_id" name="menu_perm_list" value=[]>
+          </div>
+          </div>
+           <div class="box-footer">
+              <button type="submit" class="btn btn-primary" onclick="submit_click()">Submit</button>
+              &nbsp;&nbsp;
+           </div>
+          </form>
+      </div>
+
+    </section>
+    <!-- /.content -->
+
+
+
+
+ {% endblock Content_Area %}
+
+
+
+
+ {% block Java_Scripts %}
+
+
+ <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script src="{% static "admin_assets/pattern/patternLock.js" %}"></script>
+<script src="{% static "user_assets/lobibox/js/lobibox.min.js" %}"></script>
+
+<script>
+  $(function () {
+    var lock = new PatternLock("#patternContainer",{
+    onDraw:function(pattern){
+    word(lock)
+   
+    }
+    });
+    function word(lock) {
+    var pat=lock.getPattern();
+    $("#id_form2-pattern_code").val(pat);
+    //$('#patterncode').valid()
+    }
+  });
+ </script> 
+ <script>
+   $(function () {
+   $(document).ready(function(){  
+    
+      function validateRegForm(){
+           
+           var username = $('#id_form1-username').val();
+           var email = $('#id_form1-email').val();
+           var password  = $('#id_form1-password1').val();
+           var password_confirm  = $('#id_form1-password2').val();
+           var patterncode = $('#id_form2-pattern_code').val();
+           var address1 = $('#id_form2-address1').val();
+           var access_module = $("#menu_access_id").val();
+
+          if((username == '') || (username.length == 0)){
+            msg = 'Email must required.'
+            validate_msg('error',msg);
+            return false
+          }else if((email == '') || (email.length == 0)){
+            msg ='Password must required.'
+            validate_msg('error',msg);
+            return false
+          }
+          else if((password == '') || (password.length == 0)){
+            msg ='Password must required.'
+            validate_msg('error',msg);
+            return false
+          }else if((password_confirm == '') || (password_confirm.length == 0)){
+            msg ='Password confirmation must required.'
+            validate_msg('error',msg);
+            return false
+          }else if((address1 == '') || (address1.length == 0)){
+            msg ='Password confirmation must required.'
+            validate_msg('error',msg);
+            return false
+          }else if((patterncode == '') || (patterncode.length == 0)){
+            msg ='Pattern code must required.'
+            validate_msg('error',msg);
+            return false
+          }
+          else{
+            msg =''
+            return true
+          }
+          }
+      $(function () {
+
+          $('form#subadminform').on('submit', function (e) {
+           
+          var form =   validateRegForm()
+          if (form){
+            return true;
+          }else{
+            return false;
+          }
+
+          });
+         
+      });
+
+
+      function validate_msg(type,message){
+
+      if (type =='success'){
+        var success_text =  message;
+        
+
+        Lobibox.notify('success', {
+        title:'Success',
+        continueDelayOnInactiveTab: false,
+        pauseDelayOnHover: true,
+        sound: false,
+        position: 'right top',
+        msg: success_text
+        });
+
+      }
+
+      if (type =='error'){
+        var error_text = message
+        Lobibox.notify('error', {
+        title:'Error',
+        continueDelayOnInactiveTab: false,
+        pauseDelayOnHover: true,
+        sound: false,
+        position: 'right top',
+        msg: error_text
+        });
+
+
+
+      }
+
+    }
+
+    }); 
+ });
+ </script>
+
+<script>
+  function check_access(e){
+    var access_check_val = $("#menu_access_id_"+e).val();
+    // var main_menu_name = $("#module_name_id_"+e).val();
+    // alert(main_menu_name)
+    // var sub_menu = `{{sub_menu_qs}}`
+    // console.log(sub_menu,'0----------->sub_menu');
+    
+    // a = []
+    if (access_check_val == 0) {
+      document.getElementById('menu_access_id_'+e).value = 1;
+      // if main_menu_name == sub_menu.su 
+    } else {
+      document.getElementById('menu_access_id_'+e).value = 0;
+    }
+  }
+
+
+  function submit_click(){
+    var empty_array = []
+    var array = `{{menu_qs_count}}`
+    for (let index = 0; index < array; index++) {
+      const element = index+1;
+      var get_val = $("#menu_access_id_"+element).val();
+      if (get_val == 1) {
+        var get_menu_id = $("#module_id_"+element).val();
+        empty_array.push(get_menu_id)
+      }
+      
+    }
+    document.getElementById("menu_perm_list_id").value = JSON.stringify({"id" : empty_array});
+  }
+
+</script>
+
+
+
+
+ {% endblock %}
+
+

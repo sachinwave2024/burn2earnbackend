@@ -1,0 +1,278 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    
+    <section class="content">
+     
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+      
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+             
+               <div class="form-group">
+                  <label >{{form.from_symbol.label }} 
+                    {% if form.from_symbol|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.from_symbol class+="form-control" placeholder=form.from_symbol.label %}
+                    {% if form.from_symbol.errors %}
+                    {% for error in form.from_symbol.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                <div class="form-group">
+                  <label >{{form.two_symbol.label }} 
+                    {% if form.two_symbol|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.two_symbol class+="form-control" placeholder=form.two_symbol.label %}
+                    {% if form.two_symbol.errors %}
+                    {% for error in form.two_symbol.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                <div class="form-group">
+                  <label >{{form.pair_name.label }} 
+                    {% if form.pair_name|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.pair_name class+="form-control" placeholder=form.pair_name.label %}
+                    {% if form.pair_name.errors %}
+                    {% for error in form.pair_name.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                <div class="form-group">
+                  <label >{{form.pair_url.label }} 
+                    {% if form.pair_url|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.pair_url class+="form-control" placeholder=form.pair_url.label %}
+                    {% if form.pair_url.errors %}
+                    {% for error in form.pair_url.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                {% comment %}
+                <div class="form-group">
+                  <label >{{form.buylimit.label }} 
+                    {% if form.buylimit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.buylimit class+="form-control" placeholder=form.buylimit.label %}
+                    {% if form.buylimit.errors %}
+                    {% for error in form.buylimit.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                
+                 <div class="form-group">
+                  <label >{{form.maker_fees.label }} 
+                    {% if form.maker_fees|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.maker_fees class+="form-control" placeholder=form.maker_fees.label %}
+                    {% if form.maker_fees.errors %}
+                    {% for error in form.maker_fees.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                <div class="form-group">
+                  <label >{{form.change_price.label }} 
+                    {% if form.change_price|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.change_price class+="form-control" placeholder=form.change_price.label %}
+                    {% if form.change_price.errors %}
+                    {% for error in form.change_price.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                {% endcomment %}
+                {% comment %}
+                <div class="form-group">
+                  <label >{{form.selllimit.label }} 
+                    {% if form.selllimit|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.selllimit class+="form-control" placeholder=form.selllimit.label %}
+                    {% if form.selllimit.errors %}
+                    {% for error in form.selllimit.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+                <div class="form-group">
+                  <label >{{form.taker_fees.label }} 
+                    {% if form.taker_fees|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.taker_fees class+="form-control" placeholder=form.taker_fees.label %}
+                    {% if form.taker_fees.errors %}
+                    {% for error in form.taker_fees.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                   
+                </div>
+
+                <div class="form-group">
+                  <label >{{form.volume_price.label }} 
+                    {% if form.volume_price|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.volume_price class+="form-control" placeholder=form.volume_price.label %}
+                    {% if form.volume_price.errors %}
+                    {% for error in form.volume_price.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+                {% endcomment %}
+                 <div class="form-group">
+                  <label >{{form.last_price.label }} 
+                    {% if form.last_price|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.last_price class+="form-control" placeholder=form.last_price.label  %}
+                    {% if form.last_price.errors %}
+                    {% for error in form.last_price.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  <label >{{form.referal_fees.label }} 
+                    {% if form.referal_fees|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.referal_fees class+="form-control" placeholder=form.referal_fees.label %}
+                    {% if form.referal_fees.errors %}
+                    {% for error in form.referal_fees.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  <label >{{form.min_amount.label }} 
+                    {% if form.min_amount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.min_amount class+="form-control" placeholder=form.min_amount.label %}
+                    {% if form.min_amount.errors %}
+                    {% for error in form.min_amount.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  <label >{{form.status.label }} 
+                    {% if form.status|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.status class+="form-control" placeholder=form.status.label %}
+                    {% if form.status.errors %}
+                    {% for error in form.status.errors %}
+                     <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                  {% endif %}
+                </div>    
+            
+            </div>
+           
+            <div class="col-md-6">
+             
+           
+            </div>
+          </div>
+        
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp;
+                <a href="{% url Btn_url %}" class="btn btn-primary">Back</a>
+         </div>
+          </form>
+      </div>
+
+    </section>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+  <script>
+   $(document).ready(function () {
+   
+    var maker_fees = $("#id_maker_fees").val();
+    var referal_fees = $("#id_referal_fees").val();
+    var min_amount = $("#id_min_amount").val();
+
+    var min_deposit = $("#id_min_deposit").val();
+    var max_deposit = $("#id_max_deposi").val();
+    var min_withdraw = $("#id_min_withdraw").val();
+    var max_withdraw = $("#id_max_withdraw").val();
+
+    var currencysymbol= $("#id_symbol").val();
+   
+    if (maker_fees == '0E-8'){
+      $("#id_maker_fees").val(0.0)
+    }
+    if (referal_fees == '0E-8'){
+      $("#id_referal_fees").val(0.0)
+    }
+    if (min_amount == '0E-8'){
+      $("#id_min_amount").val(0.0)
+    }
+    if (min_deposit == '0E-8'){
+      $("#id_min_deposit").val(0.0)
+    }
+    if (max_deposit == '0E-8'){
+      $("#id_max_deposi").val(0.0)
+    }
+
+    if (min_withdraw == '0E-8'){
+      $("#id_min_withdraw").val(0.0)
+    }
+    if (max_withdraw == '0E-8'){
+      $("#id_max_withdraw").val(0.0)
+    }
+    
+    
+    
+   });
+ </script>
+ {% endblock %}
+
+

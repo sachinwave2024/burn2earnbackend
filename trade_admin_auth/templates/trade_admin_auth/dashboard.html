@@ -1,0 +1,440 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+{% block Style_sheets %}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% load django_tables2 crispy_forms_tags %}
+ {% load render_table from django_tables2 %}
+ {% block Content_Area %}
+
+ {% if messages %}
+      {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+  <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Dashboard</h3>
+          <br>
+          <br>
+    <div class="row">
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_manage_user == 0 %}       
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"> Total Users</span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/List_User_Management/" title='Click here to Users list' target="_blank">  
+              {{auction_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Active Users</span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/user_list_management/activeuser/" title='Click here to Active Users List' target="_blank">  
+              {{auction_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">InActive Users</span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/user_list_management/Inactiveuser/" title='Click here to FAQ list '>  
+              {{bids_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+         
+        </div> -->
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-money"></i></span>
+  
+            <div class="info-box-content">
+              <span class="info-box-text">Plan Buyed User</span>
+              <span class="info-box-number">
+                <a href="/tradeadmin/user_list_management/Planactiveuser/" title='Click her to Plan Buyed Users List' target="_blank">  
+              {{cms_count}}
+              </a>
+              </span>
+            </div>
+          </div>
+        </div>
+       
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Inactive Users</span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/user_list_management/Inactiveuser/" title='Click here to See De Activated Users list ' target="_blank">  
+              {{bids_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+{% endif %}
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_plan == 0 %}
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Today Plan Expiry Users</span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/plan_expired_users_list/" title='Click here to See De Activated Users list ' target="_blank">  
+              {{plan_exp_users_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+        </div>
+{% endif %}   
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_step == 0 %}    
+        <h3 class="box-title">Yesterday Steps and Reward History</h3>
+          <br>
+          <br>
+          <div class="row">  
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Yesterday Active Users</span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/step_history_management/total_step_history/" title='Click here to Winners list ' target="_blank">  
+                {{steps_total_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Below 3000 step count Users</span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/step_history_management/below_3000_step_users/" title='Click here to Winners list ' target="_blank">  
+                {{steps_active_total_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-sandle"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Above 3000 step count Users</span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/step_history_management/above_3000_step_users/" title='Click here to Winners list ' target="_blank">  
+                {{steps_inactive_total_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-purple"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Reward Unclaimed Users
+              </span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/step_history_management/reward_unclaimed_users/" title='Click here to Winners list ' target="_blank">  
+                {{steps_less_reward_total_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Reward Claimed Users
+              </span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/step_history_management/reward_claimed_users/" title='Click here to Winners list ' target="_blank">  
+                {{steps_greater_reward_total_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endif %}
+
+
+
+      <!-- Staking count listing -->
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_stake == 0 %}    
+      <h3 class="box-title"><b>Staking & Inernal Transfer User Info</b></h3>
+      <br>
+      <br>
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Stake Users Count</span>
+              <span class="info-box-number">
+              <a href="/stake/List_Stake/" title='Click here to Winners list ' target="_blank">  
+                {{stake_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Staking Deposit Users Count</span>
+              <span class="info-box-number">
+              <a href="/stake/List_Stake_Deposit_History/" title='Click here to Winners list ' target="_blank">  
+                {{stake_deposit_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Internal Transfer Users Count</span>
+              <span class="info-box-number">
+              <a href="/stake/List_Internal_Transfer_History/" title='Click here to Winners list ' target="_blank">  
+                {{internal_transfer_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Claimed Users Count</span>
+              <span class="info-box-number">
+              <a href="/stake/List_Stake_Claim_History/" title='Click here to Winners list ' target="_blank">  
+                {{claimed_user_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endif %}        
+
+
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_manage_user == 0 %}
+        <h3 class="box-title">Users App Version Info</h3>
+          <br>
+          <br>
+          <div class="row">  
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Current App Version
+              </span>
+              <div style="display: flex;justify-content: space-between;">
+              <div>
+              <div><span class="info-box-text">Andriod
+              </span></div>
+              
+              <span class="info-box-number">
+              
+                {{android_current_version_users_count}}
+              
+            </span>
+          </div>
+          <div>
+            <div><span class="info-box-text">IOs
+            </span></div>
+            
+            <span class="info-box-number">
+             
+              {{ios_current_version_users_count}}
+            
+          </span>
+        </div>
+      </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Andriod Current Version Users
+              </span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/user_list_management/android_current_version_users_list/" title='Click here to Winners list ' target="_blank">  
+                {{android_users_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">IOS Current Version Users
+              </span>
+              <span class="info-box-number">
+              <a href="/tradeadmin/user_list_management/ios_current_version_users_list/" title='Click here to Winners list ' target="_blank">  
+                {{ios_users_count}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+{% endif %}        
+       
+    </div>
+    <div class="row">
+        
+      
+
+       
+      {% comment%}
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-address-card"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">NewsLetter</span>
+              <span class="info-box-number">
+              <a href="/trademaster/contactlist/" title='Click here Newletter list '>  
+              {{contactuser}}
+              </a>
+            </span>
+            </div>
+          </div>
+        </div>
+        {% endcomment %}
+    </div>
+  
+    
+{% if request.user.admin_user_profile.role == 0 %}
+    <div class="row">
+     
+    
+     <div class="col-md-12" style = "min-height:500px;"> 
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Admin Log Activity</h3>
+              <div class="box-tools pull-right">                         
+              </div>
+            </div>
+             <div class="table-responsive hide-scroll">
+           
+            <div class="box-body">
+
+            <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Username</th>
+                  <th>IP Address</th>
+                  <th>Activity</th>
+                  <th>Log Date</th>
+                </tr>
+                </thead>
+               
+                <tbody>
+                 {% if adminactivity_qs %}
+                 {% for item in adminactivity_qs %}
+                 <tr>
+                  <td>{{ forloop.counter}}</td>
+                  <td>{{ item.user}}</td>
+                  <td>{{ item.ip_address}}</td>
+                  <td>{{ item.activity}}</td>
+                  <td>{{ item.created_on}}</td>
+                </tr>
+                 {% endfor %}
+                {% else %}
+                     <tr><td colspan=6><h5>There are no records yet</h5></td></tr>
+                {% endif %}
+              </tbody>
+               </table>
+
+            </div>
+            </div>
+      </div>
+     </div>
+
+    </div> 
+{% else %}
+<div class="text-left">
+<h2>Welcome to dashboard !</h2></div>
+{% endif %}
+    </section>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

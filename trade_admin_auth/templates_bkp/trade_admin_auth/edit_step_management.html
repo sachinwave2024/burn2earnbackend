@@ -1,0 +1,116 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+    
+    <section class="content">
+   
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+        
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+
+                <div class="form-group">
+                 <label >{{form.step_value.label}}
+                    {% if form.step_value|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                  </label>
+                    {%render_field form.step_value class+="form-control" id+="step_value" placeholder=form.step_value.label min+="0" %}
+                </div>
+
+                <div class="form-group">
+                  <label >{{form.free_plan_days.label}}
+                     {% if form.free_plan_days|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.free_plan_days class+="form-control" id+="free_plan_days" placeholder=form.free_plan_days.label min+="0" %}
+                 </div>
+
+                 <div class="form-group">
+                  <label >{{form.Step_discount.label}}
+                     {% if form.Step_discount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Step_discount class+="form-control" id+="Step_discount" placeholder=form.Step_discount.label min+="0" %}
+                 </div>
+
+                 <div class="form-group">
+                  <label >{{form.Step_counter_Discount.label}}
+                     {% if form.Step_counter_Discount|req_label  %} <span class="text-danger"> * </span>{% endif %}
+                   </label>
+                     {%render_field form.Step_counter_Discount class+="form-control" id+="Step_counter_Discount" placeholder=form.Step_counter_Discount.label min+="0" %}
+                 </div>
+
+                  
+             
+            </div>
+          
+            <div class="col-md-6">
+             
+            
+            </div>
+          </div>
+        
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="tradeadmin/ListSteps_Management" class="btn btn-primary" >Back</a>
+         </div>
+        </form>
+      </div>
+
+    </section>
+
+
+
+<script>
+  $("#maxi_step").keyup('keyup blur',function(){ 
+      var node = $(this);   
+      node.val(node.val().replace(/[^0-9.]/g,'') );   
+  }); 
+</script>
+
+<script>
+  $("#step_value").keyup('keyup blur',function(){ 
+    var node = $(this);   
+    node.val(node.val().replace(/[^0-9.]/g,'') );   
+  }); 
+</script>
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

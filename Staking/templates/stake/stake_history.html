@@ -1,0 +1,399 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+ 
+    <section class="content">
+
+      <div class="loader" id="loader_spin_id" style="display: none;">
+        <div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>
+        <div class="test" style="color: white; text-align: center;"><p> File download in process...<br> Please don’t refresh the page.</p></div>
+        </div>
+  
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+  
+    <input type="hidden" id="all_user_list" value="{{dict_stake}}">
+
+    <div class="row">  
+      <div class="col-md-6 col-xs-12 pull-left"> 
+        <div class="row">
+          <form class="form-horizontal" method="post"> 
+            {% csrf_token %} 
+          <div class="col-md-3">
+          <label>Start Date :</label>
+          <input type="date" placeholder="Start Date" id="id_start_date" class="textinput textInput">
+        </div>
+          <div class="col-md-3">
+          <label>End Date :</label>
+          <input type="date" placeholder="End Date" id="id_end_date" class="textinput textInput">
+          <p class="mt-2" id="blankMsgName" style="color: red;"></p>
+        </div>
+
+        <div>
+          <button type="button" class="btn btn-primary" style="position: absolute;right: 242px;top: 21px;" onclick="CSV_stake_file_ajax()">Download CSV</button>
+        </div>
+        </form>
+        
+        </div>
+         
+        
+       </div>
+      <div class="col-md-6 col-xs-12 pull-right"> 
+           <div class="panel-group accordion" id="accordion1">
+                                                 <div class="panel panel-default">
+                                                     <div class="panel-heading">
+                                                         <div class="panel-title">
+                                                             <a id="accordion-search" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" aria-expanded="false">
+                                                              <i class="fa fa-search font-dark"></i>
+                                                        <span class="caption-subject font-dark bold uppercase">Advanced Search</span>
+                                                        <span style="float:right"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                                                             </a>
+                                                             
+                                                         </div>
+                                                         
+                                                     </div>
+                                                     <div id="collapse_1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                         <div class="panel-body">
+                                                             
+
+                                                              <form class="form-horizontal" id="Bill_Search_Form" method="get"> 
+                                                                <div class="form"> 
+                                                              <div id="div_id_Email" class="control-group">
+                                                                 <label for="id_Email" class="control-label ">
+                                                                              Email
+                                                                          </label>
+                                                                           <div class="controls"> 
+                                                                            {% if request.GET.Email != None %}
+                                                                             <input type="text" name="Email" class="textinput textInput" value=" {{request.GET.Email}}" id="id_Email"> 
+                                                                             {% else %}
+                                                                             <input type="text" name="Email" class="textinput textInput" id="id_Email"> 
+                                                                             {% endif %}
+                                                                            </div> 
+                                                                          </div> 
+                                                            <div id="div_id_date" class="control-group"> 
+                                                              <label for="id_date" class="control-label ">
+                                                                Date
+                                                                </label> <div class="controls"> 
+                                                                  {% if request.GET.date != None %}
+                                                                  <input type="date" name="date" class="textinput textInput" value="{{request.GET.date}}" id="id_date"> 
+                                                                  {% else %}
+                                                                  <input type="Date" name="date" class="textinput textInput" id="id_date"> 
+                                                                  {% endif %}
+                                                                </div> 
+                                                            </div> 
+                                                            
+                                                              </div>
+                                                              <div class="form-actions"> 
+                                                                <input type="submit" name="submit" value="Search" class="btn btn-primary" id="submit-id-submit">
+                                                                 <input type="reset" name="reset-search" value="Reset Search" class="btn btn-inverse btn btn-default" id="reset-search">
+                                                                
+                                                                 </div> 
+
+                                              
+                                                               </form>
+                                                            </div>
+                                                                       
+                                                              
+                                                                                                                       
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             </div>  
+                                        
+      </div>
+
+      <style>
+        .pagination{
+          padding-left: 500px;
+        }
+        .form{
+          display: flex;
+        }
+        .form .control-group{
+       
+          margin-right: 15px;
+          margin-bottom: 15px;
+        }
+        #example1_info {
+   padding: 25px 0;
+  }
+  
+  .pagination {
+   /* padding-left: 1015px; */
+   float: right;
+  }
+      </style>
+     
+   
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+              <div class="box-tools pull-right">
+                         
+                        </div>
+            </div>
+            <div class="table-responsive">
+           
+            <div class="box-body">
+            
+
+               <table id="example" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Email</th>
+                  <th>Amount (USDT)</th>
+                  <th>Amount (JW)</th>
+                  <th>Reward/Month</th>
+                  <th>Referral Reward Earned</th>
+                  <th>Stake Reward Earned</th>
+                  <th>Total Reward Earned</th>
+                  <th>Balance Reward</th>
+                  <th>Max Limit</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Status</th>
+                  <th>Created on</th>
+                  
+                  
+                </tr>
+                </thead>
+               
+                <tbody id="user_stake_hist_id">
+              </tbody>
+               </table>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-5">
+                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
+                  Showing {{start_value}} to {{end_value}} of {{usr_count}} entries
+                </div>
+                </div>
+            <div class="paginattion-inn d-flex justify-content-end" >
+              <div class="col-sm-7">
+              {% if stake_qs.has_other_pages %}
+              <ul class="pagination pagination mr-md-4">
+                 {% if stake_qs.has_previous %}
+                <li class="page-item"><a class="page-link font-secondary" href="?pageno={{ stake_qs.previous_page_number }}"><i class="fas fa-long-arrow-alt-left mr-2"></i>Previous</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link font-secondary" href="#"><i class="fas fa-long-arrow-alt-left mr-2"></i>Previous</a></li>
+                {% endif %}
+                {% for i in stake_qs.paginator.page_range %}
+                {% if stake_qs.number == i %}
+                <li class="page-item"><a class="page-link font-secondary " href="#">{{ i }}</a></li>
+                {% else %}
+                {% if request.GET.user != None and request.GET.Email != None %} 
+                <li class="page-item"><a class="page-link font-secondary " href="?Email={{request.GET.Email}}&submit=Search&pageno={{ i }}">{{ i }}</a></li>
+                {% else %}
+                {% if  i == startpage %}
+                <li class="page-item"><a class="page-link font-secondary " href="?pageno={{ i }}">{{ i }}</a></li>
+                {% elif i == endpage %}
+                <li class="page-item"><a class="page-link font-secondary " href="?pageno={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                 {% if stake_qs.has_next %}
+                <li class="page-item"><a class="page-link font-secondary" href="?pageno={{ stake_qs.next_page_number }}">Next <i class="fas fa-long-arrow-alt-right ml-2"></i></a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link font-secondary" href="#">Next <i class="fas fa-long-arrow-alt-right ml-2"></i></a></li>
+                {% endif %}
+              </ul>
+              {% endif %}
+              </div>
+              </div>
+            </div>
+            
+             </div>
+            
+          </div>
+          <!-- <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
+            Showing {{table.get_start_index}} to {{table.get_end_index}} of {{user_count}} entries
+          </div> -->
+        
+      </div>
+
+    </section>
+ {% endblock Content_Area %}
+ {% block Java_Scripts %}
+
+
+ <script src="https://cdn.tutorialjinni.com/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+
+ <script>
+  function search_table(){
+    
+     var user = $("#all_user_list").val();
+     var obj = JSON.parse(user)
+     
+     var len = Object.keys(obj).length
+     if (len != 0) {
+       
+       $("#user_stake_hist_id").empty();
+     k = 1
+     for (var i = 0; i < len; i++) {
+       table = ("<td>"+obj[i+1].sno+"</td><td>"+obj[i+1].email+"</td><td>"+obj[i+1].Amount_USDT+"</td><td>"+obj[i+1].Amount_JW+"</td><td>"+obj[i+1].reward_per_month +"</td><td>"+obj[i+1].ref_rew_earned +"</td><td>"+obj[i+1].rew_earned +"</td><td>"+obj[i+1].total_rew_earned +"</td><td>"+obj[i+1].rew_blnc +"</td><td>"+obj[i+1].max_limit+"</td><td>"+obj[i+1].start_date+"</td><td>"+obj[i+1].end_date+"</td>");  
+      //  table1 = ("<td>"+obj[i+1].date+"</td><td>"+obj[i+1].user_type+"</td");
+        
+       if (obj[i+1].status == 0) {
+        
+         $("#user_stake_hist_id").append("<tr>"+table+"<td>"+"Success"+"</td><td>"+obj[i+1].date+"</td></tr>")
+         k++;
+       }if(obj[i+1].status == 1){
+         
+         $("#user_stake_hist_id").append("<tr>"+table+"<td>"+"Failed"+"</td><td>"+obj[i+1].date+"</td></tr>")
+         k++;
+       }
+         
+     }
+     } else {
+        
+     }
+     
+  }
+  search_table()
+</script>
+
+
+<script>
+  $("#reset-search").click(function(){
+     window.location = "{% url Btn_url %}";
+     });
+   
+</script>
+
+<script src="https://cdn.tutorialjinni.com/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+
+<script>
+  function CSV_stake_file_ajax() {
+    $("#loader_spin_id").show();
+     $.ajax({
+         type: "POST",
+         url: '/tradeadmin/download_csv_stake_history/', 
+         data: {
+             start_date : $("#id_start_date").val(), 
+             end_date : $("#id_end_date").val(), 
+             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+         },
+         success:function(data)
+         {
+           if(data.start_date != "" && data.end_date != ""){
+              if(data.start_date <= data.end_date){
+                  if(data.data != ""){
+                    console.log(data,'data----');
+                    
+                      if (data.status == "true") {
+                        
+                        const str_date = data.start_date
+                        const end_date = data.end_date
+
+                        const csv = $.csv.fromObjects(data.data);
+                        downloadBlobAsFile(csv, str_date + '_to_' + end_date + ' transaction.csv' );
+                        $("#loader_spin_id").hide();
+                      } else {
+                        alert("No records found !!!!")
+                        $("#loader_spin_id").hide();
+                      }
+                }else{
+                  alert("No records found.")
+                  $("#loader_spin_id").hide();
+              }
+            }else{
+              alert("Invalid end date.")
+              $("#loader_spin_id").hide();
+            }
+          }else{
+            alert("Make sure select date.")
+            $("#loader_spin_id").hide();
+          }
+         },
+     });
+     };
+
+    const downloadBlobAsFile = function(csv, filename){
+      var downloadLink = document.createElement("a");
+      var blob = new Blob([csv], { type: 'text/csv' });
+      var url = URL.createObjectURL(blob);
+      downloadLink.href = url;
+      downloadLink.download = filename;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+
+ </script>
+
+
+<style>
+/*-- -- -- -- -|| Loader Styles Start Here ||- -- -- -- --*/
+.loader {
+    background: rgba(0, 4, 10, 0.9) none repeat scroll 0 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+.spinner {
+    height: 40px;
+    margin: auto;
+    position: absolute;
+    width: 40px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+}
+.double-bounce2 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+/*-- -- -- -- -|| Loader Styles End Here ||- -- -- -- --*/
+
+</style>
+
+ {% endblock %}
+
+

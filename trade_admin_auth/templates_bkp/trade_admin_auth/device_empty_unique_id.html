@@ -1,0 +1,195 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+ 
+    <section class="content">
+
+      <div class="loader" id="loader_spin_id" style="display: none;">
+        <div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>
+        <div class="test" style="color: white; text-align: center;"><p> File download in process...<br> Please don’t refresh the page.</p></div>
+        </div>
+  
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+  
+
+      <style>
+        .pagination{
+          padding-left: 700px;
+        }
+        .form{
+          display: flex;
+        }
+        .form .control-group{
+       
+          margin-right: 15px;
+          margin-bottom: 15px;
+        }
+        #example1_info {
+   padding: 25px 0;
+  }
+  
+  .pagination {
+   /* padding-left: 1015px; */
+   float: right;
+  }
+      </style>
+      <div class="row ">   
+      </div>
+   
+      <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+              <div class="box-tools pull-right">                         
+                        </div>
+            </div>
+
+             <div class="table-responsive">
+          
+            <div class="box-body">
+              <table id="examples" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                  <th  class="no-sort">S.No</th>
+                  <th  class="no-sort">Email</th>
+                  <th  class="no-sort">Name</th>
+                  <th  class="no-sort">User Phone_Number</th>
+                  <th  class="no-sort">Device Unique Id</th>
+                    </tr>
+                </thead>
+            </table>
+              
+            </div>
+            </div>
+          
+          </div>
+        
+      </div>
+
+    </section>
+ {% endblock Content_Area %}
+ {% block Java_Scripts %}
+
+
+ <script src="https://cdn.tutorialjinni.com/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+
+ 
+
+
+
+
+<style>
+/*-- -- -- -- -|| Loader Styles Start Here ||- -- -- -- --*/
+.loader {
+    background: rgba(0, 4, 10, 0.9) none repeat scroll 0 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+.spinner {
+    height: 40px;
+    margin: auto;
+    position: absolute;
+    width: 40px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+    animation: sk-bounce 2.0s infinite ease-in-out;
+}
+.double-bounce2 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+/*-- -- -- -- -|| Loader Styles End Here ||- -- -- -- --*/
+
+</style>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+<script>
+
+  $(document).ready(function() {
+    var table =  $('#examples').DataTable({
+      bFilter: false,
+      ajax: {
+      url: '/tradeadmin/user_empty_device_id/',
+      type: 'POST',
+     
+      },
+      columns: [
+        { data: null },
+        { data: 'Email' },
+        { data: 'Name' },
+        { data: 'user_phone_number' },
+        { data: 'device_unique_id' },
+
+
+        
+    ],
+      processing: true,
+      serverSide: true,
+      drawCallback: function (settings) { 
+          var response = settings.json;
+          $('.sorting_1').each(function(i){
+            $(this).html(response.tt[i])
+          })
+      }, 
+    });    
+    $("#Bill_Search_Form").on("submit", function (event) {
+  
+      event.preventDefault();
+  
+      $('table#examples').dataTable().fnDraw();
+      
+    })
+    
+   });
+   
+   </script>
+
+ {% endblock %}
+
+

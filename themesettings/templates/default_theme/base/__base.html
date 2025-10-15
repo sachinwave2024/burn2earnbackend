@@ -1,0 +1,326 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{comp_profile_name}} | {{Title}}</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/bootstrap/dist/css/bootstrap.min.css" %}">
+
+  
+
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/font-awesome/css/font-awesome.min.css" %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/Ionicons/css/ionicons.min.css" %}">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" %}">
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static "admin_assets/dist/css/AdminLTE.min.css" %}">
+  <link rel="stylesheet" href="{% static "admin_assets/dist/css/skins/_all-skins.min.css" %}">
+
+ 
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+ <link rel="stylesheet" href="{% static "admin_assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" %}">
+  <link rel="stylesheet" href="{% static "admin_assets/bower_components/boostarpdatetimepicker/css/bootstrap-datetimepicker.min.css" %}">
+  <link rel="stylesheet" href="{% static "admin_assets/lobibox/css/lobibox.min.css" %}">
+
+  <link rel="shortcut icon" type="image/png" href="{% if company_fav.url != '' %}{{company_fav.url}}{% endif %}"/>
+  <!-- jQuery 3 -->
+  <script src="{% static "admin_assets/bower_components/jquery/dist/jquery.min.js" %}"></script>
+  {% block Style_sheets %}
+<style>
+.google-visualization-orgchart-table{
+  border-collapse:separate;
+}
+
+</style>
+  {% endblock Style_sheets %}
+  <style>
+    .loader {
+  background: rgba(0, 4, 10, 0.9) none repeat scroll 0 0;
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+}
+.spinner {
+  height: 40px;
+  margin: auto;
+  position: absolute;
+  width: 40px;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #fff;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+.double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+ @-webkit-keyframes sk-bounce {
+0%, 100% {
+-webkit-transform: scale(0.0)
+}
+50% {
+-webkit-transform: scale(1.0)
+}
+}
+ @keyframes sk-bounce {
+0%, 100% {
+transform: scale(0.0);
+-webkit-transform: scale(0.0);
+}
+50% {
+transform: scale(1.0);
+-webkit-transform: scale(1.0);
+}
+}
+.test {
+  height: 115%;
+  position: relative
+}
+.test p {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+  </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="/tradeadmin/dashboard/" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini">
+        {% if comp_company_logo %}
+           <img src="{{ comp_company_logo.url }}" alt="company logo"  />
+          {%else%}
+          <b>{{ comp_profile_name }}</b>
+        {% endif %}
+
+      </span>
+      <!-- logo for regular state and mobile devices -->
+      {% load static %}
+        
+      <span class="logo-lg">
+          {% if comp_company_logo %}
+          <img src="{{ comp_company_logo.url }}" alt="company logo"   />
+          {%else%}
+          <b>{{ comp_profile_name }}</b>
+          {% endif %}
+      </span>
+    </a>
+    <!-- Header navbar start-->
+    {% block Nav_bar %}
+  
+        {% include  "default_theme/base/__Nav_Bar.html" %}
+  
+    {% endblock Nav_bar %}
+    <!-- Header navbar end-->
+      <!-- profile setting start-->
+    {% block Profile_Settings %}
+      
+            {% include  "default_theme/base/_ProfileSetting.html" %}
+      
+    {% endblock Profile_Settings %}
+
+       <!-- profile setting end-->
+         {% comment %}
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+         {% endcomment %} 
+        </ul>
+      </div>
+    </nav>
+  </header>
+ <!-- BEGIN SIDEBAR -->
+  {% block Side_bar %}
+
+      {% include  "default_theme/base/_side_bar.html" %}
+        
+  {% endblock Side_bar %}
+  <!-- End SIDEBAR -->
+ 
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- BEGIN PAGE BAR -->
+    {% block BreadCrumbs %}
+      {% include  "default_theme/base/_breadCRUMB.html" %}
+    {% endblock BreadCrumbs %}
+    <!-- END PAGE BAR -->
+    <!--  Main content start -->
+<div class="loader" id="myLoad" style="display: none;">
+<div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>
+<div class="test" style="color: white; text-align: center;"><p> Transaction in Process...<br> Please don’t click or refresh the page.  <br> Please check your transaction on binance smart chain network. </p></div>
+</div>
+    {% block Content_Area %}
+
+        {% include  "default_theme/base/maincontent.html" %}
+    {% endblock Content_Area %}
+    <!--  Main content end -->
+  </div>
+  <!-- /.content-wrapper -->
+  {% block Footer %}
+        {% include  "default_theme/base/_Footer.html" %}
+  {% endblock Footer %}
+  
+
+ 
+</div>
+<!-- ./wrapper -->
+
+
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static "admin_assets/bower_components/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+
+
+<!-- DataTables -->
+<script src="{% static "admin_assets/bower_components/datatables.net/js/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "admin_assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js" %}"></script>
+<!-- SlimScroll -->
+<script src="{% static "admin_assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js" %}"></script>
+<!-- FastClick -->
+{% comment %}
+<script src="{% static "admin_assets/bower_components/fastclick/lib/fastclick.js" %}"></script>
+{% endcomment %}
+<!-- AdminLTE App -->
+<script src="{% static "admin_assets/dist/js/adminlte.min.js" %}"></script>
+
+<!-- AdminLTE for demo purposes -->
+<script src="{% static "admin_assets/plugins/iCheck/icheck.min.js" %}"></script>
+<script src="{% static "admin_assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" %}"></script>
+<script src="{% static "admin_assets/bower_components/boostarpdatetimepicker/js/bootstrap-datetimepicker.js" %}"></script>
+<script src="{% static "admin_assets/bower_components/boostarpdatetimepicker/js/locales/bootstrap-datetimepicker.fr.js" %}"></script>
+<script src="{% static "admin_assets/lobibox/js/lobibox.min.js" %}"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : false,
+      'info'        : true,
+      'autoWidth'   : false,
+      'aaSorting': [[0, 'desc']]
+    })
+  })
+  $('.datepicker').datepicker({
+      autoclose: true
+    })
+  function start_loader()
+   {
+    $('#myLoad').show();
+   
+   }
+
+  function stop_loader()
+  {
+    
+    
+    $('#myLoad').hide();
+    
+
+  }
+  //start_loader();
+</script>
+<script>
+  $(document).ready(function(){
+   document.addEventListener("contextmenu", function(e){
+        e.preventDefault();
+      }, false)
+/*
+document.onkeydown = function(e) {
+            if(e.keyCode == 123) {
+             return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+             return false;
+            }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+             return false;
+            }
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+             return false;
+            }
+
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){
+             return false;
+            }      
+         }
+ */    
+  });
+</script>
+
+<script type="text/javascript">
+ $(".alert").delay(2500).slideUp(1000, function(){
+ $(this).alert('close');
+ });
+ </script>
+
+{% block Java_Scripts %}
+   
+<script type="text/javascript">
+
+$(document).ready(function(){
+start_loader();
+stop_loader();
+
+
+});
+function start_loader()
+   {
+    $('#myLoad').show();
+    alert('test')
+   }
+
+  function stop_loader()
+  {
+    
+    
+    $('#myLoad').hide();
+    alert('test2')
+
+  }
+
+</script>
+
+
+{% endblock %}
+
+</body>
+</html>

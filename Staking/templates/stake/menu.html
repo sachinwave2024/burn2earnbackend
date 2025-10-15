@@ -1,0 +1,53 @@
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_stake == 0 %}
+<li class="{% if activecls == 'maketplace'%} active {% endif %} treeview">
+  <a href="">
+    <i class="fa fa-money"></i> <span>Staking Management</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+    <li><a href="/stake/Edit_Staking_Plan/1/"><i class="fa fa-circle-o"></i>Stake Admin Management</a></li>
+    <li><a href="{% url 'staking:List_Staking_Referral' %}"><i class="fa fa-circle-o"></i>Stake Referral Management</a></li>
+    <li><a href="{% url 'staking:List_Stake' %}"><i class="fa fa-circle-o"></i>Stake History</a></li>
+    <li><a href="{% url 'staking:List_Stake_Deposit_History' %}"><i class="fa fa-circle-o"></i>Stake Deposit History</a></li>
+    <li><a href="{% url 'staking:List_Stake_Claim_History' %}"><i class="fa fa-circle-o"></i>Stake Claim History</a></li>   
+  </ul>
+</li>
+<li class="{% if activecls == 'maketplace'%} active {% endif %} treeview">
+  <a href="">
+    <i class="fa fa-money"></i> <span>Staking Credit Management</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+    <li><a href="/stake/Edit_Staking_Monthly_Plan/1/"><i class="fa fa-circle-o"></i>Stake Credit Admin Management</a></li>
+    <li><a href="{% url 'staking:List_Stake_credit' %}"><i class="fa fa-circle-o"></i>Stake Credit History</a></li>
+  </ul>
+</li>
+{% endif %}
+
+{% if request.user.admin_user_profile.role == 0  or menu_permissions_context_internal == 0 %}
+<li class="{% if activecls == 'maketplace'%} active {% endif %} treeview">
+  <a href="">
+    <i class="fa fa-money"></i> <span>Internal Transfer</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+    <li>
+      <a href="/stake/internal_transfer_fees_update/1/">
+        <i class="fa fa-server"></i> <span>Internal Transfer Management</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'staking:List_Internal_Transfer_History' %}">
+        <i class="fa fa-server"></i> <span>Internal Transfer History</span>
+      </a>
+    </li>
+  </ul>
+</li>
+{% endif %}
+

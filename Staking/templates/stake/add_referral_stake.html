@@ -1,0 +1,246 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+
+{% block Style_sheets %}
+{{ subadmin_formset.media.css }}
+{% endblock Style_sheets %}
+{% load widget_tweaks %}
+
+ {% block Content_Area %}
+   
+    <section class="content">
+      
+     
+     <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+            {% comment %}
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            {% endcomment %}
+          </div>
+        </div>
+        {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+         
+         <form role="form" action="" method='post' enctype="multipart/form-data" novalidate ="novalidate">
+             {% csrf_token %} 
+             {{ form.media }}
+       
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-6">
+              
+
+                <div class="form-group">
+                 <label >{{form.levels.label}} 
+                    <span class="text-danger"> * </span>
+                  </label>
+                    {% render_field form.levels class+="form-control" placeholder=form.levels.label required+="required" min+=0 onkeypress+="return event.charCode >= 48 && event.charCode <= 57"%}
+                    {% if form.levels.errors %}
+                        {% for error in form.levels.errors %}
+                        <span class="text-danger">* {{ error|escape }} </span>
+                        {% endfor %}
+                        {% endif %}
+                </div>
+
+              </div>
+              </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.self_stake_Amount.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.self_stake_Amount class+="form-control" placeholder=form.self_stake_Amount.label required+="required" min+=0 oninput+="range_off()" %}
+                    <p class="mt-2" id="error_msg" style="color: red;"></p>
+                    
+                    {% if form.self_stake_Amount.errors %}
+                    {% for error in form.self_stake_Amount.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" id="vall" value=" {{plan_object.self_stake_Amount_range__max}}"/>
+
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.self_stake_Amount_range.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.self_stake_Amount_range class+="form-control" placeholder=form.self_stake_Amount_range.label required+="required" min+=0 oninput+="range_off_stake_range()" %}
+                    <p class="mt-2" id="error_msg_stake_range" style="color: red;"></p>
+                    <p class="mt-2" id="Min_Max_Error" style="color: red;"></p>
+                    
+                    {% if form.self_stake_Amount_range.errors %}
+                    {% for error in form.self_stake_Amount_range.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.first_level_stake.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.first_level_stake class+="form-control" placeholder=form.first_level_stake.label required+="required" id+="id_min_stake" min+=0%}
+                    
+                    {% if form.first_level_stake.errors %}
+                    {% for error in form.first_level_stake.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.secound_level_stake.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.secound_level_stake class+="form-control" placeholder=form.secound_level_stake.label required+="required" id+="id_min_stake" min+=0%}
+                    
+                    {% if form.secound_level_stake.errors %}
+                    {% for error in form.secound_level_stake.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >{{form.status.label}} 
+                    <span class="text-danger"> * </span>
+                    </label>
+                    {% render_field form.status class+="form-control" placeholder=form.status.label required+="required" id+="id_min_stake" min+=0%}
+                    
+                    {% if form.status.errors %}
+                    {% for error in form.status.errors %}
+                    <span class="text-danger">* {{ error|escape }} </span>
+                    {% endfor %}
+                    {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" id="id_stake_range_amt" value="{{plan_object}}">
+
+          <style>
+            .column {
+              float: left;
+              width: 33.33%;
+              padding: 5px;
+            }
+            
+            .row::after {
+              content: "";
+              clear: both;
+              display: table;
+            }
+          </style>
+
+         <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                &nbsp;&nbsp; &nbsp;&nbsp;
+                <a href="{% url Btn_url %}" class="btn btn-primary" >Back</a>
+         </div>
+          </form>
+      </div>
+
+     </section>
+
+
+
+<script>
+    function min_max_chk(event){
+      min_amount = document.getElementById("id_min_stake").value
+      max_amount = document.getElementById("id_max_stake").value
+      referral_min_amount = document.getElementById("referral_withdraw_minimum_limit").value
+      referral_max_amount = document.getElementById("referral_withdraw_maximum_limit").value
+      if (parseInt(health_min_amount) > parseInt(health_max_amount)){
+          document.getElementById("blank").innerHTML = 'Maximum Withdraw Limit should be Greater';
+          } else{
+            document.getElementById("blank").innerHTML = "";
+          }
+      if (parseInt(referral_min_amount) > parseInt(referral_max_amount)){
+        document.getElementById("blank0").innerHTML = 'Maximum Withdraw Limit should be Greater';
+      } else{
+        document.getElementById("blank0").innerHTML = "";
+      }
+
+
+    }
+</script>
+
+
+<script>
+  function range_off(event){
+    const x = $("#id_self_stake_Amount").val();
+    const y = $("#vall").val();
+    if (_.inRange(x, 0, parseInt(y)) || parseInt(x) == parseInt(y)) {
+      // something
+      document.getElementById("error_msg").innerHTML = "**Already in range."
+    }
+    else{
+      document.getElementById("error_msg").innerHTML = ""
+    }
+  }
+</script>
+
+<script>
+  function range_off_stake_range(event){
+    const x = $("#id_self_stake_Amount_range").val();
+    const y = $("#vall").val();
+    if (_.inRange(x, 0, parseInt(y)) || parseInt(x) == parseInt(y)) {
+      // something
+      document.getElementById("error_msg_stake_range").innerHTML = "**Already in range."
+    }
+    else{
+      document.getElementById("error_msg_stake_range").innerHTML = ""
+    }
+    Min = $("#id_self_stake_Amount").val();
+    Max = $("#id_self_stake_Amount_range").val();  
+    if (parseInt(Max) < parseInt(Min)){
+    document.getElementById("Min_Max_Error").innerHTML = '**Maximum Range Should be Greate Than Minimum';
+    } else{
+      document.getElementById("Min_Max_Error").innerHTML = "";
+    }
+  }
+</script>
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ {% endblock %}
+
+

@@ -1,0 +1,465 @@
+{% extends 'default_theme/base/__base.html' %}
+{% load static %} 
+
+{% load form_custom %}
+
+{% block Style_sheets %}
+
+
+{% endblock Style_sheets %}
+
+ {% load render_table from django_tables2 %}
+
+ {% block Content_Area %}
+ 
+    <section class="content">
+    
+     
+   	 <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">{{ Title}}</h3>
+          <div class="box-tools pull-right">
+          </div>
+        </div>
+     {% if messages %}
+     {% for message in messages %}
+     <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    
+   
+     <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"></h3>
+            </div>
+            <div class="table-responsive">
+            
+            <div class="box-body">
+              {% comment %}
+               {% render_table table %} 
+              {% endcomment %}
+              
+              <!-- <div class="head-user d-flex justify-content-end p-3">
+                <div class="user-wrapper">
+                  <div class="right-inner-addon input-container">
+                    
+                    <input type="text" class="form-control font-firabook font12" id="id_findtext"  placeholder="Search Keywords..." />
+                  </div>
+                </div>
+              </div> -->
+              <input type="hidden" id="all_user_list" value="{{dict_users_list}}">
+              <div class="row ">   
+                <div class="col-md-6 col-xs-12 pull-left"> 
+                  <div class="row">
+                    <form class="form-horizontal" method="post"> 
+                      {% csrf_token %} 
+                    <div class="col-md-3">
+                  <!-- <div class="form-control"> -->
+                    <label>Start Date :</label>
+                    <input type="date" placeholder="Start Date" id="id_start_date" class="textinput textInput">
+                  </div>
+                  <!-- </div> -->
+                    <div class="col-md-3">
+                  <!-- <div class="form-control"> -->
+                    <label>End Date :</label>
+                    <input type="date" placeholder="End Date" id="id_end_date" class="textinput textInput">
+                    <p class="mt-2" id="blankMsgName" style="color: red;"></p>
+                  <!-- </div> -->
+                  </div>
+          
+                  <div>
+                    <button type="button" class="btn btn-primary" onclick="CSV_file_ajax()">Download CSV</button>
+                  </div>
+                  </form>
+                  </div>
+                  
+                 </div>  
+              <div class="row ">   
+                <div class="col-md-6 col-xs-12 pull-right"> 
+                     <div class="panel-group accordion" id="accordion1">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <a id="accordion-search" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1" aria-expanded="false">
+                                 <i class="fa fa-search font-dark"></i>
+                           <span class="caption-subject font-dark bold uppercase">Advanced Search</span>
+                           <span style="float:right"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+                                </a>
+                                
+                            </div>
+                            
+                        </div>
+                        <div id="collapse_1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                              
+                                
+
+                                 <form class="form-horizontal" id="Bill_Search_Form" method="get"> 
+                                   <div class="form">
+                                   <div id="div_id_Name" class="control-group"> 
+                                     <label for="id_Name" class="control-label ">
+                                   
+                                                 User Name
+                                   </label> 
+                                   <div class="controls">
+                                     {% if request.GET.Name != None %} 
+                                     <input type="text" name="Name" class="textinput textInput" value=" {{request.GET.Name}}" id="id_Name"> 
+                                     {% else %}
+                                     <input type="text" name="Name" class="textinput textInput" id="id_Name"> 
+                                     {% endif%}
+                                   </div> 
+                                 </div> 
+                                 <div id="div_id_Email" class="control-group">
+                                    <label for="id_Email" class="control-label ">
+                                                 User Email Address
+                                             </label>
+                                              <div class="controls"> 
+                                               {% if request.GET.Email != None %}
+                                                <input type="text" name="Email" class="textinput textInput" value=" {{request.GET.Email}}" id="id_Email"> 
+                                                {% else %}
+                                                <input type="text" name="Email" class="textinput textInput" id="id_Email"> 
+                                                {% endif %}
+                                               </div> 
+                                             </div> 
+                                             <div id="div_id_Referral_id" class="control-group"> 
+                                               <label for="id_Referral_id" class="control-label ">
+                                                 Referral id
+                                 </label> <div class="controls"> 
+                                   {% if request.GET.Referral_id != None %}
+                                   <input type="text" name="Referral_id" class="textinput textInput" value="{{request.GET.Referral_id}}" id="id_Referral_id"> 
+                                   {% else %}
+                                   <input type="text" name="Referral_id" class="textinput textInput" id="id_Referral_id"> 
+                                   {% endif %}
+                                 </div> 
+                               </div> 
+                               
+                                 </div>
+                                 <div class="form-actions"> 
+                                   <input type="submit" name="submit" value="Search" class="btn btn-primary" id="submit-id-submit">
+                                    <input type="reset" name="reset-search" value="Reset Search" class="btn btn-inverse btn btn-default" id="reset-search">
+                                    </div> 
+                                  </form>
+                               </div>
+                                          
+                                 
+                                                                                          
+                            </div>
+                        </div>
+                                                           </div>
+                                                       </div>  
+                                                  
+                </div>
+
+               <table id="example" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Username</th>
+                  <th>User Email Address</th>
+                  <th>Referral id</th>
+                  <th>Ref User</th>
+                  <th>App Version</th>
+                  <th>Active plan</th>
+                  <th>Phone type</th>
+                  <th>Status</th>
+                  <th>Created on</th>
+                  <th>User Type</th>
+                  <th>Actions</th>
+                  <th>Wallet address</th>
+                  <th>History</th>
+                  <th>Referal History</th>
+                  <th>OrderHistory</th>
+                  <th>Add Plan</th>
+                  <th>Step Update</th>
+                  <th>Missing reward update</th>
+                  <th>Staking history</th>
+
+
+                </tr>
+                </thead>
+                
+                <tbody id="users_table_id">
+
+                    
+                 {% if trade_qs %}
+                 {% for item in trade_qs %}
+                 <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ item.user_name }}</td>
+                  <td>{{ item.Email }}</td>
+                  <td>{{ item.Referral_id }}</td>
+                  <td>{{ item.Direct_referral_id }}</td>
+                  <td>{{ item.phone_number }}</td>
+                  <td>{{ item.plan }}1</td>
+                  <td>{{ item.user_profile_pic }}</td>
+                  <td>{{ item.get_status_display }}</td>
+                  <td>{{ item.created_on }}</td>
+                  <td>{{ item.User_type }}</td>
+                  <td>
+                    <a href="/tradeadmin/Edit_User_Management/{{item.id}}/" title="Edit"><i class="fa fa-edit"></i></a>
+                 </td>
+                 <td>
+                  <a href="/tradeadmin/user_history_table/{{item.id}}/" title="Edit"><i class="fa fa-edit"></i></a>
+               </td>
+               <td>
+                <a href="/tradeadmin/user_history_table/{{item.id}}/" title="Edit"><i class="fa fa-edit"></i></a>
+             </td>
+                </tr>
+                 {% endfor %}
+                {% else %}
+                     <tr><td colspan=16><h5>There are no records yet</h5></td></tr>
+                {% endif %}
+              </tbody>
+               </table>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-5">
+                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
+                  Showing {{start_value}} to {{end_value}} of {{usr_count}} entries
+                </div>
+              </div>
+            <div class="paginattion-inn d-flex justify-content-end" >
+              <div class="col-sm-7">
+              {% if trade_qs.has_other_pages %}
+              <ul class="pagination pagination mr-md-4">
+                 {% if trade_qs.has_previous %}
+                <li class="page-item"><a class="page-link font-secondary" href="?pageno={{ trade_qs.previous_page_number }}"><i class="fas fa-long-arrow-alt-left mr-2"></i>Previous</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link font-secondary" href="#"><i class="fas fa-long-arrow-alt-left mr-2"></i>Previous</a></li>
+                {% endif %}
+                {% for i in trade_qs.paginator.page_range %}
+                {% if trade_qs.number == i %}
+                <li class="page-item"><a class="page-link font-secondary " href="#">{{ i }}</a></li>
+                {% else %}
+                {% if request.GET.username != None and request.GET.Email != None %} 
+                <li class="page-item"><a class="page-link font-secondary " href="?username={{request.GET.username}}&Email={{request.GET.Email}}&submit=Search&pageno={{ i }}">{{ i }}</a></li>
+                {% else %}
+                {% if  i == startpage %}
+                <li class="page-item"><a class="page-link font-secondary " href="?pageno={{ i }}">{{ i }}</a></li>
+                {% elif i == endpage %}
+                <li class="page-item"><a class="page-link font-secondary " href="?pageno={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                 {% if trade_qs.has_next %}
+                <li class="page-item"><a class="page-link font-secondary" href="?pageno={{ trade_qs.next_page_number }}">Next <i class="fas fa-long-arrow-alt-right ml-2"></i></a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link font-secondary" href="#">Next <i class="fas fa-long-arrow-alt-right ml-2"></i></a></li>
+                {% endif %}
+              </ul>
+              {% endif %}
+              </div>
+              </div>
+            </div>
+           
+          </div>
+            </div>
+           
+          </div>
+        
+        </div>
+
+
+    </section>
+   
+    <style>
+      .head-user {
+          align-content: end;
+          width: 100%;
+        }
+        .p-3 {
+            padding: 1rem !important;
+          }
+        .justify-content-end {
+            justify-content: flex-end !important;
+          }
+      .d-flex {
+          display: flex !important;
+        }
+        .user-wrapper {
+          display: flex;
+          align-items: center;
+        }
+        .right-inner-addon {
+            position: relative;
+          }
+          .pagination{
+            /* padding-left: 1300px; */
+            float: right;
+          }
+          .form{
+            display: flex;
+          }
+          .form .control-group{
+     margin-right: 15px;
+     margin-bottom: 15px;
+   }
+   #example1_info {
+ padding: 25px;
+}
+   
+    </style>
+
+
+
+ {% endblock Content_Area %}
+
+ {% block Java_Scripts %}
+
+ 
+
+ <script>
+   function search_table(){
+     
+      var user = $("#all_user_list").val();
+      var obj = JSON.parse(user)
+      var len = Object.keys(obj).length
+      if (obj) {
+        
+        $("#users_table_id").empty();
+      k = 1
+      for (var i = 0; i < len; i++) {
+        table = ("<td>"+obj[i+1].sno+"</td><td>"+obj[i+1].username+"</td><td>"+obj[i+1].email+"</td><td>"+obj[i+1].ref_id +"</td><td>"+obj[i+1].ref_user+"</td><td>"+obj[i+1].App_version+"</td><td>"+obj[i+1].Plan+"</td><td>"+obj[i+1].phone_type+"</td>");
+        table1 = ("<td>"+obj[i+1].date+"</td><td>"+obj[i+1].user_type+"</td><td>"+"<a href='/tradeadmin/Edit_User_Management/"+obj[i+1].id+"/'  ><i class='fa fa-edit'></i></a></td><td><a href='/tradeadmin/User_Wallet_Address_Detail/"+obj[i+1].id+"/'><i class='fa fa-list'></i></a></td><td><a href='/tradeadmin/user_history_table/"+obj[i+1].id+"/' ><i class='fa fa-history'></i></a></td><td><a href='/tradeadmin/user_referal_history_table/"+obj[i+1].id+"/'><i class='fa fa-history'></i></a></td><td><a href='/tradeauth/user_order_history_table/"+obj[i+1].id+"/'><i class='fa fa-history'></i></a></td><td><a href='/tradeadmin/Add_User_Plan/"+obj[i+1].id+"/' ><i class='fa fa-briefcase'></i></a></td><td><a href='/tradeadmin/step_update_user/"+obj[i+1].id+"/'><i class='fa fa-edit'></i></a></td><td><a href='/tradeadmin/missing_reward_update_admin/"+obj[i+1].id+"/' ><i class='fa fa-history'></i></a></td><td><a href='/stake/user_stake_history_table/"+obj[i+1].id+"/' ><i class='fa fa-history'></i></a></td>");
+        if (obj[i+1].status == 0) {
+          $("#users_table_id").append("<tr>"+table+"<td>"+"Active"+"</td>"+table1+"</tr>")
+          k++;
+        } else {
+          $("#users_table_id").append("<tr>"+table+"<td>"+"Inactive"+"</td>"+table1+"</tr>")
+          k++;
+        }
+          
+      }
+      } else {
+        
+      }
+      
+   }
+   search_table()
+ </script>
+
+ <script>
+   $("#reset-search").click(function(){
+      window.location = "/tradeadmin/dashboard/";
+      });
+    
+ </script>
+
+<script src="https://cdn.tutorialjinni.com/jquery-csv/1.0.11/jquery.csv.min.js"></script>
+
+<script>
+  function CSV_file_ajax() {
+    $("#loader_spin_id").show();
+     $.ajax({
+         type: "POST",
+         url: '/tradeadmin/download_csv_user_management_report/', 
+         data: {
+             start_date : $("#id_start_date").val(), 
+             end_date : $("#id_end_date").val(), 
+             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+         },
+         success:function(data)
+         {
+           if(data.start_date != "" && data.end_date != ""){
+              if(data.start_date <= data.end_date){
+                  if(data.data != ""){
+                    
+                      if (data.status == "true") {
+                        
+                        const str_date = data.start_date
+                        const end_date = data.end_date
+
+                        const csv = $.csv.fromObjects(data.data);
+                        downloadBlobAsFile(csv, str_date + '_to_' + end_date + ' transaction.csv' );
+                        $("#loader_spin_id").hide();
+                      } else {
+                        alert("No records found !!!!")
+                        $("#loader_spin_id").hide();
+                      }
+                }else{
+                  alert("No records found.")
+                  $("#loader_spin_id").hide();
+              }
+            }else{
+              alert("Invalid end date.")
+              $("#loader_spin_id").hide();
+            }
+          }else{
+            alert("Make sure select date.")
+            $("#loader_spin_id").hide();
+          }
+         },
+     });
+     };
+
+    const downloadBlobAsFile = function(csv, filename){
+      var downloadLink = document.createElement("a");
+      var blob = new Blob([csv], { type: 'text/csv' });
+      var url = URL.createObjectURL(blob);
+      downloadLink.href = url;
+      downloadLink.download = filename;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+
+ </script>
+
+<script>
+  $("#id_user").hide()
+  $("#div_id_user").hide()
+</script>
+
+
+<style>
+  /*-- -- -- -- -|| Loader Styles Start Here ||- -- -- -- --*/
+  .loader {
+      background: rgba(0, 4, 10, 0.9) none repeat scroll 0 0;
+      bottom: 0;
+      height: 100%;
+      left: 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 100%;
+      z-index: 9999;
+  }
+  .spinner {
+      height: 40px;
+      margin: auto;
+      position: absolute;
+      width: 40px;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+  }
+  .double-bounce1, .double-bounce2 {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #fff;
+      opacity: 0.6;
+      position: absolute;
+      top: 0;
+      left: 0;
+      -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+      animation: sk-bounce 2.0s infinite ease-in-out;
+  }
+  .double-bounce2 {
+      -webkit-animation-delay: -1.0s;
+      animation-delay: -1.0s;
+  }
+  /*-- -- -- -- -|| Loader Styles End Here ||- -- -- -- --*/
+  
+  </style>
+ {% endblock %}
+
