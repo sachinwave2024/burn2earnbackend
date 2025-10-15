@@ -27,8 +27,9 @@ REPOSITORY_ROOT= os.path.dirname(BASE_DIR)
 SECRET_KEY = 'mima8^^t85_64er*cbw376dvjms%n-!5!sz4x511j$8#@pc_96'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+#DEBUG = True
+DEBUG = False
+
 
 # ALLOWED_HOSTS = ['*','localhost','192.168.1.255','172.31.35.106','https://apinode.keepwalkking.io','172.31.38.104','localhost:8000']
 ALLOWED_HOSTS = ['*','localhost','165.227.31.56','https://api.burn2earn.org','localhost:8000']
