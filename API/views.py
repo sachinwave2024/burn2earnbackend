@@ -1438,6 +1438,7 @@ def Pin_set(request):
     
 
 
+
 @api_view(['POST'])
 def User_Login(request):
         main = load_maintanance(request)
@@ -1458,7 +1459,7 @@ def User_Login(request):
         except:
             user_count = User_Management.objects.filter(Email = email).count()
             if user_count == 0:
-                user_data={"Msg":"User Does Not exists6",'status':'false'}
+                user_data={"Msg":"User Does Not exists",'status':'false'}
                 return Response(user_data)
             if user_count == 1:
                 user = User_Management.objects.get(Email = email)
@@ -1557,7 +1558,7 @@ def User_Login(request):
                     user_data={"Msg":"Login Successfully",'status':'true','token':token.key,"userStatus":msg,'referral_code':ref_code.referal_code,'setType':user.User_Verification_Status,'User_type':user.User_type,'ActivateStatus':Activestatus}
                     return Response(user_data)
                 except:
-                    user_data={"Msg":"User Does Not exists5",'status':'false','token':token.key}
+                    user_data={"Msg":"User Does Not exists",'status':'false','token':token.key}
                     return Response(user_data)
             if user_type == "facebook":
                 try:
@@ -1597,7 +1598,7 @@ def User_Login(request):
                     user_data={"Msg":"Login Successfull",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':user.User_type,'setType':user.User_Verification_Status,'ActivateStatus':Activestatus,'isTfaEnable':user_twofa} 
                     return Response(user_data)
                 except:
-                    user_data={"Msg":"User Does Not exists4",'status':'false','token':token.key}
+                    user_data={"Msg":"User Does Not exists",'status':'false','token':token.key}
                     return Response(user_data) 
             if user_type == "gmail" :
                 try:
@@ -1623,7 +1624,7 @@ def User_Login(request):
                             msg = "OldUser"
                         eemail = email[:4]
                         eemail_last = email[-6:]
-                        user_data= {"Msg":"Login Successfull",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':user.User_type,"userStatus":msg,'setType':user.User_Verification_Status,'ActivateStatus':Activestatus} 
+                        user_data= {"Msg":"Login Successfull",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':user.User_type,"userStatus":msg,'setType':user.User_Verification_Status,'ActivateStatus':Activestatus,'wallet_address':wallet_address} 
                         return Response(user_data)
                     except:
                         user_id = user.id
@@ -1675,7 +1676,7 @@ def User_Login(request):
                     user_data= {"Msg":"Login Successfull",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':user.User_type,"userStatus":msg,'setType':user.User_Verification_Status,'ActivateStatus':Activestatus,'isTfaEnable':user_twofa,"Version":company.Android_version,'wallet_address':wallet_address} 
                     return Response(user_data)
                 except:
-                    user_data={"Msg":"User Does Not exists3",'status':'false','token':token.key}
+                    user_data={"Msg":"User Does Not exists",'status':'false','token':token.key}
                     return Response(user_data)  
             if user_type == "normaluser":
                 if user.status != 2:
@@ -1732,18 +1733,18 @@ def User_Login(request):
                             status.save()
                         user_twofa = status.user_status
                         company = Company.objects.get(id = 1)
-                        user_data={"Msg":"OTP Sent Successfully",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':"normaluser",'setType':get_user.User_Verification_Status,'isTfaEnable':user_twofa,"Version":company.Android_version}  
+                        user_data={"Msg":"OTP Sent Successfully",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':"normaluser",'setType':get_user.User_Verification_Status,'isTfaEnable':user_twofa,"Version":company.Android_version,'wallet_address':wallet_address}  
                         return Response(user_data) 
                     except Exception as e :
                         user_data={"Msg":"Mail Server Problem !.Please Try Again Later"+str(e),'status':'false','token':token.key}
                         return Response(user_data) 
                 else:   
                     user_data={"Msg":"Unusual Activity",'status':'false','token':token.key}
-                    return Response(user_data)
-        else:
-            user_data={"Msg":"User Does Not exists1",'status':'false','token':token.key}
-            return Response(user_data)
-        return Response(user_data)
+                    return Response(user_data)   
+        else:   
+            user_data={"Msg":"User Does Not exists",'status':'false','token':token.key}
+            return Response(user_data)            
+        return Response(user_data)    
 
 
 @api_view(['POST'])
