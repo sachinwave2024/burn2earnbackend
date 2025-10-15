@@ -1,9 +1,22 @@
-env/
-jasonwellnessenv/
+# Python
 *.pyc
 __pycache__/
+*.pyo
+*.pyd
+
+# Virtual Environments
+env/
+jasonwellnessenv/
+
+# Django
 *.sqlite3
+media/
+staticfiles/
 *.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Other
 *.env
-*.DS_Store
-*.egg-info/
