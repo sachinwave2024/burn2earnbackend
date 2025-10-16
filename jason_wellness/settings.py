@@ -16,7 +16,8 @@ REPOSITORY_ROOT = os.path.dirname(BASE_DIR)
 
 # Quick-start development settings
 SECRET_KEY = 'mima8^^t85_64er*cbw376dvjms%n-!5!sz4x511j$8#@pc_96'
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*', 'localhost']
 
 # Parent mnemonic (used in your app)
