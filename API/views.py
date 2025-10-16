@@ -23617,7 +23617,7 @@ def MP_plan_detail(request):
         
         # Get user based on token
         token = Token.objects.get(key=Token_header)
-        user_details = User_Management.objects.values('User_type', 'plan', 'id').get(user_name=token.user)
+        # user_details = User_Management.objects.values('User_type', 'plan', 'id').get(user_name=token.user)
         Comp = User_Management.objects.get(user_name=token.user)
 
         # Call update functions
@@ -24048,7 +24048,6 @@ def MP_plan_detail(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=500)
-
 
 
 from datetime import date, timedelta
