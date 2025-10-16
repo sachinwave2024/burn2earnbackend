@@ -1438,7 +1438,6 @@ def Pin_set(request):
     
 
 
-
 @api_view(['POST'])
 def User_Login(request):
         main = load_maintanance(request)
@@ -1459,7 +1458,7 @@ def User_Login(request):
         except:
             user_count = User_Management.objects.filter(Email = email).count()
             if user_count == 0:
-                user_data={"Msg":"User Does Not exists",'status':'false'}
+                user_data={"Msg":"User Does Not exists6",'status':'false'}
                 return Response(user_data)
             if user_count == 1:
                 user = User_Management.objects.get(Email = email)
@@ -1558,7 +1557,7 @@ def User_Login(request):
                     user_data={"Msg":"Login Successfully",'status':'true','token':token.key,"userStatus":msg,'referral_code':ref_code.referal_code,'setType':user.User_Verification_Status,'User_type':user.User_type,'ActivateStatus':Activestatus}
                     return Response(user_data)
                 except:
-                    user_data={"Msg":"User Does Not exists",'status':'false','token':token.key}
+                    user_data={"Msg":"User Does Not exists5",'status':'false','token':token.key}
                     return Response(user_data)
             if user_type == "facebook":
                 try:
@@ -1598,7 +1597,7 @@ def User_Login(request):
                     user_data={"Msg":"Login Successfull",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':user.User_type,'setType':user.User_Verification_Status,'ActivateStatus':Activestatus,'isTfaEnable':user_twofa} 
                     return Response(user_data)
                 except:
-                    user_data={"Msg":"User Does Not exists",'status':'false','token':token.key}
+                    user_data={"Msg":"User Does Not exists4",'status':'false','token':token.key}
                     return Response(user_data) 
             if user_type == "gmail" :
                 try:
@@ -1624,7 +1623,7 @@ def User_Login(request):
                             msg = "OldUser"
                         eemail = email[:4]
                         eemail_last = email[-6:]
-                        user_data= {"Msg":"Login Successfull",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':user.User_type,"userStatus":msg,'setType':user.User_Verification_Status,'ActivateStatus':Activestatus,'wallet_address':wallet_address} 
+                        user_data= {"Msg":"Login Successfull",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':user.User_type,"userStatus":msg,'setType':user.User_Verification_Status,'ActivateStatus':Activestatus} 
                         return Response(user_data)
                     except:
                         user_id = user.id
@@ -1676,7 +1675,7 @@ def User_Login(request):
                     user_data= {"Msg":"Login Successfull",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':user.User_type,"userStatus":msg,'setType':user.User_Verification_Status,'ActivateStatus':Activestatus,'isTfaEnable':user_twofa,"Version":company.Android_version,'wallet_address':wallet_address} 
                     return Response(user_data)
                 except:
-                    user_data={"Msg":"User Does Not exists",'status':'false','token':token.key}
+                    user_data={"Msg":"User Does Not exists3",'status':'false','token':token.key}
                     return Response(user_data)  
             if user_type == "normaluser":
                 if user.status != 2:
@@ -1733,18 +1732,18 @@ def User_Login(request):
                             status.save()
                         user_twofa = status.user_status
                         company = Company.objects.get(id = 1)
-                        user_data={"Msg":"OTP Sent Successfully",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':"normaluser",'setType':get_user.User_Verification_Status,'isTfaEnable':user_twofa,"Version":company.Android_version,'wallet_address':wallet_address}  
+                        user_data={"Msg":"OTP Sent Successfully",'status':'true','token':token.key,'email':eemail+"******************"+eemail_last,'referral_code':ref_code.referal_code,'User_type':"normaluser",'setType':get_user.User_Verification_Status,'isTfaEnable':user_twofa,"Version":company.Android_version}  
                         return Response(user_data) 
                     except Exception as e :
                         user_data={"Msg":"Mail Server Problem !.Please Try Again Later"+str(e),'status':'false','token':token.key}
                         return Response(user_data) 
                 else:   
                     user_data={"Msg":"Unusual Activity",'status':'false','token':token.key}
-                    return Response(user_data)   
-        else:   
-            user_data={"Msg":"User Does Not exists",'status':'false','token':token.key}
-            return Response(user_data)            
-        return Response(user_data)    
+                    return Response(user_data)
+        else:
+            user_data={"Msg":"User Does Not exists1",'status':'false','token':token.key}
+            return Response(user_data)
+        return Response(user_data)
 
 
 @api_view(['POST'])
@@ -3365,15 +3364,15 @@ import pickle
 from web3.middleware import geth_poa_middleware
 
 # testBNBseedurl = 'https://bsc-dataseed.binance.org/'
-# obj_contract = Contract_address.objects.get(id = 1)
-# testBNBseedurl = obj_contract.Stake_contract_Address
-# web3 =  Web3(Web3.HTTPProvider(testBNBseedurl))
-# web3.middleware_onion.inject(geth_poa_middleware, layer=0)
-# admin_address_pk ='1OP1haKmdm2odu+Z1ZY+uVbEsflfaD6OiphJXYrtAO6tIc85R4SD3KrXJnJQ7Xa4T7w53u3I244rFeQUnOmEsHVOLtZnJoacYQICnk6qzUM='
-# admin_address ='BScIjxmyaKnGGeDrjHjHrwVsoWrH138k6Eai3wQ2rTOo4WZg5RNHx+BSFDRJ6MUE'
-# ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
-# ad_ad = "thAtkC68J5UMbBBos41TnMw1xeVcbYNgFgLJS55SIMyN7Z3vJvLoMhHg0Eta/kKm"
-# user_ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
+obj_contract = Contract_address.objects.get(id = 1)
+testBNBseedurl = obj_contract.Stake_contract_Address
+web3 =  Web3(Web3.HTTPProvider(testBNBseedurl))
+web3.middleware_onion.inject(geth_poa_middleware, layer=0)
+admin_address_pk ='1OP1haKmdm2odu+Z1ZY+uVbEsflfaD6OiphJXYrtAO6tIc85R4SD3KrXJnJQ7Xa4T7w53u3I244rFeQUnOmEsHVOLtZnJoacYQICnk6qzUM='
+admin_address ='BScIjxmyaKnGGeDrjHjHrwVsoWrH138k6Eai3wQ2rTOo4WZg5RNHx+BSFDRJ6MUE'
+ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
+ad_ad = "thAtkC68J5UMbBBos41TnMw1xeVcbYNgFgLJS55SIMyN7Z3vJvLoMhHg0Eta/kKm"
+user_ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
 
 
 
@@ -24050,6 +24049,7 @@ def MP_plan_detail(request):
         return Response({"error": str(e)}, status=500)
 
 
+
 from datetime import date, timedelta
 from decimal import Decimal
 from django.core.exceptions import ObjectDoesNotExist
@@ -26568,15 +26568,7 @@ logger = logging.getLogger(__name__)
 def burn_process_rewards(request):
     try:
         user_id = request.data.get('user_id')
-        # user_detail = User_Management.objects.get(id=user_id)
-        try:
-            user_detail = User_Management.objects.get(id=user_id)
-        except User_Management.DoesNotExist:
-            # Skip or log the missing user
-            user_detail = None
-            print(f"[Warning] User with id {user_id} does not exist.")
-            # Optionally continue to next user if in a loop
-
+        user_detail = User_Management.objects.get(id=user_id)
 
         # Fetch all valid stake entries
         stake_entries = BurntoearnHistory.objects.filter(email_id=user_id, send_status=1)
@@ -26775,16 +26767,16 @@ from eth_account import Account,messages
 import pickle
 from web3.middleware import geth_poa_middleware
 
-# # testBNBseedurl = 'https://bsc-dataseed.binance.org/'
-# obj_contract = Contract_address.objects.get(id = 1)
-# testBNBseedurl = obj_contract.Stake_contract_Address
-# web3 =  Web3(Web3.HTTPProvider(testBNBseedurl))
-# web3.middleware_onion.inject(geth_poa_middleware, layer=0)
-# admin_address_pk ='1OP1haKmdm2odu+Z1ZY+uVbEsflfaD6OiphJXYrtAO6tIc85R4SD3KrXJnJQ7Xa4T7w53u3I244rFeQUnOmEsHVOLtZnJoacYQICnk6qzUM='
-# admin_address ='BScIjxmyaKnGGeDrjHjHrwVsoWrH138k6Eai3wQ2rTOo4WZg5RNHx+BSFDRJ6MUE'
-# ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
-# ad_ad = "thAtkC68J5UMbBBos41TnMw1xeVcbYNgFgLJS55SIMyN7Z3vJvLoMhHg0Eta/kKm"
-# user_ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
+# testBNBseedurl = 'https://bsc-dataseed.binance.org/'
+obj_contract = Contract_address.objects.get(id = 1)
+testBNBseedurl = obj_contract.Stake_contract_Address
+web3 =  Web3(Web3.HTTPProvider(testBNBseedurl))
+web3.middleware_onion.inject(geth_poa_middleware, layer=0)
+admin_address_pk ='1OP1haKmdm2odu+Z1ZY+uVbEsflfaD6OiphJXYrtAO6tIc85R4SD3KrXJnJQ7Xa4T7w53u3I244rFeQUnOmEsHVOLtZnJoacYQICnk6qzUM='
+admin_address ='BScIjxmyaKnGGeDrjHjHrwVsoWrH138k6Eai3wQ2rTOo4WZg5RNHx+BSFDRJ6MUE'
+ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
+ad_ad = "thAtkC68J5UMbBBos41TnMw1xeVcbYNgFgLJS55SIMyN7Z3vJvLoMhHg0Eta/kKm"
+user_ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
 
 
 @api_view(['POST'])
