@@ -26568,7 +26568,15 @@ logger = logging.getLogger(__name__)
 def burn_process_rewards(request):
     try:
         user_id = request.data.get('user_id')
-        user_detail = User_Management.objects.get(id=user_id)
+        # user_detail = User_Management.objects.get(id=user_id)
+        try:
+            user_detail = User_Management.objects.get(id=user_id)
+        except User_Management.DoesNotExist:
+            # Skip or log the missing user
+            user_detail = None
+            print(f"[Warning] User with id {user_id} does not exist.")
+            # Optionally continue to next user if in a loop
+
 
         # Fetch all valid stake entries
         stake_entries = BurntoearnHistory.objects.filter(email_id=user_id, send_status=1)
