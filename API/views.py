@@ -23614,436 +23614,436 @@ def MP_plan_detail(request):
         if not Token_header:
             return Response({"error": "Token is required"}, status=400)
         
-    #     # Get user based on token
-    #     token = Token.objects.get(key=Token_header)
-    #     # user_details = User_Management.objects.values('User_type', 'plan', 'id').get(user_name=token.user)
-    #     Comp = User_Management.objects.get(user_name=token.user)
+        # Get user based on token
+        token = Token.objects.get(key=Token_header)
+        # user_details = User_Management.objects.values('User_type', 'plan', 'id').get(user_name=token.user)
+        Comp = User_Management.objects.get(user_name=token.user)
 
-    #     # Call update functions
-    #     UpdateUserPlanDetail(request, Comp.id)
-    #     MPRoi_wallet_blance(request, Comp.id)
-    #     MP_referall_blance(request, Comp.id)
-    #     # croneMPHealthReward(request, Comp.id)
+        # Call update functions
+        UpdateUserPlanDetail(request, Comp.id)
+        MPRoi_wallet_blance(request, Comp.id)
+        MP_referall_blance(request, Comp.id)
+        # croneMPHealthReward(request, Comp.id)
 
-    #     id = Comp.id
-    #     reff_id = Comp.reff_id
-    #     Email = Comp.Email
-    #     mleg1 = Comp.Mpuserleg1
-    #     mlegall = Comp.Mpuserlegall
-
-
-    #     # Fetch wallet address
-    #     try:
-    #         wallet_trust = user_address_trust_wallet.objects.get(user_id=Comp.id)
-    #         trust_add = wallet_trust.Address
-    #     except user_address_trust_wallet.DoesNotExist:
-    #         trust_add = ''
-    #     wallet_address = str(trust_add).lower()
-
-    #     # Define constants
-    #     JW_Deposit = True
-    #     USDT_Deposit = True
-    #     JW_support = '0xaB785054251DB0fc44538F5DeeBE7507B748b692'
-    #     JWC_support = '0x5936c8415C62C4B5C2515D7fa93d9a5881A2218d'
-    #     USDT_support = '0x188a6d540f30796b7cdcf5f653b328772a64db21'
-
-    #     # Get plan support status
-    #     try:
-    #         plan_supp = MPfeeHistory.objects.filter(email_id=Comp.id).last()
-    #     except Exception as e:
-    #         plan_supp = None
-
-    #     date_now = datetime.now()
-
-    #     # Ensure plan_supp and plan_supp.plan_end_date are valid
-    #     if plan_supp and plan_supp.plan_end_date and plan_supp.plan_end_date > date_now:
-    #         plan_support_status = "1"
-    #         supp_fee = str(plan_supp.claim_amount)
-    #     else:
-    #         plan_support_status = "0"
-    #         supp_fee = "0"
+        id = Comp.id
+        reff_id = Comp.reff_id
+        Email = Comp.Email
+        mleg1 = Comp.Mpuserleg1
+        mlegall = Comp.Mpuserlegall
 
 
-    #     lastfeepaid = plan_supp.claim_amount if plan_supp else "0"
-    #     JWC_marketprice = '5'
+        # Fetch wallet address
+        try:
+            wallet_trust = user_address_trust_wallet.objects.get(user_id=Comp.id)
+            trust_add = wallet_trust.Address
+        except user_address_trust_wallet.DoesNotExist:
+            trust_add = ''
+        wallet_address = str(trust_add).lower()
 
-    #     # Fetch plan history
-    #     try:
-    #         plan_hist = MPPLanHistory.objects.filter(email_id=Comp.id, send_status=1).last()
-    #     except Exception as e:
-    #         plan_hist = None
+        # Define constants
+        JW_Deposit = True
+        USDT_Deposit = True
+        JW_support = '0xaB785054251DB0fc44538F5DeeBE7507B748b692'
+        JWC_support = '0x5936c8415C62C4B5C2515D7fa93d9a5881A2218d'
+        USDT_support = '0x188a6d540f30796b7cdcf5f653b328772a64db21'
 
-    #     if plan_hist:
-    #         plan = plan_hist.plan_amount
-    #         plan_start = plan_hist.plan_start_date
-    #         plan_end = plan_hist.plan_end_date
-    #         plan_status = 'Active'
-    #     else:
-    #         plan = "0"
-    #         plan_start = None
-    #         plan_end = None
-    #         plan_status = 'NotActive'
+        # Get plan support status
+        try:
+            plan_supp = MPfeeHistory.objects.filter(email_id=Comp.id).last()
+        except Exception as e:
+            plan_supp = None
 
-    #     # Fetch wallet balances
-    #     DAta = UserCashWallet.objects.get(userid_id=Comp.id)
-    #     MPHealth = DAta.MPHealth
-    #     MPRefferral = DAta.MPReward
+        date_now = datetime.now()
 
-    #     # Fetch active plan details
-    #     try:
-    #         active_plan = MPPLanHistory.objects.filter(email_id=Comp.id, send_status=1).last()
-    #     except:
-    #         active_plan = None
+        # Ensure plan_supp and plan_supp.plan_end_date are valid
+        if plan_supp and plan_supp.plan_end_date and plan_supp.plan_end_date > date_now:
+            plan_support_status = "1"
+            supp_fee = str(plan_supp.claim_amount)
+        else:
+            plan_support_status = "0"
+            supp_fee = "0"
 
-    #     if active_plan:
-    #         plan_details = MPPlanlist.objects.filter(plan=int(active_plan.plan_amount)).first()
-    #         if plan_details:
-    #             Dailyreward = int(plan_details.daily_reward)
-    #             step = int(plan_details.step)
-    #             PlanName = plan_details.plan_name
-    #             Time_period = plan_details.time_period
-    #         else:
-    #             Dailyreward = 0
-    #             step = 0
-    #             PlanName = None
-    #             Time_period = None
-    #     else:
-    #         Dailyreward = 0
-    #         step = 0
-    #         PlanName = None
-    #         Time_period = None
+
+        lastfeepaid = plan_supp.claim_amount if plan_supp else "0"
+        JWC_marketprice = '5'
+
+        # Fetch plan history
+        try:
+            plan_hist = MPPLanHistory.objects.filter(email_id=Comp.id, send_status=1).last()
+        except Exception as e:
+            plan_hist = None
+
+        if plan_hist:
+            plan = plan_hist.plan_amount
+            plan_start = plan_hist.plan_start_date
+            plan_end = plan_hist.plan_end_date
+            plan_status = 'Active'
+        else:
+            plan = "0"
+            plan_start = None
+            plan_end = None
+            plan_status = 'NotActive'
+
+        # Fetch wallet balances
+        DAta = UserCashWallet.objects.get(userid_id=Comp.id)
+        MPHealth = DAta.MPHealth
+        MPRefferral = DAta.MPReward
+
+        # Fetch active plan details
+        try:
+            active_plan = MPPLanHistory.objects.filter(email_id=Comp.id, send_status=1).last()
+        except:
+            active_plan = None
+
+        if active_plan:
+            plan_details = MPPlanlist.objects.filter(plan=int(active_plan.plan_amount)).first()
+            if plan_details:
+                Dailyreward = int(plan_details.daily_reward)
+                step = int(plan_details.step)
+                PlanName = plan_details.plan_name
+                Time_period = plan_details.time_period
+            else:
+                Dailyreward = 0
+                step = 0
+                PlanName = None
+                Time_period = None
+        else:
+            Dailyreward = 0
+            step = 0
+            PlanName = None
+            Time_period = None
             
             
         
             
             
-    #     # Fetch plan history
-    #     try:
-    #         plan_count = MPPLanHistory.objects.filter(email_id=Comp.id).count()
-    #     except Exception as e:
-    #         plan_count = 0  # Ensure plan_count is set to 0 in case of an exception
+        # Fetch plan history
+        try:
+            plan_count = MPPLanHistory.objects.filter(email_id=Comp.id).count()
+        except Exception as e:
+            plan_count = 0  # Ensure plan_count is set to 0 in case of an exception
 
-    #     # Handle cases where plan_count might be None
-    #     if plan_count is None:
-    #         plan_count = 0  # Set to 0 if plan_count is None
+        # Handle cases where plan_count might be None
+        if plan_count is None:
+            plan_count = 0  # Set to 0 if plan_count is None
 
-    #     # Determine the buy plan based on the plan_count
-    #     if plan_count == 0:
-    #         buyplan = ["50", "100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000"]
-    #     elif plan_count == 1:
-    #         buyplan = ["50","100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100"]
-    #     elif plan_count == 2:
-    #         buyplan = ["50","100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200"]
-    #     elif plan_count == 3:
-    #         buyplan = ["100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300"]
-    #     elif plan_count == 4:
-    #         buyplan = ["150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400"] 
-    #     elif plan_count == 5:
-    #         buyplan     = ["200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500"] 
-    #     elif plan_count == 6:
-    #         buyplan = ["250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000"] 
-    #     elif plan_count == 7:
-    #         buyplan = ["300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500"] 
-    #     elif plan_count == 8:
-    #         buyplan = ["400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 9:
-    #         buyplan = ["450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 10:
-    #         buyplan = ["500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 11:
-    #         buyplan = ["550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 12:
-    #         buyplan = ["600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 13:
-    #         buyplan = ["650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 14:
-    #         buyplan = ["700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 15:
-    #         buyplan = ["750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 16:
-    #         buyplan = ["800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 17:
-    #         buyplan = ["850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 18:
-    #         buyplan = ["900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 19:
-    #         buyplan = ["950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 20:
-    #         buyplan = ["1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 21:
-    #         buyplan = ["1100","1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 22:
-    #         buyplan = ["1200","1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 23:
-    #         buyplan = ["1300","1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 24:
-    #         buyplan = ["1400","1500","2000","2500","3000"] 
-    #     elif plan_count == 25:
-    #         buyplan = ["1500","2000","2500","3000"] 
-    #     elif plan_count == 26:
-    #         buyplan = ["2000","2500","3000"] 
-    #     elif plan_count == 27:
-    #         buyplan = ["2500","3000"] 
-    #     elif plan_count == 28:
-    #         buyplan = ["3000"] 
+        # Determine the buy plan based on the plan_count
+        if plan_count == 0:
+            buyplan = ["50", "100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000"]
+        elif plan_count == 1:
+            buyplan = ["50","100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100"]
+        elif plan_count == 2:
+            buyplan = ["50","100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200"]
+        elif plan_count == 3:
+            buyplan = ["100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300"]
+        elif plan_count == 4:
+            buyplan = ["150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400"] 
+        elif plan_count == 5:
+            buyplan     = ["200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500"] 
+        elif plan_count == 6:
+            buyplan = ["250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000"] 
+        elif plan_count == 7:
+            buyplan = ["300","350","400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500"] 
+        elif plan_count == 8:
+            buyplan = ["400","450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 9:
+            buyplan = ["450","500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 10:
+            buyplan = ["500","550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 11:
+            buyplan = ["550","600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 12:
+            buyplan = ["600","650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 13:
+            buyplan = ["650","700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 14:
+            buyplan = ["700","750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 15:
+            buyplan = ["750","800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 16:
+            buyplan = ["800","850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 17:
+            buyplan = ["850","900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 18:
+            buyplan = ["900","950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 19:
+            buyplan = ["950","1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 20:
+            buyplan = ["1000","1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 21:
+            buyplan = ["1100","1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 22:
+            buyplan = ["1200","1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 23:
+            buyplan = ["1300","1400","1500","2000","2500","3000"] 
+        elif plan_count == 24:
+            buyplan = ["1400","1500","2000","2500","3000"] 
+        elif plan_count == 25:
+            buyplan = ["1500","2000","2500","3000"] 
+        elif plan_count == 26:
+            buyplan = ["2000","2500","3000"] 
+        elif plan_count == 27:
+            buyplan = ["2500","3000"] 
+        elif plan_count == 28:
+            buyplan = ["3000"] 
             
-    #     withdraw_per_month_val = Withdraw.objects.filter(
-    #         userid_id=Comp.id, 
-    #         created_on__gte=Comp.Mplan_start_date
-    #     ).exclude(Wallet_type__in=['LB_wallet', 'Trade_Referral_wallet', 'Bot_Referral_wallet','trade_withdraw_wallet','Reward_wallet','Referral_wallet','ROR_wallet']).aggregate(Sum('Amount'))
+        withdraw_per_month_val = Withdraw.objects.filter(
+            userid_id=Comp.id, 
+            created_on__gte=Comp.Mplan_start_date
+        ).exclude(Wallet_type__in=['LB_wallet', 'Trade_Referral_wallet', 'Bot_Referral_wallet','trade_withdraw_wallet','Reward_wallet','Referral_wallet','ROR_wallet']).aggregate(Sum('Amount'))
         
-    #     if withdraw_per_month_val['Amount__sum'] is not None:
-    #         totalll=str(withdraw_per_month_val['Amount__sum'])
-    #     else :
-    #         totalll=0.0
+        if withdraw_per_month_val['Amount__sum'] is not None:
+            totalll=str(withdraw_per_month_val['Amount__sum'])
+        else :
+            totalll=0.0
             
-    #     TWA = Decimal(Comp.MPlanTWA)
-    #     BWA = Decimal(TWA) - Decimal(totalll)
-    #     Comp.MPlanBWA = BWA
-    #     Comp.save()
-    #     mPlanbwa = Comp.MPlanBWA
-    #     mplanminHR = Comp.MPminwithdraw
-    #     mplanminRR = Comp.MPmaxwithdraw
+        TWA = Decimal(Comp.MPlanTWA)
+        BWA = Decimal(TWA) - Decimal(totalll)
+        Comp.MPlanBWA = BWA
+        Comp.save()
+        mPlanbwa = Comp.MPlanBWA
+        mplanminHR = Comp.MPminwithdraw
+        mplanminRR = Comp.MPmaxwithdraw
         
-    #     # Calculate min HR and UR with checks for None
-    #     mplanminHR = mplanminHR if mplanminHR is not None else 0
-    #     mplanminRR = mplanminRR if mplanminRR is not None else 0
-    #     mPlanbwa = mPlanbwa if mPlanbwa is not None else 0
+        # Calculate min HR and UR with checks for None
+        mplanminHR = mplanminHR if mplanminHR is not None else 0
+        mplanminRR = mplanminRR if mplanminRR is not None else 0
+        mPlanbwa = mPlanbwa if mPlanbwa is not None else 0
 
-    #     mplanminorgHR = min(mplanminHR, mPlanbwa)
-    #     mplanminorgUR = min(mplanminRR, mPlanbwa)
+        mplanminorgHR = min(mplanminHR, mPlanbwa)
+        mplanminorgUR = min(mplanminRR, mPlanbwa)
         
-    #     BNBStatus = Comp.BNBStatus
+        BNBStatus = Comp.BNBStatus
         
-    #     mphealthwithdrawfee = "10"
-    #     mprefferalwithdrawfee = "10"
-    #     app_version = "6.0.1"
-    #     Comp_User = User_Management.objects.get(user_name = token.user)
-    #     try:
-    #         Admin_Block_MainWithdraw = Admin_Block_Main_Withdraw.objects.get(Email=Comp_User.Email)
-    #     except:
-    #         Admin_Block_MainWithdraw = None
-    #     if Admin_Block_MainWithdraw is not None:
-    #         admin_stop_withdraw1=Admin_Block_MainWithdraw.status
-    #     else:
-    #         admin_stop_withdraw1=0
-            
-            
-    #     HR = int(plan) * 1.20
-        
-    #     usdttojwc = 5
-    #     # jwctousdt = 3
-    #     if id in [240, 241]:  # IDs where jwctousdt = 2
-    #         jwctousdt = 2
-    #     elif id in [258, 4]:  # IDs where jwctousdt = 4
-    #         jwctousdt = 4
-    #     else:
-    #         jwctousdt = 3  # Default
+        mphealthwithdrawfee = "10"
+        mprefferalwithdrawfee = "10"
+        app_version = "6.0.1"
+        Comp_User = User_Management.objects.get(user_name = token.user)
+        try:
+            Admin_Block_MainWithdraw = Admin_Block_Main_Withdraw.objects.get(Email=Comp_User.Email)
+        except:
+            Admin_Block_MainWithdraw = None
+        if Admin_Block_MainWithdraw is not None:
+            admin_stop_withdraw1=Admin_Block_MainWithdraw.status
+        else:
+            admin_stop_withdraw1=0
             
             
-    #     totalplanamont = Decimal('0.0')
-    #     swaptwa = Decimal('0.0')
+        HR = int(plan) * 1.20
         
-    #     swapusdt_amount = swap_receivehistory.objects.filter(
-    #         userid=Comp.id, 
-    #     ).aggregate(Sum('Withdraw_USDT'))
-
-    #     if swapusdt_amount['Withdraw_USDT__sum'] is not None:
-    #         totalswapamontusdt = Decimal(str(swapusdt_amount['Withdraw_USDT__sum']))  
-    #     else:
-    #         totalswapamontusdt = Decimal('0.0')
-        
-    #     swapjwc_amount = swap_receivehistory.objects.filter(
-    #         userid=Comp.id, 
-    #     ).aggregate(Sum('Withdraw_JWC'))
-
-    #     if swapjwc_amount['Withdraw_JWC__sum'] is not None:
-    #         totalswapamontjwc = Decimal(str(swapjwc_amount['Withdraw_JWC__sum']))  
-    #     else:
-    #         totalswapamontjwc = Decimal('0.0')
-        
-    #     swapjwclimit = (totalswapamontusdt / Decimal('5')) * Decimal('0.80')
-        
-    #     withdraw_per_month_valll = Withdraw.objects.filter(
-    #         userid_id=Comp_User.id,
-    #         created_on__gte=Comp_User.Mplan_start_date
-    #     ).exclude(Wallet_type__in=['LB_wallet', 'Trade_Referral_wallet', 'Bot_Referral_wallet','trade_withdraw_wallet','Reward_wallet','Referral_wallet','ROR_wallet']).aggregate(Sum('Withdraw_JW'))
-        
-    #     if withdraw_per_month_valll['Withdraw_JW__sum'] is not None:
-    #         totalll3=str(withdraw_per_month_valll['Withdraw_JW__sum'])
-    #     else :
-    #         totalll3=0.0
+        usdttojwc = 5
+        # jwctousdt = 3
+        if id in [240, 241]:  # IDs where jwctousdt = 2
+            jwctousdt = 2
+        elif id in [258, 4]:  # IDs where jwctousdt = 4
+            jwctousdt = 4
+        else:
+            jwctousdt = 3  # Default
             
-    #     totallll = Decimal(totalll3) * 5
+            
+        totalplanamont = Decimal('0.0')
+        swaptwa = Decimal('0.0')
+        
+        swapusdt_amount = swap_receivehistory.objects.filter(
+            userid=Comp.id, 
+        ).aggregate(Sum('Withdraw_USDT'))
+
+        if swapusdt_amount['Withdraw_USDT__sum'] is not None:
+            totalswapamontusdt = Decimal(str(swapusdt_amount['Withdraw_USDT__sum']))  
+        else:
+            totalswapamontusdt = Decimal('0.0')
+        
+        swapjwc_amount = swap_receivehistory.objects.filter(
+            userid=Comp.id, 
+        ).aggregate(Sum('Withdraw_JWC'))
+
+        if swapjwc_amount['Withdraw_JWC__sum'] is not None:
+            totalswapamontjwc = Decimal(str(swapjwc_amount['Withdraw_JWC__sum']))  
+        else:
+            totalswapamontjwc = Decimal('0.0')
+        
+        swapjwclimit = (totalswapamontusdt / Decimal('5')) * Decimal('0.80')
+        
+        withdraw_per_month_valll = Withdraw.objects.filter(
+            userid_id=Comp_User.id,
+            created_on__gte=Comp_User.Mplan_start_date
+        ).exclude(Wallet_type__in=['LB_wallet', 'Trade_Referral_wallet', 'Bot_Referral_wallet','trade_withdraw_wallet','Reward_wallet','Referral_wallet','ROR_wallet']).aggregate(Sum('Withdraw_JW'))
+        
+        if withdraw_per_month_valll['Withdraw_JW__sum'] is not None:
+            totalll3=str(withdraw_per_month_valll['Withdraw_JW__sum'])
+        else :
+            totalll3=0.0
+            
+        totallll = Decimal(totalll3) * 5
         
         
-    #     try:
-    #         total_amount = MPPLanHistory.objects.filter(email_id=Comp.id).last()
-    #     except:
-    #         total_amount = None
+        try:
+            total_amount = MPPLanHistory.objects.filter(email_id=Comp.id).last()
+        except:
+            total_amount = None
 
-    #     if total_amount:
-    #         totalplanamont = Decimal(total_amount.plan_amount)
+        if total_amount:
+            totalplanamont = Decimal(total_amount.plan_amount)
 
-    #         if total_amount.send_status == 0:
-    #         # if total_amount.send_status == 0 and totalplanamont in [Decimal('50'), Decimal('100')]:
-    #             swaptwa = totalplanamont * Decimal('0.10') / 5
-    #             # swaptwa = (totallll - totalplanamont)/5
-    #         else:
-    #             swaptwa = Decimal('0.0')
-    #     else:
-    #         swaptwa = Decimal('0.0')
+            if total_amount.send_status == 0:
+            # if total_amount.send_status == 0 and totalplanamont in [Decimal('50'), Decimal('100')]:
+                swaptwa = totalplanamont * Decimal('0.10') / 5
+                # swaptwa = (totallll - totalplanamont)/5
+            else:
+                swaptwa = Decimal('0.0')
+        else:
+            swaptwa = Decimal('0.0')
  
-    #     swap_amount = swap_receivehistory.objects.filter(
-    #         userid=Comp.id,
-    #         type = 'mp',
-    #         created_on__gte=Comp.Mplan_start_date
-    #     ).aggregate(Sum('Withdraw_JWC'))
+        swap_amount = swap_receivehistory.objects.filter(
+            userid=Comp.id,
+            type = 'mp',
+            created_on__gte=Comp.Mplan_start_date
+        ).aggregate(Sum('Withdraw_JWC'))
 
-    #     if swap_amount['Withdraw_JWC__sum'] is not None:
-    #         totalswapamont = Decimal(str(swap_amount['Withdraw_JWC__sum'])) 
-    #     else:
-    #         totalswapamont = Decimal('0.0')
+        if swap_amount['Withdraw_JWC__sum'] is not None:
+            totalswapamont = Decimal(str(swap_amount['Withdraw_JWC__sum'])) 
+        else:
+            totalswapamont = Decimal('0.0')
             
-    #     if total_amount:
-    #         totalplanamont = Decimal(total_amount.plan_amount)
+        if total_amount:
+            totalplanamont = Decimal(total_amount.plan_amount)
 
-    #         # if total_amount.send_status == 0 and totalplanamont in [Decimal('50'), Decimal('100')]:
-    #         if total_amount.send_status == 0:
-    #             swapbwa = swaptwa - totalswapamont
-    #         else:
-    #             swapbwa = Decimal('0.0')
-    #     else:
-    #         swapbwa = Decimal('0.0')
+            # if total_amount.send_status == 0 and totalplanamont in [Decimal('50'), Decimal('100')]:
+            if total_amount.send_status == 0:
+                swapbwa = swaptwa - totalswapamont
+            else:
+                swapbwa = Decimal('0.0')
+        else:
+            swapbwa = Decimal('0.0')
         
-    #     minswap = '1'
-    #     swapwithdrawfee = '0'
+        minswap = '1'
+        swapwithdrawfee = '0'
         
         
-    #     try:
-    #         Admin_Block_MainWithdraw = Admin_Block_Main_Withdraw.objects.get(Email=Comp.Email)
-    #     except:
-    #         Admin_Block_MainWithdraw = None
+        try:
+            Admin_Block_MainWithdraw = Admin_Block_Main_Withdraw.objects.get(Email=Comp.Email)
+        except:
+            Admin_Block_MainWithdraw = None
             
-    #     if Admin_Block_MainWithdraw is not None:
-    #         admin_stop_swap=Admin_Block_MainWithdraw.status
-    #     else:
-    #         admin_stop_swap=0
+        if Admin_Block_MainWithdraw is not None:
+            admin_stop_swap=Admin_Block_MainWithdraw.status
+        else:
+            admin_stop_swap=0
             
-    #     UpdateUserPlanDetail(request, Comp.id)
+        UpdateUserPlanDetail(request, Comp.id)
         
-    #     planbuyjw = 1
-    #     planbuyjwc = 0
+        planbuyjw = 1
+        planbuyjwc = 0
         
-    #     # start_date = CBurntoearnHistory.objects.filter(email_id=Comp.id, send_status=1).first()
-    #     # if start_date:
-    #     #     Roi_wallet = CBurnMonthRewardHistory.objects.filter(
-    #     #         user_id=Comp.id,
-    #     #         created_on__gte=start_date.plan_start_date -timedelta(days=1)
-    #     #     ).aggregate(sum_percent_value=Sum('Reward'))
-    #     #     burnswaptwa = Roi_wallet.get('sum_percent_value') or 0
-    #     # else:
-    #     #     burnswaptwa = 0
-    #     withdraw_CLASS = BurnWithdraw.objects.filter(
-    #         userid_id=Comp.id,
-    #     ).exclude(
-    #         Wallet_type__in=['Burnreferral_wallet', 'Burnreward_wallet', 'CBurnreferral_wallet']
-    #     ).aggregate(total_amount=Sum('Amount'))
+        # start_date = CBurntoearnHistory.objects.filter(email_id=Comp.id, send_status=1).first()
+        # if start_date:
+        #     Roi_wallet = CBurnMonthRewardHistory.objects.filter(
+        #         user_id=Comp.id,
+        #         created_on__gte=start_date.plan_start_date -timedelta(days=1)
+        #     ).aggregate(sum_percent_value=Sum('Reward'))
+        #     burnswaptwa = Roi_wallet.get('sum_percent_value') or 0
+        # else:
+        #     burnswaptwa = 0
+        withdraw_CLASS = BurnWithdraw.objects.filter(
+            userid_id=Comp.id,
+        ).exclude(
+            Wallet_type__in=['Burnreferral_wallet', 'Burnreward_wallet', 'CBurnreferral_wallet']
+        ).aggregate(total_amount=Sum('Amount'))
 
-    #     # Step 2: Convert to Decimal and handle None case
-    #     total_burnswaptwa = Decimal(withdraw_CLASS['total_amount'] or 0)
+        # Step 2: Convert to Decimal and handle None case
+        total_burnswaptwa = Decimal(withdraw_CLASS['total_amount'] or 0)
 
-    #     # Step 3: Calculate burnswaptwa minus 5%
-    #     burnswaptwa = total_burnswaptwa - (total_burnswaptwa * Decimal('0.05'))
-    #     # withdraw_CLASS = BurnWithdraw.objects.filter(
-    #     #         userid_id=Comp.id,
-    #     #     ).exclude(
-    #     #         Wallet_type__in=['Burnreferral_wallet','Burnreward_wallet','CBurnreferral_wallet']
-    #     #     ).aggregate(total_amount=Sum('Amount'))
+        # Step 3: Calculate burnswaptwa minus 5%
+        burnswaptwa = total_burnswaptwa - (total_burnswaptwa * Decimal('0.05'))
+        # withdraw_CLASS = BurnWithdraw.objects.filter(
+        #         userid_id=Comp.id,
+        #     ).exclude(
+        #         Wallet_type__in=['Burnreferral_wallet','Burnreward_wallet','CBurnreferral_wallet']
+        #     ).aggregate(total_amount=Sum('Amount'))
 
-    #     #     # Handle None case
-    #     # burnswaptwa = str(withdraw_CLASS['total_amount']) if withdraw_CLASS['total_amount'] is not None else '0.0'
+        #     # Handle None case
+        # burnswaptwa = str(withdraw_CLASS['total_amount']) if withdraw_CLASS['total_amount'] is not None else '0.0'
         
-    #     swap_amountburn = swap_receivehistory.objects.filter(
-    #         userid=Comp.id,
-    #         type = 'burn',
-    #         # created_on__gte=Comp.Mplan_start_date
-    #     ).aggregate(Sum('Withdraw_JWC'))
+        swap_amountburn = swap_receivehistory.objects.filter(
+            userid=Comp.id,
+            type = 'burn',
+            # created_on__gte=Comp.Mplan_start_date
+        ).aggregate(Sum('Withdraw_JWC'))
 
-    #     if swap_amountburn['Withdraw_JWC__sum'] is not None:
-    #         totalswapamontburn = Decimal(str(swap_amountburn['Withdraw_JWC__sum'])) 
-    #     else:
-    #         totalswapamontburn = Decimal('0.0')
+        if swap_amountburn['Withdraw_JWC__sum'] is not None:
+            totalswapamontburn = Decimal(str(swap_amountburn['Withdraw_JWC__sum'])) 
+        else:
+            totalswapamontburn = Decimal('0.0')
         
-    #     burnswapbwa = Decimal(burnswaptwa) - Decimal(totalswapamontburn)
+        burnswapbwa = Decimal(burnswaptwa) - Decimal(totalswapamontburn)
         
 
-    #     # Prepare response data
-    #     user_data = {
-    #         'id': id,
-    #         'reff_id': reff_id,
-    #         'Email': Email,
-    #         'wallet_address': wallet_address,
-    #         'JW_Deposit': JW_Deposit,
-    #         'USDT_Deposit': USDT_Deposit,
-    #         'JW_support': JW_support,
-    #         'JWC_support':JWC_support,
-    #         'USDT_support': USDT_support,
-    #         'Mplan_support_status': plan_support_status,
-    #         'lastfeepaid': lastfeepaid,
-    #         'JWC_marketprice': JWC_marketprice,
-    #         'plan': plan,
-    #         'plan_start': plan_start,
-    #         'plan_end': plan_end,
-    #         'plan_status': plan_status,
-    #         'MPHealth': MPHealth,
-    #         'MPRefferral': MPRefferral,
-    #         'mleg1': mleg1,
-    #         'mlegall': mlegall,
-    #         'mPlanbwa': mPlanbwa,
-    #         'mplanminorgHR': mplanminorgHR,
-    #         'mplanminorgUR': mplanminorgUR,
-    #         'Dailyreward': Dailyreward,
-    #         'step': step,
-    #         'PlanName': PlanName,
-    #         'Time_period': Time_period,
-    #         'plan_count':plan_count,
-    #         'buyplan':buyplan,
-    #         'supp_fee':supp_fee,
-    #         'MPTWA':TWA,
-    #         'MPBWA':BWA,
-    #         'BNBStatus':BNBStatus,
-    #         'mphealthwithdrawfee':mphealthwithdrawfee,
-    #         'mprefferalwithdrawfee':mprefferalwithdrawfee,
-    #         'app_version':app_version,
-    #         'admin_stop_withdraw':admin_stop_withdraw1,
-    #         'HR':HR,
-    #         'usdttojwc':usdttojwc,
-    #         'jwctousdt':jwctousdt,
-    #         'totalplanamont':totalplanamont,
-    #         'swaptwa':swaptwa,
-    #         'totalswapamont':totalswapamont,
-    #         'swapbwa':swapbwa,
-    #         'minswap':minswap,
-    #         'swapwithdrawfee':swapwithdrawfee,
-    #         'admin_stop_swap':admin_stop_swap,
-    #         'totalswapamontusdt':totalswapamontusdt,
-    #         'totalswapamontjwc':totalswapamontjwc,
-    #         'swapjwclimit':swapjwclimit,
-    #         'planbuyjw':planbuyjw,
-    #         'planbuyjwc':planbuyjwc,
-    #         'burnswaptwa':burnswaptwa,
-    #         'burnswapbwa':burnswapbwa
+        # Prepare response data
+        user_data = {
+            'id': id,
+            'reff_id': reff_id,
+            'Email': Email,
+            'wallet_address': wallet_address,
+            'JW_Deposit': JW_Deposit,
+            'USDT_Deposit': USDT_Deposit,
+            'JW_support': JW_support,
+            'JWC_support':JWC_support,
+            'USDT_support': USDT_support,
+            'Mplan_support_status': plan_support_status,
+            'lastfeepaid': lastfeepaid,
+            'JWC_marketprice': JWC_marketprice,
+            'plan': plan,
+            'plan_start': plan_start,
+            'plan_end': plan_end,
+            'plan_status': plan_status,
+            'MPHealth': MPHealth,
+            'MPRefferral': MPRefferral,
+            'mleg1': mleg1,
+            'mlegall': mlegall,
+            'mPlanbwa': mPlanbwa,
+            'mplanminorgHR': mplanminorgHR,
+            'mplanminorgUR': mplanminorgUR,
+            'Dailyreward': Dailyreward,
+            'step': step,
+            'PlanName': PlanName,
+            'Time_period': Time_period,
+            'plan_count':plan_count,
+            'buyplan':buyplan,
+            'supp_fee':supp_fee,
+            'MPTWA':TWA,
+            'MPBWA':BWA,
+            'BNBStatus':BNBStatus,
+            'mphealthwithdrawfee':mphealthwithdrawfee,
+            'mprefferalwithdrawfee':mprefferalwithdrawfee,
+            'app_version':app_version,
+            'admin_stop_withdraw':admin_stop_withdraw1,
+            'HR':HR,
+            'usdttojwc':usdttojwc,
+            'jwctousdt':jwctousdt,
+            'totalplanamont':totalplanamont,
+            'swaptwa':swaptwa,
+            'totalswapamont':totalswapamont,
+            'swapbwa':swapbwa,
+            'minswap':minswap,
+            'swapwithdrawfee':swapwithdrawfee,
+            'admin_stop_swap':admin_stop_swap,
+            'totalswapamontusdt':totalswapamontusdt,
+            'totalswapamontjwc':totalswapamontjwc,
+            'swapjwclimit':swapjwclimit,
+            'planbuyjw':planbuyjw,
+            'planbuyjwc':planbuyjwc,
+            'burnswaptwa':burnswaptwa,
+            'burnswapbwa':burnswapbwa
             
-    #     }
+        }
 
-    #     return Response(user_data)
+        return Response(user_data)
 
     except Token.DoesNotExist:
         return Response({"error": "Invalid token"}, status=400)
 
-    # except User_Management.DoesNotExist:
-    #     return Response({"error": "User not found"}, status=404)
+    except User_Management.DoesNotExist:
+        return Response({"error": "User not found"}, status=404)
 
     except Exception as e:
         return Response({"error": str(e)}, status=500)
