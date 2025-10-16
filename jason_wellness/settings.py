@@ -108,7 +108,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
@@ -116,8 +116,14 @@ MIDDLEWARE = [
 
 # 👇 Add this line here
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins
+CORS_ALLOW_CREDENTIALS = True
 
-
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # temporary to avoid 405/403
+    ]
+}
 
 ROOT_URLCONF = 'jason_wellness.urls'
 
