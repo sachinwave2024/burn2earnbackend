@@ -1,6 +1,4 @@
 
-
-Optional: import custom settings if needed
 from jason_wellness.jason_wellness_settings import *
 from jason_wellness.jason_database import *
 
