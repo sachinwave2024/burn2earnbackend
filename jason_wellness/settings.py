@@ -103,13 +103,26 @@ MESSAGE_TAGS = {
 
 WSGI_APPLICATION = 'jason_wellness.wsgi.application'
 
-# Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Kiueayfafyawhfayrfhafahfea',
+        'USER': 'burntoearn',
+        'PASSWORD': 'YourStrongPassword123!',
+        'HOST': '165.227.31.56',
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'},
+    },
+    'second_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Wdiadkfaufdkaefadvd',
+        'USER': 'burntoearn',
+        'PASSWORD': 'YourStrongPassword123!',
+        'HOST': '165.227.31.56',
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'},
+    }
+}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
