@@ -23608,11 +23608,11 @@ from decimal import Decimal
 from django.db.models import Sum
 @api_view(['POST'])
 def MP_plan_detail(request):
-    # try:
-    #     # Retrieve token from headers
-    #     Token_header = request.headers.get('token')
-    #     if not Token_header:
-    #         return Response({"error": "Token is required"}, status=400)
+    try:
+        # Retrieve token from headers
+        Token_header = request.headers.get('token')
+        if not Token_header:
+            return Response({"error": "Token is required"}, status=400)
         
     #     # Get user based on token
     #     token = Token.objects.get(key=Token_header)
@@ -24039,8 +24039,8 @@ def MP_plan_detail(request):
 
     #     return Response(user_data)
 
-    # except Token.DoesNotExist:
-    #     return Response({"error": "Invalid token"}, status=400)
+    except Token.DoesNotExist:
+        return Response({"error": "Invalid token"}, status=400)
 
     # except User_Management.DoesNotExist:
     #     return Response({"error": "User not found"}, status=404)
