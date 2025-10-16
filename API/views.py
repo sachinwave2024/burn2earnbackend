@@ -3365,15 +3365,15 @@ import pickle
 from web3.middleware import geth_poa_middleware
 
 # testBNBseedurl = 'https://bsc-dataseed.binance.org/'
-obj_contract = Contract_address.objects.get(id = 1)
-testBNBseedurl = obj_contract.Stake_contract_Address
-web3 =  Web3(Web3.HTTPProvider(testBNBseedurl))
-web3.middleware_onion.inject(geth_poa_middleware, layer=0)
-admin_address_pk ='1OP1haKmdm2odu+Z1ZY+uVbEsflfaD6OiphJXYrtAO6tIc85R4SD3KrXJnJQ7Xa4T7w53u3I244rFeQUnOmEsHVOLtZnJoacYQICnk6qzUM='
-admin_address ='BScIjxmyaKnGGeDrjHjHrwVsoWrH138k6Eai3wQ2rTOo4WZg5RNHx+BSFDRJ6MUE'
-ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
-ad_ad = "thAtkC68J5UMbBBos41TnMw1xeVcbYNgFgLJS55SIMyN7Z3vJvLoMhHg0Eta/kKm"
-user_ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
+# obj_contract = Contract_address.objects.get(id = 1)
+# testBNBseedurl = obj_contract.Stake_contract_Address
+# web3 =  Web3(Web3.HTTPProvider(testBNBseedurl))
+# web3.middleware_onion.inject(geth_poa_middleware, layer=0)
+# admin_address_pk ='1OP1haKmdm2odu+Z1ZY+uVbEsflfaD6OiphJXYrtAO6tIc85R4SD3KrXJnJQ7Xa4T7w53u3I244rFeQUnOmEsHVOLtZnJoacYQICnk6qzUM='
+# admin_address ='BScIjxmyaKnGGeDrjHjHrwVsoWrH138k6Eai3wQ2rTOo4WZg5RNHx+BSFDRJ6MUE'
+# ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
+# ad_ad = "thAtkC68J5UMbBBos41TnMw1xeVcbYNgFgLJS55SIMyN7Z3vJvLoMhHg0Eta/kKm"
+# user_ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
 
 
 
@@ -26775,16 +26775,16 @@ from eth_account import Account,messages
 import pickle
 from web3.middleware import geth_poa_middleware
 
-# testBNBseedurl = 'https://bsc-dataseed.binance.org/'
-obj_contract = Contract_address.objects.get(id = 1)
-testBNBseedurl = obj_contract.Stake_contract_Address
-web3 =  Web3(Web3.HTTPProvider(testBNBseedurl))
-web3.middleware_onion.inject(geth_poa_middleware, layer=0)
-admin_address_pk ='1OP1haKmdm2odu+Z1ZY+uVbEsflfaD6OiphJXYrtAO6tIc85R4SD3KrXJnJQ7Xa4T7w53u3I244rFeQUnOmEsHVOLtZnJoacYQICnk6qzUM='
-admin_address ='BScIjxmyaKnGGeDrjHjHrwVsoWrH138k6Eai3wQ2rTOo4WZg5RNHx+BSFDRJ6MUE'
-ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
-ad_ad = "thAtkC68J5UMbBBos41TnMw1xeVcbYNgFgLJS55SIMyN7Z3vJvLoMhHg0Eta/kKm"
-user_ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
+# # testBNBseedurl = 'https://bsc-dataseed.binance.org/'
+# obj_contract = Contract_address.objects.get(id = 1)
+# testBNBseedurl = obj_contract.Stake_contract_Address
+# web3 =  Web3(Web3.HTTPProvider(testBNBseedurl))
+# web3.middleware_onion.inject(geth_poa_middleware, layer=0)
+# admin_address_pk ='1OP1haKmdm2odu+Z1ZY+uVbEsflfaD6OiphJXYrtAO6tIc85R4SD3KrXJnJQ7Xa4T7w53u3I244rFeQUnOmEsHVOLtZnJoacYQICnk6qzUM='
+# admin_address ='BScIjxmyaKnGGeDrjHjHrwVsoWrH138k6Eai3wQ2rTOo4WZg5RNHx+BSFDRJ6MUE'
+# ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
+# ad_ad = "thAtkC68J5UMbBBos41TnMw1xeVcbYNgFgLJS55SIMyN7Z3vJvLoMhHg0Eta/kKm"
+# user_ad_pk = "Bp1Fljq9rBHi4kaPVBdBIlqS3jEzHswzB1jpwLpk6iU9GbRn7favXXczENW+v8l+Kr3Hov0UqAul7Nqq3WLaxA=="
 
 
 @api_view(['POST'])
