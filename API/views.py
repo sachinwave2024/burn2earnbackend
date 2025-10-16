@@ -23624,7 +23624,7 @@ def MP_plan_detail(request):
         UpdateUserPlanDetail(request, Comp.id)
         MPRoi_wallet_blance(request, Comp.id)
         MP_referall_blance(request, Comp.id)
-        croneMPHealthReward(request, Comp.id)
+        # croneMPHealthReward(request, Comp.id)
 
         id = Comp.id
         reff_id = Comp.reff_id
