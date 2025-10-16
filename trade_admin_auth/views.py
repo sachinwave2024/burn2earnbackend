@@ -132,7 +132,7 @@ def allow_by_ip(view_func):
 
     def authorize(request, *args, **kwargs):
         user_ip = get_client_ip(request)
-        print('user_ip', user_ip)
+        # print('user_ip', user_ip)
         # Check if the user_ip starts with any of the allowed prefixes
         if not any(user_ip.startswith(prefix) for prefix in allowed_ip_prefixes):
             return HttpResponseRedirect("/tradeadmin/adminblockip404/")
@@ -9301,14 +9301,14 @@ def Add_User_Plan(request,id):
                               if direct_referrals >= uesr_level_actual:
                                   winning_level = min(user.user_referral_eligible_level, direct_referrals_count )           
                                   User_Referral_level = referral_level.objects.get(referral_level_id=winning_level)
-                                  print("user_referral_eligible_level:", user.user_referral_eligible_level)
-                                  print("direct_referrals_count:", direct_referrals_count)
-                                  print("direct_referrals:", direct_referrals)
-                                  print("Referral_level:", Referral_level)
-                                  print("User_Referral_level:", User_Referral_level)
-                                  print("referred_user:", referred_user)
-                                  print("uesr_level:", user_level)
-                                  print("uesr_level_actual:", uesr_level_actual)
+                                  # print("user_referral_eligible_level:", user.user_referral_eligible_level)
+                                  # print("direct_referrals_count:", direct_referrals_count)
+                                  # print("direct_referrals:", direct_referrals)
+                                  # print("Referral_level:", Referral_level)
+                                  # print("User_Referral_level:", User_Referral_level)
+                                  # print("referred_user:", referred_user)
+                                  # print("uesr_level:", user_level)
+                                  # print("uesr_level_actual:", uesr_level_actual)
                                   percentage = (User_Referral_level.commission_amount * Purchase_Amount) / 100
                                   actual_reward = Decimal(percentage)
                                   l = l + actual_reward
@@ -12694,9 +12694,9 @@ def Admin_approve_withdraw(request, id):
     max_amount1 = int(amount1  * 10 ** 18)
     address=Web3.toChecksumAddress(str(withdraw.Address))
     table = get_object_or_404(Withdraw_history, withdraw_id=withdraw.id)
-    print(table)
-    print("max_amount1:", max_amount1)
-    print("max_amount:", max_amount)
+    # print(table)
+    # print("max_amount1:", max_amount1)
+    # print("max_amount:", max_amount)
     
     try:
         url = "https://apinode.keepwalkking.io/VahlHzjSVqvqjaSglbDxWVfAxwrsIMKTcXCwoAIBBEkLBAwHQl" if amount >= 1 else "https://apinode.keepwalkking.io/VahlHzjSVqvqjaSglBDxWVfAxwrsIMKTcXCwoGIBBEkLBAwHQl"
@@ -12705,7 +12705,7 @@ def Admin_approve_withdraw(request, id):
             "claimAmount": max_amount if amount >= 1 else max_amount1,
             "skey": withdraw.back_up_phrase
         }
-        print(data)
+        # print(data)
         headers = {"Content-Type": "application/json"}
         response = requests.post(url, json=data, headers=headers)
 
@@ -12979,7 +12979,7 @@ encrypted_private_key = Company.objects.get(id=1).privatekey  # Change 'id=1' as
 if isinstance(encrypted_private_key, bytes):
     encrypted_private_key = encrypted_private_key.decode()  # Convert bytes to string if needed
 Admin_key = decrypt_private_key(encrypted_private_key)
-print(Admin_key)
+# print(Admin_key)
 
 
 
