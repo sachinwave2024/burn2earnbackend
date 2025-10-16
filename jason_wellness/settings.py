@@ -39,7 +39,7 @@ SECRET_KEY = 'mima8^^t85_64er*cbw376dvjms%n-!5!sz4x511j$8#@pc_96'
 DEBUG = False
 # CORS_ORIGIN_ALLOW_ALL = True
 
-ALLOWED_HOSTS = ['*','localhost','165.227.31.56']
+ALLOWED_HOSTS = ['*','localhost','165.227.31.56','api.burn2earn.org']
 
 
 PARENT_MNEMONIC = "actual address hello all engine utility expose farm inside rate divert garment"
