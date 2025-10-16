@@ -157,10 +157,25 @@ WSGI_APPLICATION = 'jason_wellness.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Kiueayfafyawhfayrfhafahfea',
+        'USER': 'burntoearn',
+        'PASSWORD': 'YourStrongPassword123!',
+        'HOST': '165.227.31.56',
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'},
+    },
+    'second_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Wdiadkfaufdkaefadvd',
+        'USER': 'burntoearn',
+        'PASSWORD': 'YourStrongPassword123!',
+        'HOST': '165.227.31.56',
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
+
 # Use BigAutoField as default for all models
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
